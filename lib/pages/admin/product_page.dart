@@ -202,7 +202,7 @@ class _ProductPageState extends State<ProductPage> {
       ),
     );
   }
-
+ 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
