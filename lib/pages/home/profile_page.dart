@@ -24,7 +24,7 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               ClipOval(
                 child: Image.network(
-                  user.profilePhotoUrl,
+                  "https://picsum.photos/200",
                   width: 64,
                 ),
               ),
@@ -41,7 +41,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                     Text(
-                      "@${user.username}",
+                      "@dandev14",
                       style: subtitleTextStyle.copyWith(
                         fontSize: 16,
                       ),

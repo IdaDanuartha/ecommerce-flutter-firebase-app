@@ -3,22 +3,24 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class DashboardPage extends StatefulWidget {
+  const DashboardPage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<DashboardPage> createState() => _DashboardPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _DashboardPageState extends State<DashboardPage> {
+
   @override
   Widget build(BuildContext context) {
-    User? user = FirebaseAuth.instance.currentUser;
-    var userDetail = FirebaseFirestore.instance
-            .collection('users')
-            .doc(user!.uid)
-            .get();
 
+  User? user = FirebaseAuth.instance.currentUser;
+  var userDetail = FirebaseFirestore.instance
+          .collection('users')
+          .doc(user!.uid)
+          .get();
+          
     Widget header() {
       return Container(
         margin: EdgeInsets.only(

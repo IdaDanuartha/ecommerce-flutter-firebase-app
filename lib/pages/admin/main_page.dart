@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ecommerce_firebase/pages/home/home_page.dart';
+import 'package:ecommerce_firebase/pages/admin/dashboard_page.dart';
 import 'package:ecommerce_firebase/themes.dart';
 
 class MainPage extends StatefulWidget {
@@ -12,7 +12,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   int _currentIndex = 0;
   final _screens = [
-    HomePage(),
+    DashboardPage(),
     // ChatPage(),
     // WishlistPage(),
     // ProfilePage(),

@@ -158,13 +158,13 @@ class _EditProfileState extends State<EditProfile> {
               image: DecorationImage(
                 fit: BoxFit.fill,
                 image: NetworkImage(
-                  user.profilePhotoUrl
+                  "https://picsum.photos/200"
                 )
               )
             ),
           ),
           nameInput(user.name),
-          usernameInput(user.username),
+          usernameInput("dandev14"),
           emailInput(user.email),          
         ],
       ),
@@ -177,7 +177,7 @@ class _EditProfileState extends State<EditProfile> {
     UserModel user = authProvider.user;
 
     nameController.text = user.name;
-    usernameController.text = user.username;
+    usernameController.text = "dandev14";
     emailController.text = user.email;
 
     return Scaffold(

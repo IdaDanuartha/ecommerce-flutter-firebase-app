@@ -1,9 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:ecommerce_firebase/providers/product_provider.dart';
 import 'package:ecommerce_firebase/themes.dart';
-import 'package:provider/provider.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});

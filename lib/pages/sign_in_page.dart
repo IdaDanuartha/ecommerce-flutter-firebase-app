@@ -1,5 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_firebase/pages/admin/dashboard_page.dart';
 import 'package:ecommerce_firebase/pages/home/home_page.dart';
-import 'package:ecommerce_firebase/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
@@ -20,6 +21,52 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
+
+void route() {
+    User? user = FirebaseAuth.instance.currentUser;
+    FirebaseFirestore.instance
+            .collection('users')
+            .doc(user!.uid)
+            .get()
+            .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        if (documentSnapshot.get('role') == "admin" || documentSnapshot.get('role') == "staff") {
+           Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>  DashboardPage(),
+          ),
+        );
+        }else{
+          Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>  HomePage(),
+          ),
+        );
+        }
+      } else {
+        print('Document does not exist on the database');
+      }
+    });
+  }
+
+  void signIn(String email, String password) async {
+    try {
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      route();
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
+    }
+  }
 
     Widget header() {
       return Container(
@@ -136,23 +183,8 @@ class _SignInPageState extends State<SignInPage> {
         margin: EdgeInsets.only(top: defaultMargin),
         child: TextButton(
           onPressed: () async {
-                final message = await AuthService().login(
-                  email: _emailController.text,
-                  password: _passwordController.text,
-                );
-                if (message!.contains('Success')) {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => const HomePage(),
-                    ),
-                  );
-                }
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(message),
-                  ),
-                );
-              },
+            signIn(_emailController.text, _passwordController.text);
+          },
           style: TextButton.styleFrom(
               backgroundColor: primaryColor,
               shape: RoundedRectangleBorder(

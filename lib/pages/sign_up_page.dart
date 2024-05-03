@@ -1,10 +1,9 @@
-import 'package:ecommerce_firebase/pages/home/home_page.dart';
-import 'package:ecommerce_firebase/services/auth_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_firebase/pages/sign_in_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_firebase/providers/auth_provider.dart';
 import 'package:ecommerce_firebase/themes.dart';
 import 'package:ecommerce_firebase/widgets/loading_button.dart';
-import 'package:provider/provider.dart';
 
 class SignUpPage extends StatefulWidget {
   SignUpPage({super.key});
@@ -21,8 +20,38 @@ class _SignUpPageState extends State<SignUpPage> {
 
   bool isLoading = false;
 
+  final _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
+    postDetailsToFirestore() async {
+      FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+      var user = _auth.currentUser;
+      CollectionReference ref = firebaseFirestore.collection('users');
+      ref.doc(user!.uid).set({'name': _nameController.text, 'username': _usernameController.text, 'email': _emailController.text, 'role': "customer"});
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => SignInPage()));
+    }
+    
+    void signUp(String email, String password) async {
+      await _auth
+        .createUserWithEmailAndPassword(email: email, password: password)
+        .then((value) => {postDetailsToFirestore()})
+        .catchError((e) {
+          print(e);
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: alertColor,
+                duration: Duration(milliseconds: 1000),
+                content: Text(
+                  'Failed to create account',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            );
+        });
+    }
+    
     Widget header() {
       return Container(
         margin: EdgeInsets.only(top: defaultMargin),
@@ -109,7 +138,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 child: Row(
                   children: [
                     Image.asset(
-                      'assets/icon_username.png',
+                      'assets/icon_name.png',
                       width: 17,
                     ),
                     SizedBox(width: 16),
@@ -222,19 +251,26 @@ class _SignUpPageState extends State<SignUpPage> {
         margin: EdgeInsets.only(top: defaultMargin),
         child: TextButton(
           onPressed: () async {
-                final message = await AuthService().registration(
-                  email: _emailController.text,
-                  password: _passwordController.text,
-                );
-                if (message!.contains('Success')) {
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => const HomePage()));
-                }
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(message),
-                  ),
-                );
+                // final message = await AuthService().registration(
+                //   email: _emailController.text,
+                //   password: _passwordController.text,
+                // );
+                // if (message!.contains('Success')) {
+                //   Navigator.of(context).pushReplacement(
+                //     MaterialPageRoute(builder: (context) => const HomePage())
+                //   );
+                // }
+                // ScaffoldMessenger.of(context).showSnackBar(
+                //   SnackBar(
+                //     backgroundColor: alertColor,
+                //     duration: Duration(milliseconds: 1000),
+                //     content: Text(
+                //       'Failed to create account',
+                //       textAlign: TextAlign.center,
+                //     ),
+                //   ),
+                // );
+                signUp(_emailController.text, _passwordController.text);
               },
           style: TextButton.styleFrom(
               backgroundColor: primaryColor,
