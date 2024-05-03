@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ecommerce_firebase/models/user_model.dart';
-import 'package:ecommerce_firebase/providers/auth_provider.dart';
 import 'package:ecommerce_firebase/themes.dart';
 import 'package:provider/provider.dart';
 
@@ -138,7 +136,7 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
   
-  Widget content(UserModel user) {
+  Widget content() {
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: defaultMargin
@@ -163,9 +161,9 @@ class _EditProfileState extends State<EditProfile> {
               )
             ),
           ),
-          nameInput(user.name),
+          nameInput("Danuartha"),
           usernameInput("dandev14"),
-          emailInput(user.email),          
+          emailInput("danuart@gmail.com"),          
         ],
       ),
     );
@@ -173,17 +171,15 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
-    AuthProvider authProvider = Provider.of<AuthProvider>(context);
-    UserModel user = authProvider.user;
 
-    nameController.text = user.name;
+    nameController.text = "Danuartha";
     usernameController.text = "dandev14";
-    emailController.text = user.email;
+    emailController.text = "danuart@gmail.com";
 
     return Scaffold(
       backgroundColor: bgColor3,
       appBar: header(),
-      body: content(user),
+      body: content(),
       resizeToAvoidBottomInset: false,
     );
   }

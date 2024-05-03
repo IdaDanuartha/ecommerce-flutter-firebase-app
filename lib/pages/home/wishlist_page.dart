@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ecommerce_firebase/providers/wishlist_provider.dart';
 import 'package:ecommerce_firebase/themes.dart';
 import 'package:ecommerce_firebase/widgets/wishlist_card.dart';
 import 'package:provider/provider.dart';
@@ -9,7 +8,7 @@ class WishlistPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WishlistProvider wishlistProvider = Provider.of<WishlistProvider>(context);
+    // WishlistProvider wishlistProvider = Provider.of<WishlistProvider>(context);
 
     Widget header() {
       return Container(
@@ -89,9 +88,9 @@ class WishlistPage extends StatelessWidget {
             padding: EdgeInsets.symmetric(
               horizontal: defaultMargin
             ),
-            children: wishlistProvider.wishlist.map(
-              (product) => WishlistCard(product: product)
-            ).toList()
+            // children: wishlistProvider.wishlist.map(
+            //   (product) => WishlistCard(product: product)
+            // ).toList()
           )
         ),
       );
@@ -100,7 +99,7 @@ class WishlistPage extends StatelessWidget {
     return Column(
       children: [
         header(),
-        wishlistProvider.wishlist.length == 0 ? emptyWishlist() : content()
+        // wishlistProvider.wishlist.length == 0 ? emptyWishlist() : content()
       ],
     );
   }

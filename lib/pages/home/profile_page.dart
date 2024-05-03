@@ -1,8 +1,7 @@
+import 'package:ecommerce_firebase/pages/sign_in_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_firebase/models/user_model.dart';
-import 'package:ecommerce_firebase/providers/auth_provider.dart';
 import 'package:ecommerce_firebase/themes.dart';
-import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -12,7 +11,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {      
-  Widget header(UserModel user, handleLogout) {
+  Widget header(handleLogout) {
     return AppBar(
       backgroundColor: bgColor1,
       automaticallyImplyLeading: false,
@@ -34,7 +33,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Hello, ${user.name}",
+                      "Danuartha",
                       style: primaryTextStyle.copyWith(
                         fontSize: 24,
                         fontWeight: semiBold
@@ -132,32 +131,17 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    AuthProvider authProvider = Provider.of<AuthProvider>(context);
-    UserModel user = authProvider.user;
+    final FirebaseAuth _auth = FirebaseAuth.instance;
 
     handleLogout() async {
-      if(await authProvider.logout()) {
-        Navigator.pushNamedAndRemoveUntil(
-          context, 
-          '/sign-in', 
-          (route) => false
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: alertColor,
-            content: Text(
-              'Logout failed',
-              textAlign: TextAlign.center,
-            ),
-          ),
-        );
-      }
+      await _auth.signOut();
+      Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => SignInPage()));
     }
 
     return Column(
       children: [
-        header(user, handleLogout),
+        header(handleLogout),
         content()
       ],
     );

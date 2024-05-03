@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 
@@ -12,10 +13,16 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> {
 
+  User? user = FirebaseAuth.instance.currentUser;
+
   @override
   void initState() {
-    Timer(const Duration(seconds: 3), () {
-      Navigator.pushNamed(context, '/sign-in');
+    Timer(const Duration(seconds: 2), () {
+      if(user?.uid != null) {
+        Navigator.pushNamed(context, '/home');
+      } else {
+        Navigator.pushNamed(context, '/sign-in');
+      }
     });
     
     super.initState();

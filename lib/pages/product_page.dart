@@ -1,15 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_firebase/models/product_model.dart';
 import 'package:ecommerce_firebase/pages/detail_chat_page.dart';
-import 'package:ecommerce_firebase/providers/wishlist_provider.dart';
 import 'package:ecommerce_firebase/themes.dart';
 import 'package:provider/provider.dart';
 
 class ProductPage extends StatefulWidget {
-  const ProductPage({super.key, required this.product});
+  const ProductPage({super.key});
 
-  final ProductModel product;
+  // final ProductModel product;
 
   @override
   State<ProductPage> createState() => _ProductPageState();
@@ -31,7 +29,7 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
-    WishlistProvider wishlistProvider = Provider.of<WishlistProvider>(context);
+    // WishlistProvider wishlistProvider = Provider.of<WishlistProvider>(context);
 
     Future<void> showSuccessDialog() async {
       return showDialog(
@@ -173,16 +171,26 @@ class _ProductPageState extends State<ProductPage> {
             ),
           ),
           CarouselSlider(
-            items: widget.product.galleries
-                .map(
-                  (image) => Image.network(
-                    "https://picsum.photos/400",
-                    width: MediaQuery.of(context).size.width,
-                    height: 310,
-                    fit: BoxFit.cover,
-                  ),
-                )
-                .toList(),
+            items: [
+              Image.network(
+                "https://picsum.photos/400",
+                width: MediaQuery.of(context).size.width,
+                height: 310,
+                fit: BoxFit.cover,
+              ),
+              Image.network(
+                "https://picsum.photos/400",
+                width: MediaQuery.of(context).size.width,
+                height: 310,
+                fit: BoxFit.cover,
+              ),
+              Image.network(
+                "https://picsum.photos/400",
+                width: MediaQuery.of(context).size.width,
+                height: 310,
+                fit: BoxFit.cover,
+              ),
+            ],
             options: CarouselOptions(
               initialPage: 0,
               onPageChanged: (index, reason) {
@@ -197,10 +205,10 @@ class _ProductPageState extends State<ProductPage> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: widget.product.galleries.map((e) {
-              index++;
-              return indicator(index);
-            }).toList(),
+            // children: [widget.product.galleries.map((e) {
+            //   index++;
+            //   return indicator(index);
+            // }).toList(),]
           ),
         ],
       );
@@ -234,14 +242,14 @@ class _ProductPageState extends State<ProductPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.product.name,
+                          "Product 1",
                           style: primaryTextStyle.copyWith(
                             fontSize: 18,
                             fontWeight: semiBold,
                           ),
                         ),
                         Text(
-                          widget.product.category.name,
+                          "Sepatu",
                           style: secondaryTextStyle.copyWith(
                             fontSize: 12,
                           ),
@@ -252,36 +260,34 @@ class _ProductPageState extends State<ProductPage> {
                   GestureDetector(
                     onTap: () {
                       
-                      wishlistProvider.setProduct(widget.product);
+                      // wishlistProvider.setProduct(widget.product);
 
-                      if (wishlistProvider.isWishlist(widget.product)) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            backgroundColor: secondaryColor,
-                            duration: Duration(milliseconds: 500),
-                            content: Text(
-                              'Has been added to the Wishlist',
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        );
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            backgroundColor: alertColor,
-                            duration: Duration(milliseconds: 500),
-                            content: Text(
-                              'Product has been removed from the Wishlist',
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        );
-                      }
+                      // if (wishlistProvider.isWishlist(widget.product)) {
+                      //   ScaffoldMessenger.of(context).showSnackBar(
+                      //     SnackBar(
+                      //       backgroundColor: secondaryColor,
+                      //       duration: Duration(milliseconds: 500),
+                      //       content: Text(
+                      //         'Has been added to the Wishlist',
+                      //         textAlign: TextAlign.center,
+                      //       ),
+                      //     ),
+                      //   );
+                      // } else {
+                      //   ScaffoldMessenger.of(context).showSnackBar(
+                      //     SnackBar(
+                      //       backgroundColor: alertColor,
+                      //       duration: Duration(milliseconds: 500),
+                      //       content: Text(
+                      //         'Product has been removed from the Wishlist',
+                      //         textAlign: TextAlign.center,
+                      //       ),
+                      //     ),
+                      //   );
+                      // }
                     },
                     child: Image.asset(
-                      wishlistProvider.isWishlist(widget.product)
-                          ? 'assets/button_wishlist_blue.png'
-                          : 'assets/button_wishlist.png',
+                      'assets/button_wishlist.png',
                       width: 46,
                     ),
                   ),
@@ -310,7 +316,7 @@ class _ProductPageState extends State<ProductPage> {
                     style: primaryTextStyle,
                   ),
                   Text(
-                    '\$${widget.product.price}',
+                    '\$34.65',
                     style: priceTextStyle.copyWith(
                       fontSize: 16,
                       fontWeight: semiBold,
@@ -341,7 +347,7 @@ class _ProductPageState extends State<ProductPage> {
                     height: 12,
                   ),
                   Text(
-                    widget.product.description,
+                    'lorem ipsum dolor sit amet',
                     style: subtitleTextStyle.copyWith(
                       fontWeight: light,
                     ),
