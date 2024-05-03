@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
-import 'package:ecommerce_firebase/widgets/wishlist_card.dart';
-import 'package:provider/provider.dart';
 
-class WishlistPage extends StatelessWidget {
-  const WishlistPage({super.key});
+class OrderPage extends StatelessWidget {
+  const OrderPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +14,7 @@ class WishlistPage extends StatelessWidget {
           backgroundColor: bgColor1,
           centerTitle: true,
           title: Text(
-            "Favorite Shoes",
+            "My Orders",
             style: primaryTextStyle.copyWith(
               fontSize: 18,
               fontWeight: medium
@@ -24,6 +22,7 @@ class WishlistPage extends StatelessWidget {
           ),
           elevation: 0,
           automaticallyImplyLeading: false,
+          leading: null,
         ),
       );
     }

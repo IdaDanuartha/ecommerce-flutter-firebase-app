@@ -1,6 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecommerce_firebase/pages/admin/dashboard_page.dart';
-import 'package:ecommerce_firebase/pages/home/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
@@ -31,19 +29,9 @@ void route() {
             .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
         if (documentSnapshot.get('role') == "admin" || documentSnapshot.get('role') == "staff") {
-           Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>  DashboardPage(),
-          ),
-        );
+           Navigator.pushNamed(context, '/dashboard');
         }else{
-          Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>  HomePage(),
-          ),
-        );
+          Navigator.pushNamed(context, '/home');
         }
       } else {
         print('Document does not exist on the database');

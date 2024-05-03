@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
@@ -19,7 +20,18 @@ class _SplashPageState extends State<SplashPage> {
   void initState() {
     Timer(const Duration(seconds: 2), () {
       if(user?.uid != null) {
-        Navigator.pushNamed(context, '/home');
+        var userDetail =
+        FirebaseFirestore.instance.collection('users').doc(user!.uid).get().then(
+          (DocumentSnapshot doc) {
+              final data = doc.data() as Map<String, dynamic>;
+              if(data["role"] == "admin" || data["role"] == "staff") {
+                Navigator.pushNamed(context, '/dashboard');
+              } else {
+                Navigator.pushNamed(context, '/home');
+              }
+            },
+            onError: (e) => print("Error getting document: $e"),
+        );
       } else {
         Navigator.pushNamed(context, '/sign-in');
       }

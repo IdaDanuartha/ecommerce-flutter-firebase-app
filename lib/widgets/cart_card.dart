@@ -26,7 +26,7 @@ class CartCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   image: DecorationImage(
-                    image: NetworkImage(
+                    image: AssetImage(
                       'assets/image_shoes.png',
                     ),
                   ),

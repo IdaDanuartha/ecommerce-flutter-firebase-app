@@ -1,6 +1,6 @@
-import 'package:ecommerce_firebase/pages/home/chat_page.dart';
-import 'package:ecommerce_firebase/pages/home/profile_page.dart';
-import 'package:ecommerce_firebase/pages/home/wishlist_page.dart';
+import 'package:ecommerce_firebase/pages/home/cart_page.dart';
+import 'package:ecommerce_firebase/pages/profile_page.dart';
+import 'package:ecommerce_firebase/pages/home/order_page.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/pages/home/home_page.dart';
 import 'package:ecommerce_firebase/themes.dart';
@@ -16,25 +16,25 @@ class _MainPageState extends State<MainPage> {
   int _currentIndex = 0;
   final _screens = [
     HomePage(),
-    ChatPage(),
-    WishlistPage(),
+    CartPage(),
+    OrderPage(),
     ProfilePage(),
   ];
 
   @override
   Widget build(BuildContext context) {
-    Widget cartButton() {
-      return FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, "/cart");
-        },
-        backgroundColor: secondaryColor,
-        child: Image.asset(
-          'assets/icon_cart.png',
-          width: 20,
-        ),
-      );
-    }
+    // Widget cartButton() {
+    //   return FloatingActionButton(
+    //     onPressed: () {
+    //       Navigator.pushNamed(context, "/cart");
+    //     },
+    //     backgroundColor: secondaryColor,
+    //     child: Image.asset(
+    //       'assets/icon_cart.png',
+    //       width: 20,
+    //     ),
+    //   );
+    // }
 
     Widget customButtonNav() {
       return ClipRRect(
@@ -104,8 +104,8 @@ class _MainPageState extends State<MainPage> {
 
     return Scaffold(
       backgroundColor: _currentIndex == 0 ? bgColor1 : bgColor3,
-      floatingActionButton: cartButton(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // floatingActionButton: cartButton(),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: customButtonNav(),
       body: Stack(
         children: _screens

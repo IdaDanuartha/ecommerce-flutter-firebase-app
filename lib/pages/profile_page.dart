@@ -53,6 +53,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Image.asset(
                   'assets/button_exit.png',
                   width: 20,
+                  color: primaryTextColor,
                 ),
               )
             ],
@@ -110,7 +111,6 @@ class _ProfilePageState extends State<ProfilePage> {
               },
               child: menuItem("Edit Profile"),
             ),
-            menuItem("Your Orders"),
             menuItem("Help"),
             SizedBox(height: 30),
             Text(

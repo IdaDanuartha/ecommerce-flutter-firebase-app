@@ -29,11 +29,18 @@ class _CheckoutPageState extends State<CheckoutPage> {
     AppBar header() {
       return AppBar(
         backgroundColor: bgColor1,
-        elevation: 0,
+        iconTheme: IconThemeData(
+          color: primaryTextColor,
+        ),
         centerTitle: true,
         title: Text(
-          'Checkout Details',
+          'Your Cart',
+          style: primaryTextStyle.copyWith(
+            fontSize: 18,
+            fontWeight: medium
+          ),
         ),
+        elevation: 0,
       );
     }
 

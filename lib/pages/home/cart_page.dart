@@ -10,12 +10,16 @@ class CartPage extends StatelessWidget {
       return AppBar(
         backgroundColor: bgColor1,
         centerTitle: true,
-        iconTheme: IconThemeData(
-          color: primaryTextColor,
-        ),
+        leading: null,
+        // iconTheme: IconThemeData(
+        //   color: primaryTextColor,
+        // ),
         title: Text(
-          'Your Cart',
-          style: primaryTextStyle,
+          'My Carts',
+          style: primaryTextStyle.copyWith(
+            fontSize: 18,
+            fontWeight: medium
+          ),
         ),
         elevation: 0,
       );
