@@ -31,6 +31,16 @@ class _SignUpPageState extends State<SignUpPage> {
       ref.doc(user!.uid).set({'name': _nameController.text, 'username': _usernameController.text, 'email': _emailController.text, 'role': "customer"});
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => SignInPage()));
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: successColor,
+            duration: Duration(milliseconds: 2500),
+            content: Text(
+              'Account created successfully',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
     }
     
     void signUp(String email, String password) async {
@@ -42,7 +52,7 @@ class _SignUpPageState extends State<SignUpPage> {
           ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 backgroundColor: alertColor,
-                duration: Duration(milliseconds: 1000),
+                duration: Duration(milliseconds: 1500),
                 content: Text(
                   'Failed to create account',
                   textAlign: TextAlign.center,

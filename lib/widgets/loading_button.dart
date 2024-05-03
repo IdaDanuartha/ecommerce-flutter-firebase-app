@@ -30,7 +30,7 @@ class LoadingButton extends StatelessWidget {
               ),
             ),
             SizedBox(
-              width: 4,
+              width: 6,
             ),
             Text(
               'Loading',

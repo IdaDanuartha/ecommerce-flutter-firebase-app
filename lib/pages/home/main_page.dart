@@ -66,8 +66,8 @@ class _MainPageState extends State<MainPage> {
                 icon: Container(
                   margin: EdgeInsets.only(top: 20),
                   child: Image.asset(
-                    'assets/icon_product.png',
-                    width: 30,
+                    'assets/icon_cart.png',
+                    width: 20,
                     color:
                         _currentIndex == 1 ? primaryColor : Color(0XFF808191),
                   ),

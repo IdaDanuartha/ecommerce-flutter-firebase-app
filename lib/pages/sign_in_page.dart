@@ -28,11 +28,12 @@ void route() {
             .get()
             .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
-        if (documentSnapshot.get('role') == "admin" || documentSnapshot.get('role') == "staff") {
-           Navigator.pushNamed(context, '/dashboard');
-        }else{
-          Navigator.pushNamed(context, '/home');
-        }
+        // if (documentSnapshot.get('role') == "admin" || documentSnapshot.get('role') == "staff") {
+        //    Navigator.pushNamed(context, '/dashboard');
+        // }else{
+        //   Navigator.pushNamed(context, '/home');
+        // }
+        Navigator.pushNamed(context, '/home');
       } else {
         print('Document does not exist on the database');
       }
@@ -48,11 +49,16 @@ void route() {
       );
       route();
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
-      }
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: alertColor,
+            duration: Duration(milliseconds: 1500),
+            content: Text(
+              'Login failed! Check your credentials and try again',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
     }
   }
 
@@ -171,7 +177,9 @@ void route() {
         margin: EdgeInsets.only(top: defaultMargin),
         child: TextButton(
           onPressed: () async {
+            _isLoading = true;
             signIn(_emailController.text, _passwordController.text);
+            _isLoading = false;
           },
           style: TextButton.styleFrom(
               backgroundColor: primaryColor,

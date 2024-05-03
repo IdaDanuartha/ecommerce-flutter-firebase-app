@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_firebase/providers/product_provider.dart';
+import 'package:ecommerce_firebase/widgets/product_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,24 +20,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     User? user = _auth.currentUser;
-    var userDetail = FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
+    var userDetail =
+        FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
 
-    List<Map<String, dynamic>> productList = [];
-
-    Future<void> fetchData() async {
-      var products = await _db.collection("products").get();
-      products.docs.forEach((docSnapshot) {
-        productList.add({
-          'id': docSnapshot.id,
-          'data': docSnapshot.data(),
-        });
-      });
-      
-      // Display the data
-      productList.forEach((product) {
-        print('${product['id']} => ${product['data']}');
-      });
-    }
+    ProductProvider productProvider = Provider.of<ProductProvider>(context);
 
     Widget header() {
       return Container(
@@ -335,7 +324,9 @@ class _HomePageState extends State<HomePage> {
                     //     ],
                     //   ),
                     // ],
-                    // children: fetchData(),
+                    children: productProvider.products
+                        .map((product) => ProductCard(product: product))
+                        .toList(),
                   )))
         ],
       );

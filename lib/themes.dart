@@ -6,6 +6,7 @@ double defaultMargin = 30.0;
 Color primaryColor = const Color(0xFF6C5ECF);
 Color secondaryColor = const Color(0xFF38ABBE);
 Color alertColor = const Color(0xFFED6363);
+Color successColor = Color.fromARGB(255, 42, 182, 65);
 Color priceColor = const Color(0xFF2C96F1);
 Color bgColor1 = const Color(0xFF1F1D2B);
 Color bgColor2 = const Color(0xFF2B2937);
@@ -40,6 +41,9 @@ TextStyle blackTextStyle = GoogleFonts.poppins(
 );
 TextStyle alertTextStyle = GoogleFonts.poppins(
   color: alertColor,
+);
+TextStyle successTextStyle = GoogleFonts.poppins(
+  color: successColor,
 );
 
 
