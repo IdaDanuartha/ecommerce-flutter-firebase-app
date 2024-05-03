@@ -22,9 +22,15 @@ class ProductCard extends StatelessWidget {
               height: 150,
               fit: BoxFit.cover,
             );
+          } else {
+            return Image.asset(
+                "assets/image_gallery.png",
+                width: 300,
+                height: 150,
+                color: primaryTextColor,
+              );
           }
 
-          return const Text("Something went wrong");
         },
       );
     }

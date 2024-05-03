@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_firebase/pages/sign_in_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +11,8 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {      
-  Widget header(handleLogout) {
+class _ProfilePageState extends State<ProfilePage> {
+  Widget header(user, handleLogout) {
     return AppBar(
       backgroundColor: bgColor1,
       automaticallyImplyLeading: false,
@@ -32,18 +33,40 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Danuartha",
-                      style: primaryTextStyle.copyWith(
-                        fontSize: 24,
-                        fontWeight: semiBold
-                      ),
+                    FutureBuilder<DocumentSnapshot>(
+                      future: user,
+                      builder: (BuildContext context,
+                          AsyncSnapshot<DocumentSnapshot> snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          Map<String, dynamic> data =
+                              snapshot.data!.data() as Map<String, dynamic>;
+
+                          return Text(
+                            data["name"],
+                            style: primaryTextStyle.copyWith(
+                                fontSize: 24, fontWeight: semiBold),
+                          );
+                        }
+                        return Text("");
+                      },
                     ),
-                    Text(
-                      "@dandev14",
-                      style: subtitleTextStyle.copyWith(
-                        fontSize: 16,
-                      ),
+                    FutureBuilder<DocumentSnapshot>(
+                      future: user,
+                      builder: (BuildContext context,
+                          AsyncSnapshot<DocumentSnapshot> snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          Map<String, dynamic> data =
+                              snapshot.data!.data() as Map<String, dynamic>;
+
+                          return Text(
+                            "@${data["username"]}",
+                            style: subtitleTextStyle.copyWith(
+                              fontSize: 16,
+                            ),
+                          );
+                        }
+                        return Text("");
+                      },
                     ),
                   ],
                 ),
@@ -71,9 +94,7 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           Text(
             text,
-            style: secondaryTextStyle.copyWith(
-              fontSize: 15
-            ),
+            style: secondaryTextStyle.copyWith(fontSize: 15),
           ),
           Icon(
             Icons.chevron_right,
@@ -88,22 +109,16 @@ class _ProfilePageState extends State<ProfilePage> {
     return Expanded(
       child: Container(
         width: double.infinity,
-        padding: EdgeInsets.symmetric(
-          horizontal: defaultMargin
-        ),
-        decoration: BoxDecoration(
-          color: bgColor3
-        ),
+        padding: EdgeInsets.symmetric(horizontal: defaultMargin),
+        decoration: BoxDecoration(color: bgColor3),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 20),
             Text(
               'Account',
-              style: primaryTextStyle.copyWith(
-                fontSize: 18,
-                fontWeight: semiBold
-              ),
+              style:
+                  primaryTextStyle.copyWith(fontSize: 18, fontWeight: semiBold),
             ),
             GestureDetector(
               onTap: () {
@@ -115,10 +130,8 @@ class _ProfilePageState extends State<ProfilePage> {
             SizedBox(height: 30),
             Text(
               'General',
-              style: primaryTextStyle.copyWith(
-                fontSize: 18,
-                fontWeight: semiBold
-              ),
+              style:
+                  primaryTextStyle.copyWith(fontSize: 18, fontWeight: semiBold),
             ),
             menuItem("Privacy & Policy"),
             menuItem("Terms of Service"),
@@ -131,19 +144,20 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    User? user = FirebaseAuth.instance.currentUser;
+    var userDetail =
+        FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
+
     final FirebaseAuth _auth = FirebaseAuth.instance;
 
     handleLogout() async {
       await _auth.signOut();
       Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => SignInPage()));
+          context, MaterialPageRoute(builder: (context) => SignInPage()));
     }
 
     return Column(
-      children: [
-        header(handleLogout),
-        content()
-      ],
+      children: [header(userDetail, handleLogout), content()],
     );
   }
 }

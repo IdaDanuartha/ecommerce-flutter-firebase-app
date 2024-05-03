@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_firebase/pages/home/cart_page.dart';
 import 'package:ecommerce_firebase/pages/profile_page.dart';
 import 'package:ecommerce_firebase/pages/home/order_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/pages/home/home_page.dart';
 import 'package:ecommerce_firebase/themes.dart';
@@ -13,6 +15,8 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  User? user = FirebaseAuth.instance.currentUser;
+
   int _currentIndex = 0;
   final _screens = [
     HomePage(),
@@ -20,6 +24,19 @@ class _MainPageState extends State<MainPage> {
     OrderPage(),
     ProfilePage(),
   ];
+
+  // var userDetail =
+  //     await FirebaseFirestore.instance.collection('users').doc(user!.uid).get().then(
+  //       (DocumentSnapshot doc) {
+  //           final data = doc.data() as Map<String, dynamic>;
+  //           if(data["role"] == "admin" || data["role"] == "staff") {
+  //             Navigator.pushNamed(context, '/dashboard');
+  //           } else {
+  //             Navigator.pushNamed(context, '/home');
+  //           }
+  //         },
+  //         onError: (e) => print("Error getting document: $e"),
+  //     );
 
   @override
   Widget build(BuildContext context) {

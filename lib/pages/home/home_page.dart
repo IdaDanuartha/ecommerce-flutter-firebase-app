@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_firebase/helpers/get_download_url.dart';
 import 'package:ecommerce_firebase/providers/product_provider.dart';
 import 'package:ecommerce_firebase/widgets/product_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +17,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -72,14 +73,26 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            Container(
-              width: 54,
-              height: 54,
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                      image: NetworkImage("https://picsum.photos/200"))),
-            )
+            FutureBuilder<DocumentSnapshot>(
+              future: userDetail,
+              builder: (BuildContext context,
+                  AsyncSnapshot<DocumentSnapshot> snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  Map<String, dynamic> data =
+                      snapshot.data!.data() as Map<String, dynamic>;
+
+                  return Container(
+                    width: 54,
+                    height: 54,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(image: NetworkImage("https://picsum.photos/200"))
+                      )
+                  );
+                }
+                return Container();
+              },
+            ),
           ],
         ),
       );
@@ -110,220 +123,6 @@ class _HomePageState extends State<HomePage> {
               child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: Column(
-                    // children: [
-                    //   Row(
-                    //     children: [
-                    //       Expanded(
-                    //         child: GestureDetector(
-                    //           // onTap: () {
-                    //           //   Navigator.push(
-                    //           //       context,x
-                    //           //       MaterialPageRoute(
-                    //           //           builder: (context) =>
-                    //           //               ProductPage(product: product)));
-                    //           // },
-                    //           child: Container(
-                    //             width: 300,
-                    //             height: 272,
-                    //             margin: EdgeInsets.only(right: 10),
-                    //             padding: EdgeInsets.all(20),
-                    //             decoration: BoxDecoration(
-                    //               borderRadius: BorderRadius.circular(12),
-                    //               color: bgColor4,
-                    //             ),
-                    //             child: Column(
-                    //               children: [
-                    //                 ClipRRect(
-                    //                   borderRadius: BorderRadius.circular(5),
-                    //                   child: Image.network(
-                    //                     "https://picsum.photos/1000",
-                    //                     width: 300,
-                    //                     height: 150,
-                    //                     fit: BoxFit.cover,
-                    //                   ),
-                    //                 ),
-                    //                 Container(
-                    //                   margin: EdgeInsets.symmetric(vertical: 5),
-                    //                   width: double.infinity,
-                    //                   child: Column(
-                    //                     crossAxisAlignment:
-                    //                         CrossAxisAlignment.start,
-                    //                     children: [
-                    //                       Text(
-                    //                         "Sepatu",
-                    //                         style: secondaryTextStyle.copyWith(
-                    //                             fontSize: 12),
-                    //                       ),
-                    //                       SizedBox(height: 6),
-                    //                       Text(
-                    //                         "Nike New Era 2024 - 2025",
-                    //                         style: primaryTextStyle.copyWith(
-                    //                             fontSize: 16,
-                    //                             fontWeight: semiBold),
-                    //                         overflow: TextOverflow.ellipsis,
-                    //                       ),
-                    //                       SizedBox(
-                    //                         height: 6,
-                    //                       ),
-                    //                       Text(
-                    //                         "\$15.99",
-                    //                         style: priceTextStyle.copyWith(
-                    //                             fontSize: 14,
-                    //                             fontWeight: medium),
-                    //                       )
-                    //                     ],
-                    //                   ),
-                    //                 ),
-                    //               ],
-                    //             ),
-                    //           ),
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    //   SizedBox(height: 20),
-                    //   Row(
-                    //     children: [
-                    //       Expanded(
-                    //         child: GestureDetector(
-                    //           // onTap: () {
-                    //           //   Navigator.push(
-                    //           //       context,x
-                    //           //       MaterialPageRoute(
-                    //           //           builder: (context) =>
-                    //           //               ProductPage(product: product)));
-                    //           // },
-                    //           child: Container(
-                    //             width: 300,
-                    //             height: 272,
-                    //             margin: EdgeInsets.only(right: 10),
-                    //             padding: EdgeInsets.all(20),
-                    //             decoration: BoxDecoration(
-                    //               borderRadius: BorderRadius.circular(12),
-                    //               color: bgColor4,
-                    //             ),
-                    //             child: Column(
-                    //               children: [
-                    //                 ClipRRect(
-                    //                   borderRadius: BorderRadius.circular(5),
-                    //                   child: Image.network(
-                    //                     "https://picsum.photos/1000",
-                    //                     width: 300,
-                    //                     height: 150,
-                    //                     fit: BoxFit.cover,
-                    //                   ),
-                    //                 ),
-                    //                 Container(
-                    //                   margin: EdgeInsets.symmetric(vertical: 5),
-                    //                   width: double.infinity,
-                    //                   child: Column(
-                    //                     crossAxisAlignment:
-                    //                         CrossAxisAlignment.start,
-                    //                     children: [
-                    //                       Text(
-                    //                         "Sepatu",
-                    //                         style: secondaryTextStyle.copyWith(
-                    //                             fontSize: 12),
-                    //                       ),
-                    //                       SizedBox(height: 6),
-                    //                       Text(
-                    //                         "Nike New Era 2024 - 2025",
-                    //                         style: primaryTextStyle.copyWith(
-                    //                             fontSize: 16,
-                    //                             fontWeight: semiBold),
-                    //                         overflow: TextOverflow.ellipsis,
-                    //                       ),
-                    //                       SizedBox(
-                    //                         height: 6,
-                    //                       ),
-                    //                       Text(
-                    //                         "\$15.99",
-                    //                         style: priceTextStyle.copyWith(
-                    //                             fontSize: 14,
-                    //                             fontWeight: medium),
-                    //                       )
-                    //                     ],
-                    //                   ),
-                    //                 ),
-                    //               ],
-                    //             ),
-                    //           ),
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    //   SizedBox(height: 20),
-                    //   Row(
-                    //     children: [
-                    //       Expanded(
-                    //         child: GestureDetector(
-                    //           // onTap: () {
-                    //           //   Navigator.push(
-                    //           //       context,x
-                    //           //       MaterialPageRoute(
-                    //           //           builder: (context) =>
-                    //           //               ProductPage(product: product)));
-                    //           // },
-                    //           child: Container(
-                    //             width: 300,
-                    //             height: 272,
-                    //             margin: EdgeInsets.only(right: 10),
-                    //             padding: EdgeInsets.all(20),
-                    //             decoration: BoxDecoration(
-                    //               borderRadius: BorderRadius.circular(12),
-                    //               color: bgColor4,
-                    //             ),
-                    //             child: Column(
-                    //               children: [
-                    //                 ClipRRect(
-                    //                   borderRadius: BorderRadius.circular(5),
-                    //                   child: Image.network(
-                    //                     "https://picsum.photos/1000",
-                    //                     width: 300,
-                    //                     height: 150,
-                    //                     fit: BoxFit.cover,
-                    //                   ),
-                    //                 ),
-                    //                 Container(
-                    //                   margin: EdgeInsets.symmetric(vertical: 5),
-                    //                   width: double.infinity,
-                    //                   child: Column(
-                    //                     crossAxisAlignment:
-                    //                         CrossAxisAlignment.start,
-                    //                     children: [
-                    //                       Text(
-                    //                         "Sepatu",
-                    //                         style: secondaryTextStyle.copyWith(
-                    //                             fontSize: 12),
-                    //                       ),
-                    //                       SizedBox(height: 6),
-                    //                       Text(
-                    //                         "Nike New Era 2024 - 2025",
-                    //                         style: primaryTextStyle.copyWith(
-                    //                             fontSize: 16,
-                    //                             fontWeight: semiBold),
-                    //                         overflow: TextOverflow.ellipsis,
-                    //                       ),
-                    //                       SizedBox(
-                    //                         height: 6,
-                    //                       ),
-                    //                       Text(
-                    //                         "\$15.99",
-                    //                         style: priceTextStyle.copyWith(
-                    //                             fontSize: 14,
-                    //                             fontWeight: medium),
-                    //                       )
-                    //                     ],
-                    //                   ),
-                    //                 ),
-                    //               ],
-                    //             ),
-                    //           ),
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ],
                     children: productProvider.products
                         .map((product) => ProductCard(product: product))
                         .toList(),
