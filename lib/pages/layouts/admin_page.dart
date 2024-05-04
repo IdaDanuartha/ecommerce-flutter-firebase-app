@@ -1,24 +1,24 @@
 import 'package:ecommerce_firebase/pages/admin/dashboard_page.dart';
 import 'package:ecommerce_firebase/pages/home/cart_page.dart';
 import 'package:ecommerce_firebase/pages/profile_page.dart';
-import 'package:ecommerce_firebase/pages/home/order_page.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 
-class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+class AdminPage extends StatefulWidget {
+  const AdminPage({super.key});
 
   @override
-  State<MainPage> createState() => _MainPageState();
+  State<AdminPage> createState() => _AdminPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _AdminPageState extends State<AdminPage> {
   int _currentIndex = 0;
   final _screens = [
-    DashboardPage(),
-    // CartPage(),
-    // WishlistPage(),
-    // ProfilePage(),
+    const DashboardPage(),
+    CartPage(),
+    CartPage(),
+    CartPage(),
+    const ProfilePage(),
   ];
 
   @override
@@ -38,7 +38,7 @@ class _MainPageState extends State<MainPage> {
 
     Widget customButtonNav() {
       return ClipRRect(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
         child: BottomNavigationBar(
             backgroundColor: bgColor4,
             elevation: 0,
@@ -52,48 +52,60 @@ class _MainPageState extends State<MainPage> {
             items: [
               BottomNavigationBarItem(
                 icon: Container(
-                  margin: EdgeInsets.only(top: 20),
+                  margin: const EdgeInsets.only(top: 20),
                   child: Image.asset(
-                    'assets/icon_home.png',
+                    'assets/icon_analytics.png',
                     width: 21,
                     color:
-                        _currentIndex == 0 ? primaryColor : Color(0XFF808191),
+                        _currentIndex == 0 ? primaryColor : const Color(0XFF808191),
                   ),
                 ),
                 label: '',
               ),
               BottomNavigationBarItem(
                 icon: Container(
-                  margin: EdgeInsets.only(top: 20),
+                  margin: const EdgeInsets.only(top: 20),
                   child: Image.asset(
                     'assets/icon_product.png',
-                    width: 30,
+                    width: 28,
                     color:
-                        _currentIndex == 1 ? primaryColor : Color(0XFF808191),
+                        _currentIndex == 1 ? primaryColor : const Color(0XFF808191),
                   ),
                 ),
                 label: '',
               ),
               BottomNavigationBarItem(
                 icon: Container(
-                  margin: EdgeInsets.only(top: 20),
+                  margin: const EdgeInsets.only(top: 20),
                   child: Image.asset(
                     'assets/icon_order.png',
-                    width: 25,
+                    width: 23,
                     color:
-                        _currentIndex == 2 ? primaryColor : Color(0XFF808191),
+                        _currentIndex == 2 ? primaryColor : const Color(0XFF808191),
                   ),
                 ),
                 label: '',
               ),
               BottomNavigationBarItem(
                 icon: Container(
-                  margin: EdgeInsets.only(top: 20),
+                  margin: const EdgeInsets.only(top: 20),
                   child: Image.asset(
-                    'assets/icon_profile.png',
-                    width: 18,
+                    'assets/icon_users.png',
+                    width: 23,
                     color:
-                        _currentIndex == 3 ? primaryColor : Color(0XFF808191),
+                        _currentIndex == 3 ? primaryColor : const Color(0XFF808191),
+                  ),
+                ),
+                label: '',
+              ),
+              BottomNavigationBarItem(
+                icon: Container(
+                  margin: const EdgeInsets.only(top: 20),
+                  child: Image.asset(
+                    'assets/icon_settings.png',
+                    width: 20,
+                    color:
+                        _currentIndex == 4 ? primaryColor : const Color(0XFF808191),
                   ),
                 ),
                 label: '',

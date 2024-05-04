@@ -28,12 +28,13 @@ void route() {
             .get()
             .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
-        // if (documentSnapshot.get('role') == "admin" || documentSnapshot.get('role') == "staff") {
-        //    Navigator.pushNamed(context, '/dashboard');
-        // }else{
-        //   Navigator.pushNamed(context, '/home');
-        // }
-        Navigator.pushNamed(context, '/home');
+        
+        if (documentSnapshot.get('role') == "admin" || documentSnapshot.get('role') == "staff") {
+           Navigator.pushNamed(context, '/dashboard');
+        }else{
+          Navigator.pushNamed(context, '/home');
+        }
+        // Navigator.pushNamed(context, '/home');
       } else {
         print('Document does not exist on the database');
       }

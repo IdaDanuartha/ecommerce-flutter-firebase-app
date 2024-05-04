@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecommerce_firebase/pages/sign_in_page.dart';
+import 'package:ecommerce_firebase/widgets/charts/bar_chart.dart';
+import 'package:ecommerce_firebase/widgets/charts/pie_chart.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
@@ -17,6 +18,8 @@ class _DashboardPageState extends State<DashboardPage> {
     User? user = FirebaseAuth.instance.currentUser;
     var userDetail =
         FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
+
+    List<double> weeklyTransactions = [20, 30, 10, 5, 50, 100, 35];
 
     Widget header() {
       return Container(
@@ -43,7 +46,7 @@ class _DashboardPageState extends State<DashboardPage> {
                               fontSize: 24, fontWeight: semiBold),
                         );
                       }
-                      return Text("");
+                      return const Text("");
                     },
                   ),
                   FutureBuilder<DocumentSnapshot>(
@@ -59,7 +62,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           style: subtitleTextStyle.copyWith(fontSize: 16),
                         );
                       }
-                      return Text("");
+                      return const Text("");
                     },
                   ),
                 ],
@@ -68,7 +71,7 @@ class _DashboardPageState extends State<DashboardPage> {
             Container(
               width: 54,
               height: 54,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
                       image: NetworkImage("https://picsum.photos/200"))),
@@ -82,17 +85,20 @@ class _DashboardPageState extends State<DashboardPage> {
       children: [
         header(),
         Container(
-          width: 20,
-          child: GestureDetector(
-            onTap: () async {
-              await FirebaseAuth.instance.signOut();
-              Navigator.pushNamed(context, "/sign-in");
-            },
-            child: Image.asset(
-              'assets/button_exit.png',
-              width: 20,
-              color: primaryTextColor,
-            ),
+          margin: EdgeInsets.only(top: 50, left: defaultMargin, right: defaultMargin),
+          child: const SizedBox(
+            height: 300,
+            // child: MyBarGraph(
+            //   weeklyTransactions: weeklyTransactions,
+            // ),
+            child: BarChartSample3(),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 20, horizontal: defaultMargin),
+          child: const SizedBox(
+            height: 300,
+            child: PieChartSample2(),
           ),
         )
       ],

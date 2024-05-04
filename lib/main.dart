@@ -1,4 +1,4 @@
-import 'package:ecommerce_firebase/pages/admin/dashboard_page.dart';
+import 'package:ecommerce_firebase/pages/layouts/admin_page.dart';
 import 'package:ecommerce_firebase/providers/product_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +6,7 @@ import 'package:ecommerce_firebase/pages/home/cart_page.dart';
 import 'package:ecommerce_firebase/pages/checkout_page.dart';
 import 'package:ecommerce_firebase/pages/checkout_success_page.dart';
 import 'package:ecommerce_firebase/pages/edit_profile_page.dart';
-import 'package:ecommerce_firebase/pages/home/main_page.dart';
+import 'package:ecommerce_firebase/pages/layouts/main_page.dart';
 import 'package:ecommerce_firebase/pages/sign_in_page.dart';
 import 'package:ecommerce_firebase/pages/sign_up_page.dart';
 import 'package:ecommerce_firebase/pages/splash_page.dart';
@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
           '/sign-in': (context) => SignInPage(),
           '/sign-up': (context) => SignUpPage(),
           '/home': (context) => MainPage(),
-          '/dashboard': (context) => DashboardPage(),
+          '/dashboard': (context) => AdminPage(),
           '/profile/edit': (context) => EditProfile(),
           '/cart': (context) => CartPage(),
           '/checkout': (context) => CheckoutPage(),
