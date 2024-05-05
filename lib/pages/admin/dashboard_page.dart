@@ -83,18 +83,107 @@ class _DashboardPageState extends State<DashboardPage> {
 
     Widget dataCount() {
       return Container(
-          margin: const EdgeInsets.only(top: 50),
-          width: MediaQuery.of(context).size.width,
-          color: Colors.red,
-          child: const Column(
-            children: [
-              Row(
-                children: [
-
-                ],
-              )
-            ],
-          ),
+        margin: const EdgeInsets.only(top: 50),
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: (MediaQuery.of(context).size.width - 80) / 2,
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                      color: bgColor3, borderRadius: BorderRadius.circular(8)),
+                  child: Column(
+                    children: [
+                      Text(
+                        "Total Products",
+                        style: primaryTextStyle.copyWith(
+                            fontSize: 12,
+                            color: Color.fromRGBO(255, 255, 255, .5)),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        "6",
+                        style: primaryTextStyle.copyWith(fontSize: 24),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: (MediaQuery.of(context).size.width - 80) / 2,
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                      color: bgColor3, borderRadius: BorderRadius.circular(8)),
+                  child: Column(
+                    children: [
+                      Text(
+                        "Total Transactions",
+                        style: primaryTextStyle.copyWith(
+                            fontSize: 12,
+                            color: Color.fromRGBO(255, 255, 255, .5)),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        "6",
+                        style: primaryTextStyle.copyWith(fontSize: 24),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: (MediaQuery.of(context).size.width - 80) / 2,
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                      color: bgColor3, borderRadius: BorderRadius.circular(8)),
+                  child: Column(
+                    children: [
+                      Text(
+                        "Total Staff",
+                        style: primaryTextStyle.copyWith(
+                            fontSize: 12,
+                            color: Color.fromRGBO(255, 255, 255, .5)),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        "6",
+                        style: primaryTextStyle.copyWith(fontSize: 24),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: (MediaQuery.of(context).size.width - 80) / 2,
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                      color: bgColor3, borderRadius: BorderRadius.circular(8)),
+                  child: Column(
+                    children: [
+                      Text(
+                        "Total Customers",
+                        style: primaryTextStyle.copyWith(
+                            fontSize: 12,
+                            color: Color.fromRGBO(255, 255, 255, .5)),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        "6",
+                        style: primaryTextStyle.copyWith(fontSize: 24),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
       );
     }
 
@@ -103,9 +192,7 @@ class _DashboardPageState extends State<DashboardPage> {
         margin: const EdgeInsets.only(top: 50),
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: bgColor3,
-          borderRadius: BorderRadius.circular(8)
-        ),
+            color: bgColor3, borderRadius: BorderRadius.circular(8)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -128,9 +215,7 @@ class _DashboardPageState extends State<DashboardPage> {
         margin: const EdgeInsets.symmetric(vertical: 30),
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: bgColor3,
-          borderRadius: BorderRadius.circular(8)
-        ),
+            color: bgColor3, borderRadius: BorderRadius.circular(8)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

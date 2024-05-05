@@ -1,4 +1,5 @@
 import 'package:ecommerce_firebase/pages/admin/dashboard_page.dart';
+import 'package:ecommerce_firebase/pages/admin/product_page.dart';
 import 'package:ecommerce_firebase/pages/home/cart_page.dart';
 import 'package:ecommerce_firebase/pages/profile_page.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ class _AdminPageState extends State<AdminPage> {
   int _currentIndex = 0;
   final _screens = [
     const DashboardPage(),
-    CartPage(),
+    ProductPage(),
     CartPage(),
     CartPage(),
     const ProfilePage(),
