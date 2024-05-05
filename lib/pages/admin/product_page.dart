@@ -31,6 +31,10 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
+  TextEditingController _nameController = new TextEditingController();
+  TextEditingController _priceController = new TextEditingController();
+  TextEditingController _qtyController = new TextEditingController();
+
   bool sort = true;
   List<Data>? filterData;
 
@@ -62,10 +66,175 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    Widget nameInput() {
+    return Container(
+      margin: EdgeInsets.only(top: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Product name',
+            style: primaryTextStyle.copyWith(
+                fontSize: 16, fontWeight: medium, color: primaryTextColor),
+          ),
+          SizedBox(height: 12),
+          Container(
+            height: 60,
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(width: 1, color: Color(0xFF797979))),
+            child: Center(
+              child: Row(
+                children: [
+                  Expanded(
+                      child: TextFormField(
+                    controller: _nameController,
+                    style: secondaryTextStyle,
+                    decoration: InputDecoration(
+                        hintText: 'Input product name',
+                        hintStyle: subtitleTextStyle,
+                        border: InputBorder.none),
+                  ))
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+    Widget priceInput() {
+    return Container(
+      margin: EdgeInsets.only(top: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Price',
+            style: primaryTextStyle.copyWith(
+                fontSize: 16, fontWeight: medium, color: primaryTextColor),
+          ),
+          SizedBox(height: 12),
+          Container(
+            height: 60,
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(width: 1, color: Color(0xFF797979))),
+            child: Center(
+              child: Row(
+                children: [
+                  Expanded(
+                      child: TextFormField(
+                    controller: _priceController,
+                    style: secondaryTextStyle,
+                    decoration: InputDecoration(
+                        hintText: 'Input price',
+                        hintStyle: subtitleTextStyle,
+                        border: InputBorder.none),
+                  ))
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+    Widget qtyInput() {
+    return Container(
+      margin: EdgeInsets.only(top: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Quantity',
+            style: primaryTextStyle.copyWith(
+                fontSize: 16, fontWeight: medium, color: primaryTextColor),
+          ),
+          SizedBox(height: 12),
+          Container(
+            height: 60,
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(width: 1, color: Color(0xFF797979))),
+            child: Center(
+              child: Row(
+                children: [
+                  Expanded(
+                      child: TextFormField(
+                    controller: _qtyController,
+                    style: secondaryTextStyle,
+                    decoration: InputDecoration(
+                        hintText: 'Input quantity',
+                        hintStyle: subtitleTextStyle,
+                        border: InputBorder.none),
+                  ))
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget addProductButton() {
+    return Container(
+      height: 60,
+      width: double.infinity,
+      margin: EdgeInsets.only(top: 20),
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+        style: TextButton.styleFrom(
+            backgroundColor: primaryColor,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10))),
+        child: Text(
+          'Add new product',
+          style: primaryTextStyle.copyWith(fontSize: 16, fontWeight: semiBold),
+        ),
+      ),
+    );
+  }
+
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                scrollable: true,
+                backgroundColor: bgColor1,
+                title: Center(
+                  child: Text("Add Product",
+                      style: primaryTextStyle.copyWith(
+                          fontWeight: bold, fontSize: 24)),
+                ),
+                insetPadding: const EdgeInsets.all(10),
+                content: Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.all(8),
+                  child: Column(
+                    children: [
+                      nameInput(),
+                      priceInput(),
+                      qtyInput(),
+                    ],
+                  ),
+                ),
+                actions: [
+                  addProductButton()
+                ],
+              );
+            },
+          );
         },
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(99)),
         tooltip: "Add product",
