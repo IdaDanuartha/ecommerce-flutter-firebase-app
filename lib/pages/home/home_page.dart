@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
                               fontSize: 24, fontWeight: semiBold),
                         );
                       }
-                      return Text("");
+                      return const Text("");
                     },
                   ),
                   FutureBuilder<DocumentSnapshot>(
@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> {
                           style: subtitleTextStyle.copyWith(fontSize: 16),
                         );
                       }
-                      return Text("");
+                      return const Text("");
                     },
                   ),
                 ],
@@ -82,7 +82,7 @@ class _HomePageState extends State<HomePage> {
                   return Container(
                     width: 54,
                     height: 54,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(image: NetworkImage("https://picsum.photos/200"))
                       )
@@ -96,7 +96,7 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    Widget popularProducts() {
+    Widget latestProducts() {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -107,7 +107,7 @@ class _HomePageState extends State<HomePage> {
               right: defaultMargin,
             ),
             child: Text(
-              'All Products',
+              'Latest Products',
               style:
                   primaryTextStyle.copyWith(fontSize: 22, fontWeight: semiBold),
             ),
@@ -119,112 +119,57 @@ class _HomePageState extends State<HomePage> {
                 right: defaultMargin,
               ),
               child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Column(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
                     children: productProvider.products
                         .map((product) => ProductCard(product: product))
                         .toList(),
-                  )))
+                  ))
+          )
         ],
       );
     }
 
-    // Widget newArrivals() {
-    //   return Column(
-    //     crossAxisAlignment: CrossAxisAlignment.start,
-    //     children: [
-    //       Container(
-    //         margin: EdgeInsets.only(
-    //           top: defaultMargin,
-    //           left: defaultMargin,
-    //           right: defaultMargin,
-    //         ),
-    //         child: Text(
-    //           'New Arrivals',
-    //           style:
-    //               primaryTextStyle.copyWith(fontSize: 22, fontWeight: semiBold),
-    //         ),
-    //       ),
-    //       Container(
-    //           margin: EdgeInsets.only(
-    //             top: 14,
-    //           ),
-    //           child: Column(children: [
-    //             GestureDetector(
-    //               onTap: () {
-    //                 // Navigator.push(
-    //                 //     context,
-    //                 //     MaterialPageRoute(
-    //                 //         builder: (context) =>
-    //                 //             ProductPage(product: product)));
-    //               },
-    //               child: Container(
-    //                 margin: EdgeInsets.only(
-    //                   left: defaultMargin,
-    //                   right: defaultMargin,
-    //                   bottom: defaultMargin,
-    //                 ),
-    //                 padding: EdgeInsets.all(20),
-    //                 decoration: BoxDecoration(
-    //                   borderRadius: BorderRadius.circular(16),
-    //                   color: bgColor4,
-    //                 ),
-    //                 child: Row(
-    //                   children: [
-    //                     ClipRRect(
-    //                       borderRadius: BorderRadius.circular(10),
-    //                       child: Image.network(
-    //                         "https://picsum.photos/1001",
-    //                         width: 120,
-    //                         height: 120,
-    //                         fit: BoxFit.cover,
-    //                       ),
-    //                     ),
-    //                     SizedBox(
-    //                       width: 12,
-    //                     ),
-    //                     Expanded(
-    //                       child: Column(
-    //                         crossAxisAlignment: CrossAxisAlignment.start,
-    //                         children: [
-    //                           Text(
-    //                             "Sepatu",
-    //                             style:
-    //                                 secondaryTextStyle.copyWith(fontSize: 12),
-    //                           ),
-    //                           SizedBox(
-    //                             height: 6,
-    //                           ),
-    //                           Text(
-    //                             "Adidas New Era 2025",
-    //                             style: primaryTextStyle.copyWith(
-    //                                 fontSize: 16, fontWeight: semiBold),
-    //                           ),
-    //                           SizedBox(
-    //                             height: 6,
-    //                           ),
-    //                           Text(
-    //                             "\$99.45",
-    //                             style:
-    //                                 priceTextStyle.copyWith(fontWeight: medium),
-    //                           )
-    //                         ],
-    //                       ),
-    //                     )
-    //                   ],
-    //                 ),
-    //               ),
-    //             ),
-    //           ]))
-    //     ],
-    //   );
-    // }
+    Widget packages() {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            margin: EdgeInsets.only(
+              top: defaultMargin,
+              left: defaultMargin,
+              right: defaultMargin,
+            ),
+            child: Text(
+              'Packages',
+              style:
+                  primaryTextStyle.copyWith(fontSize: 22, fontWeight: semiBold),
+            ),
+          ),
+          Container(
+              margin: EdgeInsets.only(
+                top: 14,
+                left: defaultMargin,
+                right: defaultMargin,
+              ),
+              child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: productProvider.products
+                        .map((product) => ProductCard(product: product))
+                        .toList(),
+                  ))
+          )
+        ],
+      );
+    }
 
     return ListView(
       children: [
         header(),
-        popularProducts(),
-        // newArrivals(),
+        latestProducts(),
+        packages(),
+        SizedBox(height: 50)
       ],
     );
   }

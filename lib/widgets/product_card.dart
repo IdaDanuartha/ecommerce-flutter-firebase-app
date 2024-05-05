@@ -18,7 +18,7 @@ class ProductCard extends StatelessWidget {
           if(snapshot.connectionState == ConnectionState.done) {
             return Image.network(
               snapshot.data.toString(),
-              width: 300,
+              width: 200,
               height: 150,
               fit: BoxFit.cover,
             );
@@ -35,72 +35,82 @@ class ProductCard extends StatelessWidget {
       );
     }
       
-    return Column(children: [
-      Row(
-        children: [
-          Expanded(
-            child: GestureDetector(
-              onTap: () {
-                // Navigator.push(
-                //     context,x
-                //     MaterialPageRoute(
-                //         builder: (context) =>
-                //             ProductPage(product: product)));
-              },
-              child: Container(
-                width: 300,
-                height: 276,
-                margin: EdgeInsets.only(right: 10),
-                padding: EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: bgColor4,
-                ),
+    return Row(children: [
+      GestureDetector(
+        onTap: () {
+          // Navigator.push(
+          //     context,x
+          //     MaterialPageRoute(
+          //         builder: (context) =>
+          //             ProductPage(product: product)));
+        },
+        child: Container(
+          width: 200,
+          // height: 276,
+          margin: const EdgeInsets.only(right: 10),
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: bgColor4,
+          ),
+          child: Column(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(5),
+                child: image()
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 5),
+                width: double.infinity,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(5),
-                      child: image()
+                    const SizedBox(height: 6),
+                    Text(
+                      product.name,
+                      style: primaryTextStyle.copyWith(
+                          fontSize: 16, fontWeight: semiBold),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 5),
-                      width: double.infinity,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: 6),
-                          Text(
-                            product.name,
-                            style: primaryTextStyle.copyWith(
-                                fontSize: 16, fontWeight: semiBold),
-                            overflow: TextOverflow.ellipsis,
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    Text(
+                      "\$${product.price}",
+                      style: priceTextStyle.copyWith(
+                          fontSize: 14, fontWeight: medium),
+                    ),
+                    const SizedBox(
+                      height: 6,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          "${product.qty} left",
+                          style: secondaryTextStyle.copyWith(fontSize: 12),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            
+                          },
+                          child: Image.asset(
+                            'assets/icon_cart.png',
+                            width: 18,
+                            color: priceColor
                           ),
-                          SizedBox(
-                            height: 4,
-                          ),
-                          Text(
-                            "\$${product.price}",
-                            style: priceTextStyle.copyWith(
-                                fontSize: 14, fontWeight: medium),
-                          ),
-                          SizedBox(
-                            height: 6,
-                          ),
-                          Text(
-                            "${product.qty} left",
-                            style: secondaryTextStyle.copyWith(fontSize: 12),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
-      SizedBox(height: 20)
+      const SizedBox(height: 20)
     ]);
   }
 }

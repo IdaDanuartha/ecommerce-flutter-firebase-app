@@ -43,7 +43,7 @@ class _MainPageState extends State<MainPage> {
     // Widget cartButton() {
     //   return FloatingActionButton(
     //     onPressed: () {
-    //       Navigator.pushNamed(context, "/cart");
+    //       Navigator.pushNamed(context, "/carts");
     //     },
     //     backgroundColor: secondaryColor,
     //     child: Image.asset(

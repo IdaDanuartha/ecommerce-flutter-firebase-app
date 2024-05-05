@@ -2,9 +2,11 @@ import 'package:ecommerce_firebase/themes.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class _BarChart extends StatelessWidget {
-  const _BarChart();
+  _BarChart({required this.weeklyTransactions});
 
+  final List<double> weeklyTransactions;
   @override
   Widget build(BuildContext context) {
     return BarChart(
@@ -15,7 +17,9 @@ class _BarChart extends StatelessWidget {
         barGroups: barGroups,
         gridData: const FlGridData(show: false),
         alignment: BarChartAlignment.spaceAround,
-        maxY: 20,
+        maxY: weeklyTransactions
+                .reduce((value, element) => value > element ? value : element) +
+            20,
       ),
     );
   }
@@ -104,112 +108,43 @@ class _BarChart extends StatelessWidget {
       );
 
   FlBorderData get borderData => FlBorderData(
-        show: false,
-      );
+    show: false,
+  );
 
   LinearGradient get _barsGradient => LinearGradient(
-        colors: [
-          primaryColor,
-          primaryColor.withAlpha(80)
-        ],
+        colors: [primaryColor, primaryColor.withAlpha(90)],
         begin: Alignment.bottomCenter,
         end: Alignment.topCenter,
       );
+  int index = 0;
+  List<BarChartGroupData> get barGroups =>
+      weeklyTransactions.map((transaction) {
+        BarChartGroupData barData = BarChartGroupData(
+          x: index,
+          barRods: [
+            BarChartRodData(
+              toY: transaction,
+              gradient: _barsGradient,
+              width: 10,
+            )
+          ],
+          showingTooltipIndicators: [0],
+        );
 
-  List<BarChartGroupData> get barGroups => [
-        BarChartGroupData(
-          x: 0,
-          barRods: [
-            BarChartRodData(
-              toY: 8,
-              gradient: _barsGradient,
-              width: 15,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 1,
-          barRods: [
-            BarChartRodData(
-              toY: 10,
-              gradient: _barsGradient,
-              width: 15,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 2,
-          barRods: [
-            BarChartRodData(
-              toY: 14,
-              gradient: _barsGradient,
-              width: 15,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 3,
-          barRods: [
-            BarChartRodData(
-              toY: 15,
-              gradient: _barsGradient,
-              width: 15,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 4,
-          barRods: [
-            BarChartRodData(
-              toY: 13,
-              gradient: _barsGradient,
-              width: 15,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 5,
-          barRods: [
-            BarChartRodData(
-              toY: 10,
-              gradient: _barsGradient,
-              width: 15,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 6,
-          barRods: [
-            BarChartRodData(
-              toY: 16,
-              gradient: _barsGradient,
-              width: 15,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-      ];
+        index++;
+        return barData;
+      }).toList();
 }
 
-class BarChartSample3  extends StatefulWidget {
-  const BarChartSample3 ({super.key});
+class BarChartSample3 extends StatelessWidget {
+  const BarChartSample3({super.key, required this.weeklyTransactions});
+  final List<double> weeklyTransactions;
 
-  @override
-  State<StatefulWidget> createState() => BarChartState();
-}
-
-class BarChartState extends State<BarChartSample3 > {
   @override
   Widget build(BuildContext context) {
-    return const AspectRatio(
+    return AspectRatio(
       aspectRatio: 1.6,
-      child: _BarChart(),
+      child: _BarChart(weeklyTransactions: weeklyTransactions),
     );
   }
 }

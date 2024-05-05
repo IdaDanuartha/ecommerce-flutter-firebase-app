@@ -50,41 +50,85 @@ class PieChart2State extends State {
               ),
             ),
           ),
-          const Column(
+          Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              // Indicator(
-              //   color: Colors.blue,
-              //   text: 'First',
-              //   isSquare: true,
-              // ),
-              // SizedBox(
-              //   height: 4,
-              // ),
-              // Indicator(
-              //   color: Colors.yellow,
-              //   text: 'Second',
-              //   isSquare: true,
-              // ),
-              // SizedBox(
-              //   height: 4,
-              // ),
-              // Indicator(
-              //   color: Colors.purple,
-              //   text: 'Third',
-              //   isSquare: true,
-              // ),
-              // SizedBox(
-              //   height: 4,
-              // ),
-              // Indicator(
-              //   color: Colors.green,
-              //   text: 'Fourth',
-              //   isSquare: true,
-              // ),
+            children: [
+              Row(
+                  children: [
+                    Container(
+                      width: 12,
+                      height: 12,
+                      color: Colors.blue,
+                    ),
+                    SizedBox(width: 5),
+                    Text(
+                      "First",
+                      style: primaryTextStyle.copyWith(
+                        fontSize: 12
+                      ),
+                    ),
+                  ],
+              ),
               SizedBox(
-                height: 18,
+                height: 5,
+              ),
+              Row(
+                  children: [
+                    Container(
+                      width: 12,
+                      height: 12,
+                      color: Colors.blue,
+                    ),
+                    SizedBox(width: 5),
+                    Text(
+                      "Second",
+                      style: primaryTextStyle.copyWith(
+                        fontSize: 12
+                      ),
+                    ),
+                  ],
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Row(
+                  children: [
+                    Container(
+                      width: 12,
+                      height: 12,
+                      color: Colors.blue,
+                    ),
+                    SizedBox(width: 5),
+                    Text(
+                      "Third",
+                      style: primaryTextStyle.copyWith(
+                        fontSize: 12
+                      ),
+                    ),
+                  ],
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Row(
+                  children: [
+                    Container(
+                      width: 12,
+                      height: 12,
+                      color: Colors.blue,
+                    ),
+                    SizedBox(width: 5),
+                    Text(
+                      "Fourth",
+                      style: primaryTextStyle.copyWith(
+                        fontSize: 12
+                      ),
+                    ),
+                  ],
+              ),
+              SizedBox(
+                height: 5,
               ),
             ],
           ),

@@ -81,27 +81,78 @@ class _DashboardPageState extends State<DashboardPage> {
       );
     }
 
-    return ListView(
-      children: [
-        header(),
-        Container(
-          margin: EdgeInsets.only(top: 50, left: defaultMargin, right: defaultMargin),
-          child: const SizedBox(
-            height: 300,
-            // child: MyBarGraph(
-            //   weeklyTransactions: weeklyTransactions,
-            // ),
-            child: BarChartSample3(),
+    Widget dataCount() {
+      return Container(
+          margin: const EdgeInsets.only(top: 50),
+          width: MediaQuery.of(context).size.width,
+          color: Colors.red,
+          child: const Column(
+            children: [
+              Row(
+                children: [
+
+                ],
+              )
+            ],
           ),
+      );
+    }
+
+    Widget barChart() {
+      return Container(
+        margin: const EdgeInsets.only(top: 50),
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: bgColor3,
+          borderRadius: BorderRadius.circular(8)
         ),
-        Container(
-          margin: EdgeInsets.symmetric(vertical: 20, horizontal: defaultMargin),
-          child: const SizedBox(
-            height: 300,
-            child: PieChartSample2(),
-          ),
-        )
-      ],
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Weekly Transactions",
+              style:
+                  primaryTextStyle.copyWith(fontSize: 16, fontWeight: semiBold),
+            ),
+            SizedBox(
+              height: 300,
+              child: BarChartSample3(weeklyTransactions: weeklyTransactions),
+            ),
+          ],
+        ),
+      );
+    }
+
+    Widget pieChart() {
+      return Container(
+        margin: const EdgeInsets.symmetric(vertical: 30),
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: bgColor3,
+          borderRadius: BorderRadius.circular(8)
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Weekly Transactions",
+              style:
+                  primaryTextStyle.copyWith(fontSize: 16, fontWeight: semiBold),
+            ),
+            const SizedBox(
+              height: 300,
+              child: PieChartSample2(),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: defaultMargin),
+      child: ListView(
+        children: [header(), dataCount(), barChart(), pieChart()],
+      ),
     );
   }
 }

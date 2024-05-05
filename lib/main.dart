@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
           '/home': (context) => MainPage(),
           '/dashboard': (context) => AdminPage(),
           '/profile/edit': (context) => EditProfile(),
-          '/cart': (context) => CartPage(),
+          '/carts': (context) => CartPage(),
           '/checkout': (context) => CheckoutPage(),
           '/checkout-success': (context) => CheckoutSuccessPage(),
         },
