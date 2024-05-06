@@ -82,10 +82,10 @@ class _HomePageState extends State<HomePage> {
                   return Container(
                     width: 54,
                     height: 54,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        image: DecorationImage(image: NetworkImage("https://picsum.photos/200"))
-                      )
+                        image: DecorationImage(
+                            image: NetworkImage(data["profile_url"]))),
                   );
                 }
                 return Container();

@@ -3,9 +3,11 @@
 import 'dart:io';
 
 import 'package:ecommerce_firebase/controllers/add_product_images_controller.dart';
+import 'package:ecommerce_firebase/providers/product_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 class Data {
   String? name;
@@ -35,11 +37,12 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-  TextEditingController _nameController = new TextEditingController();
-  TextEditingController _priceController = new TextEditingController();
-  TextEditingController _discountController = new TextEditingController();
-  TextEditingController _qtyController = new TextEditingController();
-  TextEditingController _descriptionController = new TextEditingController();
+
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _priceController = TextEditingController();
+  final TextEditingController _discountController = TextEditingController();
+  final TextEditingController _qtyController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
 
   bool sort = true;
   List<Data>? filterData;
@@ -62,8 +65,7 @@ class _ProductPageState extends State<ProductPage> {
     }
   }
 
-  AddProductImagesController addProductImagesController =
-      Get.put(AddProductImagesController());
+  AddProductImagesController addProductImagesController = Get.put(AddProductImagesController());
 
   @override
   void initState() {
@@ -75,6 +77,8 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
+    ProductProvider productProvider = Provider.of<ProductProvider>(context);
+
     Widget imageInput() {
       return Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -308,6 +312,7 @@ class _ProductPageState extends State<ProductPage> {
         margin: EdgeInsets.only(top: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
               'Description',
@@ -326,7 +331,7 @@ class _ProductPageState extends State<ProductPage> {
                   children: [
                     Expanded(
                         child: TextFormField(
-                      // minLines: 8,
+                      minLines: 8,
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                       controller: _descriptionController,
@@ -376,11 +381,22 @@ class _ProductPageState extends State<ProductPage> {
               return AlertDialog(
                 scrollable: true,
                 backgroundColor: bgColor1,
-                title: Center(
-                  child: Text("Add Product",
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                  Text("Add New Product",
                       style: primaryTextStyle.copyWith(
                           fontWeight: bold, fontSize: 24)),
-                ),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: Icon(
+                      Icons.close,
+                      color: Colors.white,
+                    ),
+                  ),
+                ]),
                 insetPadding: const EdgeInsets.all(10),
                 content: Container(
                   width: MediaQuery.of(context).size.width,
@@ -388,8 +404,10 @@ class _ProductPageState extends State<ProductPage> {
                   child: Column(
                     children: [
                       imageInput(),
+                      showImages(),
                       nameInput(),
                       priceInput(),
+                      discountInput(),
                       qtyInput(),
                       descriptionInput(),
                     ],
@@ -453,7 +471,7 @@ class _ProductPageState extends State<ProductPage> {
                         ),
                       ),
                       source: RowSource(
-                        myData: myData,
+                        product: myData,
                         count: myData.length,
                       ),
                       rowsPerPage: 5,
@@ -511,17 +529,17 @@ class _ProductPageState extends State<ProductPage> {
 }
 
 class RowSource extends DataTableSource {
-  var myData;
+  var product;
   final count;
   RowSource({
-    required this.myData,
+    required this.product,
     required this.count,
   });
 
   @override
   DataRow? getRow(int index) {
     if (index < rowCount) {
-      return recentFileDataRow(myData![index]);
+      return recentFileDataRow(product![index]);
     } else
       return null;
   }
@@ -536,33 +554,66 @@ class RowSource extends DataTableSource {
   int get selectedRowCount => 0;
 }
 
-DataRow recentFileDataRow(var data) {
+// DataRow recentFileDataRow(ProductProvider productProvider) {
+//   return DataRow(
+//     cells: productProvider.products.map((product) {
+//       return <DataCell>[
+//         DataCell(Text(product.name)),
+//         DataCell(Text(product.price.toString())),
+//         DataCell(Text(product.qty.toString())),
+//         DataCell(Row(
+//           children: [
+//             GestureDetector(
+//               onTap: () {},
+//               child: Image.asset(
+//                 'assets/icon_edit.png',
+//                 width: 16,
+//                 color: Colors.amber[600],
+//               ),
+//             ),
+//             SizedBox(width: 8),
+//             GestureDetector(
+//               onTap: () {},
+//               child: Image.asset(
+//                 'assets/icon_delete.png',
+//                 width: 16,
+//                 color: Colors.red[400],
+//               ),
+//             ),
+//           ],
+//         )),
+//       ];
+//     }).expand((cells) => cells).toList()
+//   );
+// }
+
+DataRow recentFileDataRow(var product) {
   return DataRow(
     cells: [
-      DataCell(Text(data.name ?? "Name")),
-      DataCell(Text(data.price.toString())),
-      DataCell(Text(data.qty.toString())),
-      DataCell(Row(
-        children: [
-          GestureDetector(
-            onTap: () {},
-            child: Image.asset(
-              'assets/icon_edit.png',
-              width: 16,
-              color: Colors.amber[600],
+      DataCell(Text(product.name)),
+        DataCell(Text(product.price.toString())),
+        DataCell(Text(product.qty.toString())),
+        DataCell(Row(
+          children: [
+            GestureDetector(
+              onTap: () {},
+              child: Image.asset(
+                'assets/icon_edit.png',
+                width: 16,
+                color: Colors.amber[600],
+              ),
             ),
-          ),
-          SizedBox(width: 8),
-          GestureDetector(
-            onTap: () {},
-            child: Image.asset(
-              'assets/icon_delete.png',
-              width: 16,
-              color: Colors.red[400],
+            SizedBox(width: 8),
+            GestureDetector(
+              onTap: () {},
+              child: Image.asset(
+                'assets/icon_delete.png',
+                width: 16,
+                color: Colors.red[400],
+              ),
             ),
-          ),
-        ],
-      )),
-    ],
+          ],
+        )),
+    ]
   );
 }

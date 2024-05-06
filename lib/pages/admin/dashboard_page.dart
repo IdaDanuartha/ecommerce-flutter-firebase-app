@@ -68,14 +68,26 @@ class _DashboardPageState extends State<DashboardPage> {
                 ],
               ),
             ),
-            Container(
-              width: 54,
-              height: 54,
-              decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                      image: NetworkImage("https://picsum.photos/200"))),
-            )
+            FutureBuilder<DocumentSnapshot>(
+              future: userDetail,
+              builder: (BuildContext context,
+                  AsyncSnapshot<DocumentSnapshot> snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  Map<String, dynamic> data =
+                      snapshot.data!.data() as Map<String, dynamic>;
+
+                  return Container(
+                    width: 54,
+                    height: 54,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                            image: NetworkImage(data["profile_url"]))),
+                  );
+                }
+                return Container();
+              },
+            ),
           ],
         ),
       );

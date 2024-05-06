@@ -5,7 +5,7 @@ class ProductModel {
   late double discount;
   late int qty;
   late String description;
-  // late DateTime createdAt;
+  late DateTime createdAt;
   // late DateTime updatedAt;
   late List<dynamic> images;
 
@@ -16,7 +16,7 @@ class ProductModel {
     required this.discount,
     required this.qty,
     required this.description,
-    // required this.createdAt,
+    required this.createdAt,
     // required this.updatedAt,
     required this.images,
   });
@@ -29,8 +29,8 @@ class ProductModel {
     qty = int.parse(json["qty"].toString());
     description = json["description"];
     images = json['images'];
-    // createdAt = DateTime.parse(json["updated_at"]);
-    // updatedAt = DateTime.parse(json["created_at"]);
+    createdAt = DateTime.parse(json["created_at"]);
+    // updatedAt = DateTime.parse(json["updated_at"]);
   }
 
   Map<String, dynamic> toJson() {
@@ -42,7 +42,7 @@ class ProductModel {
       "qty": qty,
       "description": description,
       "images": images,
-      // "created_at": createdAt.toString(),
+      "created_at": createdAt.toString(),
       // "updated_at": updatedAt.toString(),
     };
   }

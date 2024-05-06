@@ -1,4 +1,3 @@
-import 'package:ecommerce_firebase/helpers/get_download_url.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/models/product_model.dart';
 import 'package:ecommerce_firebase/themes.dart';
@@ -12,26 +11,32 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
   
     Widget image() {
-      return FutureBuilder(
-        future: getDownloadURL().getUrl(product.images[0]),
-        builder: (context, snapshot) {
-          if(snapshot.connectionState == ConnectionState.done) {
-            return Image.network(
-              snapshot.data.toString(),
-              width: 200,
-              height: 150,
-              fit: BoxFit.cover,
-            );
-          } else {
-            return Image.asset(
-                "assets/image_gallery.png",
-                width: 300,
-                height: 150,
-                color: primaryTextColor,
-              );
-          }
+      // return FutureBuilder(
+      //   future: product.images[0],
+      //   builder: (context, snapshot) {
+      //     if(snapshot.connectionState == ConnectionState.done) {
+      //       return Image.network(
+      //         snapshot.data.toString(),
+      //         width: 200,
+      //         height: 150,
+      //         fit: BoxFit.cover,
+      //       );
+      //     } else {
+      //       return Image.asset(
+      //           "assets/image_gallery.png",
+      //           width: 300,
+      //           height: 150,
+      //           color: primaryTextColor,
+      //         );
+      //     }
 
-        },
+      //   },
+      // );
+      return Image.network(
+        product.images[0],
+        width: 200,
+        height: 150,
+        fit: BoxFit.cover,
       );
     }
       

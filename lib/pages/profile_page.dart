@@ -22,11 +22,23 @@ class _ProfilePageState extends State<ProfilePage> {
           padding: EdgeInsets.all(defaultMargin),
           child: Row(
             children: [
-              ClipOval(
-                child: Image.network(
-                  "https://picsum.photos/200",
-                  width: 64,
-                ),
+              FutureBuilder<DocumentSnapshot>(
+                future: user,
+                builder: (BuildContext context,
+                    AsyncSnapshot<DocumentSnapshot> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    Map<String, dynamic> data =
+                        snapshot.data!.data() as Map<String, dynamic>;
+
+                    return ClipOval(
+                      child: Image.network(
+                        data["profile_url"],
+                        width: 64,
+                      ),
+                    );
+                  }
+                  return Container();
+                },
               ),
               SizedBox(width: 16),
               Expanded(
