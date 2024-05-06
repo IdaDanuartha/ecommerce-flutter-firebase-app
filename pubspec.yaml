@@ -44,6 +44,11 @@ dependencies:
   firebase_auth: ^4.6.3
   firebase_storage: ^11.2.4
   fl_chart: ^0.67.0
+  image_picker: ^1.0.8
+  transparent_image: ^2.0.1
+  device_info_plus: ^9.1.2
+  get: ^4.6.6
+  permission_handler: ^11.3.1
 
 dev_dependencies:
   flutter_test:
