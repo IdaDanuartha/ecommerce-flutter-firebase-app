@@ -19,4 +19,14 @@ class ProductProvider with ChangeNotifier {
       print(e);
     }
   }
+
+  Future<bool> store(newData) async {
+    try {
+      await ProductService().store(newData);
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
 }

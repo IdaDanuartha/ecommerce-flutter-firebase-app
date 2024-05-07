@@ -3,8 +3,8 @@
 import 'dart:io';
 
 import 'package:ecommerce_firebase/controllers/add_product_images_controller.dart';
-import 'package:ecommerce_firebase/models/product_model.dart';
 import 'package:ecommerce_firebase/providers/product_provider.dart';
+import 'package:ecommerce_firebase/widgets/loading_button.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 import 'package:get/get.dart';
@@ -24,41 +24,64 @@ class _ProductPageState extends State<ProductPage> {
   final TextEditingController _qtyController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 
-  bool sort = true;
-  List<ProductModel>? filterData;
-
-  onsortColum(int columnIndex, bool ascending) {
-    if (columnIndex == 0) {
-      if (ascending) {
-        filterData!.sort((a, b) => a.name.compareTo(b.name));
-      } else {
-        filterData!.sort((a, b) => b.name.compareTo(a.name));
-      }
-    }
-
-    if (columnIndex == 1) {
-      if (ascending) {
-        filterData!.sort((a, b) => a.price.compareTo(b.price));
-      } else {
-        filterData!.sort((a, b) => b.price.compareTo(a.price));
-      }
-    }
-  }
-
   AddProductImagesController addProductImagesController =
       Get.put(AddProductImagesController());
 
   @override
   void initState() {
-    // filterData = myData;
     super.initState();
   }
 
   TextEditingController controller = TextEditingController();
 
+  bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
+
+    storeProduct() async {
+      setState(() {
+        _isLoading = true;  
+      });
+
+      if(await productProvider.store({
+        "name": _nameController.text,
+        "price": _priceController.text,
+        "discount": _discountController.text,
+        "qty": _qtyController.text,
+        "description": _descriptionController.text,
+        // "images": addProductImagesController.selectedImages,
+      })) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: successColor,
+            duration: const Duration(milliseconds: 2000),
+            content: const Text(
+              'Product created successfully',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: alertColor,
+            duration: const Duration(milliseconds: 2000),
+            content: const Text(
+              'Failed to create product',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      }
+
+      Navigator.pop(context);
+
+      setState(() {
+        _isLoading = false;
+      });
+    }
 
     Widget imageInput() {
       return Row(
@@ -68,7 +91,7 @@ class _ProductPageState extends State<ProductPage> {
             onPressed: () {
               addProductImagesController.showImagesPickerDialog(context);
             },
-            child: Text("Select Product Images"),
+            child: const Text("Select Product Images"),
           )
         ],
       );
@@ -83,7 +106,7 @@ class _ProductPageState extends State<ProductPage> {
               ? Container(
                   width: MediaQuery.of(context).size.width - 20,
                   height: 100,
-                  margin: EdgeInsets.symmetric(vertical: 20),
+                  margin: const EdgeInsets.symmetric(vertical: 20),
                   child: GridView.builder(
                     itemCount: imageController.selectedImages.length,
                     physics: const BouncingScrollPhysics(),
@@ -124,14 +147,14 @@ class _ProductPageState extends State<ProductPage> {
                     },
                   ),
                 )
-              : SizedBox.shrink();
+              : const SizedBox.shrink();
         },
       );
     }
 
     Widget nameInput() {
       return Container(
-        margin: EdgeInsets.only(top: 20),
+        margin: const EdgeInsets.only(top: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -140,13 +163,13 @@ class _ProductPageState extends State<ProductPage> {
               style: primaryTextStyle.copyWith(
                   fontSize: 16, fontWeight: medium, color: primaryTextColor),
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
             Container(
               height: 60,
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(width: 1, color: Color(0xFF797979))),
+                  border: Border.all(width: 1, color: const Color(0xFF797979))),
               child: Center(
                 child: Row(
                   children: [
@@ -170,7 +193,7 @@ class _ProductPageState extends State<ProductPage> {
 
     Widget priceInput() {
       return Container(
-        margin: EdgeInsets.only(top: 20),
+        margin: const EdgeInsets.only(top: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -179,13 +202,13 @@ class _ProductPageState extends State<ProductPage> {
               style: primaryTextStyle.copyWith(
                   fontSize: 16, fontWeight: medium, color: primaryTextColor),
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
             Container(
               height: 60,
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(width: 1, color: Color(0xFF797979))),
+                  border: Border.all(width: 1, color: const Color(0xFF797979))),
               child: Center(
                 child: Row(
                   children: [
@@ -210,7 +233,7 @@ class _ProductPageState extends State<ProductPage> {
 
     Widget discountInput() {
       return Container(
-        margin: EdgeInsets.only(top: 20),
+        margin: const EdgeInsets.only(top: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -219,13 +242,13 @@ class _ProductPageState extends State<ProductPage> {
               style: primaryTextStyle.copyWith(
                   fontSize: 16, fontWeight: medium, color: primaryTextColor),
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
             Container(
               height: 60,
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(width: 1, color: Color(0xFF797979))),
+                  border: Border.all(width: 1, color: const Color(0xFF797979))),
               child: Center(
                 child: Row(
                   children: [
@@ -250,7 +273,7 @@ class _ProductPageState extends State<ProductPage> {
 
     Widget qtyInput() {
       return Container(
-        margin: EdgeInsets.only(top: 20),
+        margin: const EdgeInsets.only(top: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -259,13 +282,13 @@ class _ProductPageState extends State<ProductPage> {
               style: primaryTextStyle.copyWith(
                   fontSize: 16, fontWeight: medium, color: primaryTextColor),
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
             Container(
               height: 60,
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(width: 1, color: Color(0xFF797979))),
+                  border: Border.all(width: 1, color: const Color(0xFF797979))),
               child: Center(
                 child: Row(
                   children: [
@@ -290,7 +313,7 @@ class _ProductPageState extends State<ProductPage> {
 
     Widget descriptionInput() {
       return Container(
-        margin: EdgeInsets.only(top: 20),
+        margin: const EdgeInsets.only(top: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -300,13 +323,13 @@ class _ProductPageState extends State<ProductPage> {
               style: primaryTextStyle.copyWith(
                   fontSize: 16, fontWeight: medium, color: primaryTextColor),
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
             Container(
               height: 120,
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(width: 1, color: Color(0xFF797979))),
+                  border: Border.all(width: 1, color: const Color(0xFF797979))),
               child: Center(
                 child: Row(
                   children: [
@@ -333,19 +356,19 @@ class _ProductPageState extends State<ProductPage> {
 
     Widget addProductButton() {
       return Container(
-        height: 60,
+        height: 50,
         width: double.infinity,
-        margin: EdgeInsets.only(top: 20),
+        margin: const EdgeInsets.only(top: 20),
         child: ElevatedButton(
           onPressed: () {
-            Navigator.of(context).pop();
+            storeProduct();
           },
           style: TextButton.styleFrom(
               backgroundColor: primaryColor,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10))),
           child: Text(
-            'Add new product',
+            'Create',
             style:
                 primaryTextStyle.copyWith(fontSize: 16, fontWeight: semiBold),
           ),
@@ -372,7 +395,7 @@ class _ProductPageState extends State<ProductPage> {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.close,
                           color: Colors.white,
                         ),
@@ -381,7 +404,7 @@ class _ProductPageState extends State<ProductPage> {
                 insetPadding: const EdgeInsets.all(10),
                 content: Container(
                   width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(8),
                   child: Column(
                     children: [
                       imageInput(),
@@ -394,14 +417,14 @@ class _ProductPageState extends State<ProductPage> {
                     ],
                   ),
                 ),
-                actions: [addProductButton()],
+                actions: [_isLoading ? LoadingButton() : addProductButton()],
               );
             },
           );
         },
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(99)),
         tooltip: "Add product",
-        backgroundColor: Color.fromRGBO(172, 164, 232, 1),
+        backgroundColor: const Color.fromRGBO(172, 164, 232, 1),
         child: Image.asset(
           'assets/icon_add.png',
           width: 20,
@@ -425,7 +448,7 @@ class _ProductPageState extends State<ProductPage> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Container(
@@ -434,9 +457,10 @@ class _ProductPageState extends State<ProductPage> {
                     children: [
                       Table(
                         columnWidths: {
-                          0: FlexColumnWidth(2),
-                          1: FlexColumnWidth(1),
-                          2: FlexColumnWidth(1),
+                          0: const FlexColumnWidth(3),
+                          1: const FlexColumnWidth(1),
+                          2: const FlexColumnWidth(1),
+                          3: const FlexColumnWidth(1),
                         }, 
                         defaultVerticalAlignment:
                             TableCellVerticalAlignment.middle,
@@ -448,7 +472,7 @@ class _ProductPageState extends State<ProductPage> {
                                   verticalAlignment:
                                       TableCellVerticalAlignment.middle,
                                   child: Padding(
-                                    padding: EdgeInsets.all(8.0),
+                                    padding: const EdgeInsets.all(8.0),
                                     child: Text(
                                       "Name",
                                       style: primaryTextStyle,
@@ -459,7 +483,7 @@ class _ProductPageState extends State<ProductPage> {
                                   verticalAlignment:
                                       TableCellVerticalAlignment.middle,
                                   child: Padding(
-                                    padding: EdgeInsets.all(8.0),
+                                    padding: const EdgeInsets.all(8.0),
                                     child: Text(
                                       "Price",
                                       style: primaryTextStyle,
@@ -470,9 +494,20 @@ class _ProductPageState extends State<ProductPage> {
                                   verticalAlignment:
                                       TableCellVerticalAlignment.middle,
                                   child: Padding(
-                                    padding: EdgeInsets.all(8.0),
+                                    padding: const EdgeInsets.all(8.0),
                                     child: Text(
                                       "Qty",
+                                      style: primaryTextStyle,
+                                    ),
+                                  ),
+                                ),
+                                TableCell(
+                                  verticalAlignment:
+                                      TableCellVerticalAlignment.middle,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      "Action",
                                       style: primaryTextStyle,
                                     ),
                                   ),
@@ -482,9 +517,10 @@ class _ProductPageState extends State<ProductPage> {
                       ),
                       Table(
                         columnWidths: {
-                          0: FlexColumnWidth(2),
-                          1: FlexColumnWidth(1),
-                          2: FlexColumnWidth(1),
+                          0: const FlexColumnWidth(3),
+                          1: const FlexColumnWidth(1),
+                          2: const FlexColumnWidth(1),
+                          3: const FlexColumnWidth(1),
                         }, 
                         defaultVerticalAlignment:
                             TableCellVerticalAlignment.middle,
@@ -494,80 +530,6 @@ class _ProductPageState extends State<ProductPage> {
                   ),
                 ),
               ),
-              // SizedBox(
-              //     width: double.infinity,
-              //     child: Theme(
-              //       data: ThemeData.dark(useMaterial3: false)
-              //           .copyWith(cardColor: bgColor3),
-              //       child: PaginatedDataTable(
-              //         sortColumnIndex: 0,
-              //         sortAscending: sort,
-              //         header: Container(
-              //           margin: EdgeInsets.all(0),
-              //           padding: const EdgeInsets.all(5),
-              //           child: TextField(
-              //             controller: controller,
-              //             decoration: const InputDecoration(
-              //                 hintText: "Enter something to filter"),
-              //             onChanged: (value) {
-              //               // setState(() {
-              //               //   myData = filterData!
-              //               //       .where((element) =>
-              //               //           element.name!.contains(value))
-              //               //       .toList();
-              //               // });
-              //             },
-              //           ),
-              //         ),
-              //         source: RowSource(
-              //           productProvider: productProvider,
-              //         ),
-              //         rowsPerPage: 5,
-              //         columnSpacing: 20,
-              //         columns: [
-              //           DataColumn(
-              //               label: const Text(
-              //                 "Name",
-              //                 style: TextStyle(
-              //                     fontWeight: FontWeight.w600, fontSize: 14),
-              //               ),
-              //               onSort: (columnIndex, ascending) {
-              //                 setState(() {
-              //                   sort = !sort;
-              //                 });
-
-              //                 onsortColum(columnIndex, ascending);
-              //               }),
-              //           DataColumn(
-              //               label: const Text(
-              //                 "Price",
-              //                 style: TextStyle(
-              //                     fontWeight: FontWeight.w600, fontSize: 14),
-              //               ),
-              //               onSort: (columnIndex, ascending) {
-              //                 setState(() {
-              //                   sort = !sort;
-              //                 });
-
-              //                 onsortColum(columnIndex, ascending);
-              //               }),
-              //           const DataColumn(
-              //             label: Text(
-              //               "Qty",
-              //               style: TextStyle(
-              //                   fontWeight: FontWeight.w600, fontSize: 14),
-              //             ),
-              //           ),
-              //           const DataColumn(
-              //             label: Text(
-              //               "Action",
-              //               style: TextStyle(
-              //                   fontWeight: FontWeight.w600, fontSize: 14),
-              //             ),
-              //           ),
-              //         ],
-              //       ),
-              //     )),
             ],
           ),
         ),
@@ -576,43 +538,13 @@ class _ProductPageState extends State<ProductPage> {
   }
 }
 
-// class RowSource extends DataTableSource {
-//   late final ProductProvider productProvider;
-
-//   RowSource({required this.productProvider});
-
-//   @override
-//   DataRow? getRow(int index) {
-//     if (index >= 3) {
-//       return null;
-//     }
-
-//     // final item = productProvider.products[0];
-
-//     return DataRow(cells: [
-//       DataCell(Text("Danu")),
-//       DataCell(Text("9000")),
-//       DataCell(Text("10")),
-//     ]);
-//   }
-
-//   @override
-//   bool get isRowCountApproximate => false;
-
-//   @override
-//   int get rowCount => 3;
-
-//   @override
-//   int get selectedRowCount => 0;
-// }
-
 List<TableRow> dataRows(ProductProvider productProvider) {
   return productProvider.products
       .map((product) => TableRow(children: [
             TableCell(
               verticalAlignment: TableCellVerticalAlignment.middle,
               child: Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Text(
                   product.name,
                   style: primaryTextStyle,
@@ -622,7 +554,7 @@ List<TableRow> dataRows(ProductProvider productProvider) {
             TableCell(
               verticalAlignment: TableCellVerticalAlignment.middle,
               child: Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Text(
                   product.price.toString(),
                   style: primaryTextStyle,
@@ -632,44 +564,37 @@ List<TableRow> dataRows(ProductProvider productProvider) {
             TableCell(
               verticalAlignment: TableCellVerticalAlignment.middle,
               child: Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Text(
                   product.qty.toString(),
                   style: primaryTextStyle,
                 ),
               ),
             ),
+            TableCell(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () {},
+                    child: Image.asset(
+                      'assets/icon_edit.png',
+                      width: 16,
+                      color: Colors.amber[600],
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  GestureDetector(
+                    onTap: () {},
+                    child: Image.asset(
+                      'assets/icon_delete.png',
+                      width: 16,
+                      color: Colors.red[400],
+                    ),
+                  ),
+                ],
+              ),
+            )
           ]))
       .toList();
 }
-
-// DataRow recentFileDataRow(var product) {
-//   return DataRow(
-//     cells: [
-//       DataCell(Text(product.name)),
-//         DataCell(Text(product.price.toString())),
-//         DataCell(Text(product.qty.toString())),
-//         DataCell(Row(
-//           children: [
-//             GestureDetector(
-//               onTap: () {},
-//               child: Image.asset(
-//                 'assets/icon_edit.png',
-//                 width: 16,
-//                 color: Colors.amber[600],
-//               ),
-//             ),
-//             SizedBox(width: 8),
-//             GestureDetector(
-//               onTap: () {},
-//               child: Image.asset(
-//                 'assets/icon_delete.png',
-//                 width: 16,
-//                 color: Colors.red[400],
-//               ),
-//             ),
-//           ],
-//         )),
-//     ]
-//   );
-// }

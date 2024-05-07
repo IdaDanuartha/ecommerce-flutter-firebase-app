@@ -25,8 +25,6 @@ class AddProductImagesController extends GetxController {
       status = await Permission.mediaLibrary.request();
     }
 
-    print(status);
-
     if (status == PermissionStatus.granted) {
       // Get.defaultDialog(
       //   title: "Choose Image",
@@ -68,23 +66,24 @@ class AddProductImagesController extends GetxController {
       //       ),
       //     ],
       //   );
+      // ignore: use_build_context_synchronously
       showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
             scrollable: true,
-            backgroundColor: bgColor1,
+            backgroundColor: bgColor3,
             title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Test",
+                  Text("Pick an image!",
                       style: primaryTextStyle.copyWith(
-                          fontWeight: bold, fontSize: 24)),
+                          fontWeight: bold, fontSize: 18)),
                   IconButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.close,
                       color: Colors.white,
                     ),
@@ -93,22 +92,22 @@ class AddProductImagesController extends GetxController {
             insetPadding: const EdgeInsets.all(10),
             content: Container(
               width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.all(8),
-              child: Column(
+              padding: const EdgeInsets.all(8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      // Navigator.of(context).pop();
                       selectImages("camera");
                     },
-                    child: Text('Camera'),
+                    child: const Text('Camera'),
                   ),
+                  const SizedBox(width: 10),
                   ElevatedButton(
                     onPressed: () {
-                      // Navigator.of(context).pop();
                       selectImages("gallery");
                     },
-                    child: Text('Gallery'),
+                    child: const Text('Gallery'),
                   ),
                 ],
               ),

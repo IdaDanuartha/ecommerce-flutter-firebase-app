@@ -201,7 +201,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
     Widget barChart() {
       return Container(
-        margin: const EdgeInsets.only(top: 50),
+        margin: const EdgeInsets.only(top: 30),
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
             color: bgColor3, borderRadius: BorderRadius.circular(8)),

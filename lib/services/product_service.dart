@@ -7,10 +7,10 @@ class ProductService {
     final FirebaseFirestore db = FirebaseFirestore.instance;
     List<ProductModel> productsModel = [];
     
-    var products = await db.collection("products").get().then(
+    var products = db.collection("products").snapshots().listen(
       (querySnapshot) {
 
-
+        productsModel.clear();
         for(var item in querySnapshot.docs) {
           Map<String, dynamic> data = item.data();
           data['id'] = item.id;
@@ -23,5 +23,14 @@ class ProductService {
     );
 
     return productsModel;
+  }
+
+  Future store(newData) async {
+    final FirebaseFirestore db = FirebaseFirestore.instance;
+
+    await db.collection("products").add(newData).then(
+      (value) => print("Document successfully created!"),
+      onError: (e) => print("Error creating document $e")
+    );
   }
 }
