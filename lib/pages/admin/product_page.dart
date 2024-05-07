@@ -3,31 +3,12 @@
 import 'dart:io';
 
 import 'package:ecommerce_firebase/controllers/add_product_images_controller.dart';
+import 'package:ecommerce_firebase/models/product_model.dart';
 import 'package:ecommerce_firebase/providers/product_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-
-class Data {
-  String? name;
-  int? price;
-  int? qty;
-
-  Data({required this.name, required this.price, required this.qty});
-}
-
-List<Data> myData = [
-  Data(name: "Khaliq", price: 09876543, qty: 28),
-  Data(name: "David", price: 6464646, qty: 30),
-  Data(name: "Kamal", price: 8888, qty: 32),
-  Data(name: "Ali", price: 3333333, qty: 33),
-  Data(name: "Muzal", price: 987654556, qty: 23),
-  Data(name: "Taimu", price: 46464664, qty: 24),
-  Data(name: "Mehdi", price: 5353535, qty: 36),
-  Data(name: "Rex", price: 244242, qty: 38),
-  Data(name: "Alex", price: 323232323, qty: 29),
-];
 
 class ProductPage extends StatefulWidget {
   const ProductPage({Key? key}) : super(key: key);
@@ -37,7 +18,6 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _discountController = TextEditingController();
@@ -45,31 +25,32 @@ class _ProductPageState extends State<ProductPage> {
   final TextEditingController _descriptionController = TextEditingController();
 
   bool sort = true;
-  List<Data>? filterData;
+  List<ProductModel>? filterData;
 
   onsortColum(int columnIndex, bool ascending) {
     if (columnIndex == 0) {
       if (ascending) {
-        filterData!.sort((a, b) => a.name!.compareTo(b.name!));
+        filterData!.sort((a, b) => a.name.compareTo(b.name));
       } else {
-        filterData!.sort((a, b) => b.name!.compareTo(a.name!));
+        filterData!.sort((a, b) => b.name.compareTo(a.name));
       }
     }
 
     if (columnIndex == 1) {
       if (ascending) {
-        filterData!.sort((a, b) => a.price!.compareTo(b.price!));
+        filterData!.sort((a, b) => a.price.compareTo(b.price));
       } else {
-        filterData!.sort((a, b) => b.price!.compareTo(a.price!));
+        filterData!.sort((a, b) => b.price.compareTo(a.price));
       }
     }
   }
 
-  AddProductImagesController addProductImagesController = Get.put(AddProductImagesController());
+  AddProductImagesController addProductImagesController =
+      Get.put(AddProductImagesController());
 
   @override
   void initState() {
-    filterData = myData;
+    // filterData = myData;
     super.initState();
   }
 
@@ -85,7 +66,7 @@ class _ProductPageState extends State<ProductPage> {
         children: [
           ElevatedButton(
             onPressed: () {
-              addProductImagesController.showImagesPickerDialog();
+              addProductImagesController.showImagesPickerDialog(context);
             },
             child: Text("Select Product Images"),
           )
@@ -101,7 +82,8 @@ class _ProductPageState extends State<ProductPage> {
           return imageController.selectedImages.length > 0
               ? Container(
                   width: MediaQuery.of(context).size.width - 20,
-                  height: Get.height / 3.0,
+                  height: 100,
+                  margin: EdgeInsets.symmetric(vertical: 20),
                   child: GridView.builder(
                     itemCount: imageController.selectedImages.length,
                     physics: const BouncingScrollPhysics(),
@@ -118,22 +100,21 @@ class _ProductPageState extends State<ProductPage> {
                             File(addProductImagesController
                                 .selectedImages[index].path),
                             fit: BoxFit.cover,
-                            height: Get.height / 4,
-                            width: Get.width / 2,
+                            height: 100,
+                            width: 120,
                           ),
                           Positioned(
-                            right: 10,
-                            top: 0,
+                            right: 24,
+                            top: -3,
                             child: InkWell(
                               onTap: () {
                                 imageController.removeImages(index);
-                                print(imageController.selectedImages.length);
                               },
                               child: CircleAvatar(
-                                backgroundColor: secondaryColor,
+                                backgroundColor: Colors.white24,
                                 child: Icon(
                                   Icons.close,
-                                  color: primaryColor,
+                                  color: primaryTextColor,
                                 ),
                               ),
                             ),
@@ -382,21 +363,21 @@ class _ProductPageState extends State<ProductPage> {
                 scrollable: true,
                 backgroundColor: bgColor1,
                 title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                  Text("Add New Product",
-                      style: primaryTextStyle.copyWith(
-                          fontWeight: bold, fontSize: 24)),
-                  IconButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    icon: Icon(
-                      Icons.close,
-                      color: Colors.white,
-                    ),
-                  ),
-                ]),
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Add New Product",
+                          style: primaryTextStyle.copyWith(
+                              fontWeight: bold, fontSize: 24)),
+                      IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        icon: Icon(
+                          Icons.close,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ]),
                 insetPadding: const EdgeInsets.all(10),
                 content: Container(
                   width: MediaQuery.of(context).size.width,
@@ -445,81 +426,148 @@ class _ProductPageState extends State<ProductPage> {
                 ),
               ),
               SizedBox(height: 20),
-              SizedBox(
-                  width: double.infinity,
-                  child: Theme(
-                    data: ThemeData.dark(useMaterial3: false)
-                        .copyWith(cardColor: bgColor3),
-                    child: PaginatedDataTable(
-                      sortColumnIndex: 0,
-                      sortAscending: sort,
-                      header: Container(
-                        margin: EdgeInsets.all(0),
-                        padding: const EdgeInsets.all(5),
-                        child: TextField(
-                          controller: controller,
-                          decoration: const InputDecoration(
-                              hintText: "Enter something to filter"),
-                          onChanged: (value) {
-                            setState(() {
-                              myData = filterData!
-                                  .where((element) =>
-                                      element.name!.contains(value))
-                                  .toList();
-                            });
-                          },
-                        ),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    children: [
+                      Table(
+                        columnWidths: {
+                          0: FlexColumnWidth(2),
+                          1: FlexColumnWidth(1),
+                          2: FlexColumnWidth(1),
+                        }, 
+                        defaultVerticalAlignment:
+                            TableCellVerticalAlignment.middle,
+                        children: [
+                          TableRow(
+                              decoration: BoxDecoration(color: bgColor3),
+                              children: [
+                                TableCell(
+                                  verticalAlignment:
+                                      TableCellVerticalAlignment.middle,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text(
+                                      "Name",
+                                      style: primaryTextStyle,
+                                    ),
+                                  ),
+                                ),
+                                TableCell(
+                                  verticalAlignment:
+                                      TableCellVerticalAlignment.middle,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text(
+                                      "Price",
+                                      style: primaryTextStyle,
+                                    ),
+                                  ),
+                                ),
+                                TableCell(
+                                  verticalAlignment:
+                                      TableCellVerticalAlignment.middle,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text(
+                                      "Qty",
+                                      style: primaryTextStyle,
+                                    ),
+                                  ),
+                                ),
+                              ]),
+                        ],
                       ),
-                      source: RowSource(
-                        product: myData,
-                        count: myData.length,
+                      Table(
+                        columnWidths: {
+                          0: FlexColumnWidth(2),
+                          1: FlexColumnWidth(1),
+                          2: FlexColumnWidth(1),
+                        }, 
+                        defaultVerticalAlignment:
+                            TableCellVerticalAlignment.middle,
+                        children: dataRows(productProvider),
                       ),
-                      rowsPerPage: 5,
-                      columnSpacing: 20,
-                      columns: [
-                        DataColumn(
-                            label: const Text(
-                              "Name",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600, fontSize: 14),
-                            ),
-                            onSort: (columnIndex, ascending) {
-                              setState(() {
-                                sort = !sort;
-                              });
+                    ],
+                  ),
+                ),
+              ),
+              // SizedBox(
+              //     width: double.infinity,
+              //     child: Theme(
+              //       data: ThemeData.dark(useMaterial3: false)
+              //           .copyWith(cardColor: bgColor3),
+              //       child: PaginatedDataTable(
+              //         sortColumnIndex: 0,
+              //         sortAscending: sort,
+              //         header: Container(
+              //           margin: EdgeInsets.all(0),
+              //           padding: const EdgeInsets.all(5),
+              //           child: TextField(
+              //             controller: controller,
+              //             decoration: const InputDecoration(
+              //                 hintText: "Enter something to filter"),
+              //             onChanged: (value) {
+              //               // setState(() {
+              //               //   myData = filterData!
+              //               //       .where((element) =>
+              //               //           element.name!.contains(value))
+              //               //       .toList();
+              //               // });
+              //             },
+              //           ),
+              //         ),
+              //         source: RowSource(
+              //           productProvider: productProvider,
+              //         ),
+              //         rowsPerPage: 5,
+              //         columnSpacing: 20,
+              //         columns: [
+              //           DataColumn(
+              //               label: const Text(
+              //                 "Name",
+              //                 style: TextStyle(
+              //                     fontWeight: FontWeight.w600, fontSize: 14),
+              //               ),
+              //               onSort: (columnIndex, ascending) {
+              //                 setState(() {
+              //                   sort = !sort;
+              //                 });
 
-                              onsortColum(columnIndex, ascending);
-                            }),
-                        DataColumn(
-                            label: const Text(
-                              "Price",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600, fontSize: 14),
-                            ),
-                            onSort: (columnIndex, ascending) {
-                              setState(() {
-                                sort = !sort;
-                              });
+              //                 onsortColum(columnIndex, ascending);
+              //               }),
+              //           DataColumn(
+              //               label: const Text(
+              //                 "Price",
+              //                 style: TextStyle(
+              //                     fontWeight: FontWeight.w600, fontSize: 14),
+              //               ),
+              //               onSort: (columnIndex, ascending) {
+              //                 setState(() {
+              //                   sort = !sort;
+              //                 });
 
-                              onsortColum(columnIndex, ascending);
-                            }),
-                        const DataColumn(
-                          label: Text(
-                            "Qty",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 14),
-                          ),
-                        ),
-                        const DataColumn(
-                          label: Text(
-                            "Action",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 14),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )),
+              //                 onsortColum(columnIndex, ascending);
+              //               }),
+              //           const DataColumn(
+              //             label: Text(
+              //               "Qty",
+              //               style: TextStyle(
+              //                   fontWeight: FontWeight.w600, fontSize: 14),
+              //             ),
+              //           ),
+              //           const DataColumn(
+              //             label: Text(
+              //               "Action",
+              //               style: TextStyle(
+              //                   fontWeight: FontWeight.w600, fontSize: 14),
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //     )),
             ],
           ),
         ),
@@ -528,37 +576,77 @@ class _ProductPageState extends State<ProductPage> {
   }
 }
 
-class RowSource extends DataTableSource {
-  var product;
-  final count;
-  RowSource({
-    required this.product,
-    required this.count,
-  });
+// class RowSource extends DataTableSource {
+//   late final ProductProvider productProvider;
 
-  @override
-  DataRow? getRow(int index) {
-    if (index < rowCount) {
-      return recentFileDataRow(product![index]);
-    } else
-      return null;
-  }
+//   RowSource({required this.productProvider});
 
-  @override
-  bool get isRowCountApproximate => false;
+//   @override
+//   DataRow? getRow(int index) {
+//     if (index >= 3) {
+//       return null;
+//     }
 
-  @override
-  int get rowCount => count;
+//     // final item = productProvider.products[0];
 
-  @override
-  int get selectedRowCount => 0;
+//     return DataRow(cells: [
+//       DataCell(Text("Danu")),
+//       DataCell(Text("9000")),
+//       DataCell(Text("10")),
+//     ]);
+//   }
+
+//   @override
+//   bool get isRowCountApproximate => false;
+
+//   @override
+//   int get rowCount => 3;
+
+//   @override
+//   int get selectedRowCount => 0;
+// }
+
+List<TableRow> dataRows(ProductProvider productProvider) {
+  return productProvider.products
+      .map((product) => TableRow(children: [
+            TableCell(
+              verticalAlignment: TableCellVerticalAlignment.middle,
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  product.name,
+                  style: primaryTextStyle,
+                ),
+              ),
+            ),
+            TableCell(
+              verticalAlignment: TableCellVerticalAlignment.middle,
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  product.price.toString(),
+                  style: primaryTextStyle,
+                ),
+              ),
+            ),
+            TableCell(
+              verticalAlignment: TableCellVerticalAlignment.middle,
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  product.qty.toString(),
+                  style: primaryTextStyle,
+                ),
+              ),
+            ),
+          ]))
+      .toList();
 }
 
-// DataRow recentFileDataRow(ProductProvider productProvider) {
+// DataRow recentFileDataRow(var product) {
 //   return DataRow(
-//     cells: productProvider.products.map((product) {
-//       return <DataCell>[
-//         DataCell(Text(product.name)),
+//     cells: [
+//       DataCell(Text(product.name)),
 //         DataCell(Text(product.price.toString())),
 //         DataCell(Text(product.qty.toString())),
 //         DataCell(Row(
@@ -582,38 +670,6 @@ class RowSource extends DataTableSource {
 //             ),
 //           ],
 //         )),
-//       ];
-//     }).expand((cells) => cells).toList()
+//     ]
 //   );
 // }
-
-DataRow recentFileDataRow(var product) {
-  return DataRow(
-    cells: [
-      DataCell(Text(product.name)),
-        DataCell(Text(product.price.toString())),
-        DataCell(Text(product.qty.toString())),
-        DataCell(Row(
-          children: [
-            GestureDetector(
-              onTap: () {},
-              child: Image.asset(
-                'assets/icon_edit.png',
-                width: 16,
-                color: Colors.amber[600],
-              ),
-            ),
-            SizedBox(width: 8),
-            GestureDetector(
-              onTap: () {},
-              child: Image.asset(
-                'assets/icon_delete.png',
-                width: 16,
-                color: Colors.red[400],
-              ),
-            ),
-          ],
-        )),
-    ]
-  );
-}

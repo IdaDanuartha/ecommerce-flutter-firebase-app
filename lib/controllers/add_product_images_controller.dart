@@ -1,7 +1,7 @@
-
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:ecommerce_firebase/themes.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,7 +14,7 @@ class AddProductImagesController extends GetxController {
   final RxList<String> arrImagesUrl = <String>[].obs;
   final FirebaseStorage storageRef = FirebaseStorage.instance;
 
-  Future<void> showImagesPickerDialog() async {
+  Future<void> showImagesPickerDialog(BuildContext context) async {
     PermissionStatus status;
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     AndroidDeviceInfo androidDeviceInfo = await deviceInfo.androidInfo;
@@ -24,6 +24,8 @@ class AddProductImagesController extends GetxController {
     } else {
       status = await Permission.mediaLibrary.request();
     }
+
+    print(status);
 
     if (status == PermissionStatus.granted) {
       // Get.defaultDialog(
@@ -46,27 +48,74 @@ class AddProductImagesController extends GetxController {
       //     ),
       //   ],
       // );
-      AlertDialog(
-          title: Text("Choose Image"),
-          content: Text("Pick an image from the camera or gallery?"),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                // Navigator.of(context).pop();
-                selectImages("camera");
-              },
-              child: Text('Camera'),
+      // AlertDialog(
+      //     title: Text("Choose Image"),
+      //     content: Text("Pick an image from the camera or gallery?"),
+      //     actions: [
+      //       ElevatedButton(
+      //         onPressed: () {
+      //           // Navigator.of(context).pop();
+      //           selectImages("camera");
+      //         },
+      //         child: Text('Camera'),
+      //       ),
+      //       ElevatedButton(
+      //         onPressed: () {
+      //           // Navigator.of(context).pop();
+      //           selectImages("gallery");
+      //         },
+      //         child: Text('Gallery'),
+      //       ),
+      //     ],
+      //   );
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            scrollable: true,
+            backgroundColor: bgColor1,
+            title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Test",
+                      style: primaryTextStyle.copyWith(
+                          fontWeight: bold, fontSize: 24)),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: Icon(
+                      Icons.close,
+                      color: Colors.white,
+                    ),
+                  ),
+                ]),
+            insetPadding: const EdgeInsets.all(10),
+            content: Container(
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.all(8),
+              child: Column(
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      // Navigator.of(context).pop();
+                      selectImages("camera");
+                    },
+                    child: Text('Camera'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Navigator.of(context).pop();
+                      selectImages("gallery");
+                    },
+                    child: Text('Gallery'),
+                  ),
+                ],
+              ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                // Navigator.of(context).pop();
-                selectImages("gallery");
-              },
-              child: Text('Gallery'),
-            ),
-          ],
-        );
-
+          );
+        },
+      );
     }
     if (status == PermissionStatus.denied) {
       print("Error please allow permission for further usage");
