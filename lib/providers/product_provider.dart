@@ -15,6 +15,8 @@ class ProductProvider with ChangeNotifier {
     try {
       List<ProductModel> products = await ProductService().getProducts();
       _products = products;
+
+      notifyListeners();
     } catch (e) {
       print(e);
     }
@@ -24,6 +26,8 @@ class ProductProvider with ChangeNotifier {
     try {
       var product = await ProductService().store(newData);
       _products.add(ProductModel.fromJson(product));
+
+      notifyListeners();
       return true;
     } catch (e) {
       print("Error: $e");

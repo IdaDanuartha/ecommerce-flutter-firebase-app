@@ -32,6 +32,7 @@ class ProductCard extends StatelessWidget {
 
       //   },
       // );
+      
       return Image.network(
         product.images[0],
         width: 200,
