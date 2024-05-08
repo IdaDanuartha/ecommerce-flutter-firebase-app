@@ -3,18 +3,57 @@ import 'package:ecommerce_firebase/services/user_service.dart';
 import 'package:flutter/material.dart';
 
 class UserProvider with ChangeNotifier {
-  List<UserProvider> _users = [];
-  List<UserProvider> get users => _users;
+  List<UserModel> _users = [];
+  List<UserModel> _staff = [];
+  List<UserModel> _customers = [];
 
-  set users(List<UserProvider> users) {
+  List<UserModel> get users => _users;
+  List<UserModel> get staff => _staff;
+  List<UserModel> get customers => _customers;
+
+  set users(List<UserModel> users) {
     _users = users;
+    notifyListeners();
+  }
+
+  set staff(List<UserModel> staff) {
+    _staff = staff;
+    notifyListeners();
+  }
+
+  set customers(List<UserModel> customers) {
+    _customers = customers;
     notifyListeners();
   }
 
   Future<void> getUsers() async {
     try {
       List<UserModel> users = await UserService().getUsers();
-      // _users = users;
+      _users = users;
+
+      notifyListeners();
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> getStaff() async {
+    try {
+      List<UserModel> staff = await UserService().getStaff();
+      _staff = staff;
+
+      notifyListeners();
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> getCustomers() async {
+    try {
+      List<UserModel> customers = await UserService().getCustomers();
+      _customers = customers;
+
+      notifyListeners();
     } catch (e) {
       print(e);
     }

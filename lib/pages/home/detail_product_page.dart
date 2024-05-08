@@ -1,0 +1,333 @@
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:ecommerce_firebase/models/cart_model.dart';
+import 'package:ecommerce_firebase/models/product_model.dart';
+import 'package:ecommerce_firebase/providers/cart_provider.dart';
+import 'package:ecommerce_firebase/themes.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+class DetailProductHomePage extends StatefulWidget {
+  const DetailProductHomePage({super.key});
+
+  static const routeName = '/home/product';
+
+  @override
+  _DetailProductHomePageState createState() => _DetailProductHomePageState();
+}
+
+class _DetailProductHomePageState extends State<DetailProductHomePage> {
+  int currentIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments as ProductModel;
+    final argsCart = ModalRoute.of(context)!.settings.arguments as CartModel;
+    CartProvider cartProvider = Provider.of<CartProvider>(context);
+
+    Future<void> showSuccessDialog() async {
+      return showDialog(
+        context: context,
+        builder: (BuildContext context) => Container(
+          width: MediaQuery.of(context).size.width - (2 * defaultMargin),
+          child: AlertDialog(
+            backgroundColor: bgColor3,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+            content: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(
+                        Icons.close,
+                        color: primaryTextColor,
+                      ),
+                    ),
+                  ),
+                  Image.asset(
+                    'assets/icon_success.png',
+                    width: 100,
+                  ),
+                  SizedBox(
+                    height: 12,
+                  ),
+                  Text(
+                    'Hurray :)',
+                    style: primaryTextStyle.copyWith(
+                      fontSize: 18,
+                      fontWeight: semiBold,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 12,
+                  ),
+                  Text(
+                    'Item added successfully',
+                    style: secondaryTextStyle,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  // Container(
+                  //   width: 154,
+                  //   height: 44,
+                  //   child: TextButton(
+                  //     onPressed: () {
+                  //       Navigator.pushNamed(context, CartPage.routeName);
+                  //     },
+                  //     style: TextButton.styleFrom(
+                  //       backgroundColor: primaryColor,
+                  //       shape: RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.circular(12),
+                  //       ),
+                  //     ),
+                  //     child: Text(
+                  //       'View My Cart',
+                  //       style: primaryTextStyle.copyWith(
+                  //         fontSize: 16,
+                  //         fontWeight: medium,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    Widget indicator(int index) {
+      return Container(
+        width: currentIndex == index ? 16 : 4,
+        height: 4,
+        margin: EdgeInsets.symmetric(
+          horizontal: 2,
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: currentIndex == index ? primaryColor : Color(0xffC4C4C4),
+        ),
+      );
+    }
+
+    Widget header() {
+      int index = -1;
+
+      return Column(
+        children: [
+          Container(
+            margin: EdgeInsets.only(
+              top: 20,
+              left: defaultMargin,
+              right: defaultMargin,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Icon(
+                    Icons.chevron_left,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 20),
+          CarouselSlider(
+            items: args.images
+                .map(
+                  (image) => Image.network(
+                    image,
+                    width: MediaQuery.of(context).size.width,
+                    height: 310,
+                    fit: BoxFit.cover,
+                  ),
+                )
+                .toList(),
+            options: CarouselOptions(
+              enableInfiniteScroll: false,
+              initialPage: 0,
+              onPageChanged: (index, reason) {
+                setState(() {
+                  currentIndex = index;
+                });
+              },
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: args.images.map((e) {
+              index++;
+              return indicator(index);
+            }).toList(),
+          ),
+        ],
+      );
+    }
+
+    Widget content() {
+      int index = -1;
+
+      return Container(
+        width: double.infinity,
+        height: 460,
+        margin: EdgeInsets.only(top: 17),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(24),
+          ),
+          color: bgColor1,
+        ),
+        child: Column(
+          children: [
+            // NOTE: HEADER
+            Container(
+              margin: EdgeInsets.only(
+                top: defaultMargin,
+                left: defaultMargin,
+                right: defaultMargin,
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          args.name,
+                          style: primaryTextStyle.copyWith(
+                            fontSize: 18,
+                            fontWeight: semiBold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // NOTE: PRICE
+            Container(
+              width: double.infinity,
+              margin: EdgeInsets.only(
+                top: 20,
+                left: defaultMargin,
+                right: defaultMargin,
+              ),
+              padding: EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: bgColor2,
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Price starts from',
+                    style: primaryTextStyle,
+                  ),
+                  Text(
+                    '\$${args.price}',
+                    style: priceTextStyle.copyWith(
+                      fontSize: 16,
+                      fontWeight: semiBold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // NOTE: DESCRIPTION
+            Container(
+              width: double.infinity,
+              margin: EdgeInsets.only(
+                top: defaultMargin,
+                left: defaultMargin,
+                right: defaultMargin,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Description',
+                    style: primaryTextStyle.copyWith(
+                      fontWeight: medium,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 12,
+                  ),
+                  Text(
+                    args.description,
+                    style: subtitleTextStyle.copyWith(
+                      fontWeight: light,
+                    ),
+                    textAlign: TextAlign.justify,
+                  ),
+                ],
+              ),
+            ),
+
+            // NOTE: BUTTONS
+            Container(
+              width: double.infinity,
+              margin: EdgeInsets.all(defaultMargin),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      height: 54,
+                      child: TextButton(
+                        onPressed: () {
+                          cartProvider.addItem(argsCart);
+                          showSuccessDialog();
+                        },
+                        style: TextButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          backgroundColor: primaryColor,
+                        ),
+                        child: Text(
+                          'Add to Cart',
+                          style: primaryTextStyle.copyWith(
+                            fontSize: 16,
+                            fontWeight: semiBold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Scaffold(
+      backgroundColor: bgColor6,
+      body: ListView(
+        children: [
+          header(),
+          content(),
+        ],
+      ),
+    );
+  }
+}

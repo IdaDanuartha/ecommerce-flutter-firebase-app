@@ -8,6 +8,8 @@ import 'package:ecommerce_firebase/themes.dart';
 class AdminPage extends StatefulWidget {
   const AdminPage({super.key});
 
+  static const routeName = '/dashboard';
+
   @override
   State<AdminPage> createState() => _AdminPageState();
 }

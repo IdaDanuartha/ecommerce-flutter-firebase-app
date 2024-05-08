@@ -1,0 +1,81 @@
+import 'dart:convert';
+
+import 'package:ecommerce_firebase/models/cart_model.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class CartProvider with ChangeNotifier {
+  List<CartModel> _items = [];
+
+  List<CartModel> get items => _items;
+
+  double get totalPrice {
+    return _items.fold(
+        0, (total, current) => total + (current.price * current.qty));
+  }
+
+  void addItem(CartModel item) {
+    var foundItem = _items.firstWhere((i) => i.id == item.id,
+        orElse: () => CartModel(id: "", userId: "", name: '', price: 0.0, qty: 0, discount: 0.0, images: []));
+
+    if (foundItem.id != "") {
+      foundItem.qty += 1;
+    } else {
+      _items.add(item);
+    }
+
+    saveItemsToPrefs();
+    notifyListeners();
+  }
+
+  void increaseQty(CartModel item) {
+    item.qty += 1;
+    
+    saveItemsToPrefs();
+    notifyListeners();
+  }
+
+  void decreaseQty(CartModel item) {
+    item.qty -= 1;
+    if (item.qty <= 0) {
+      _items.remove(item);
+    }
+
+    saveItemsToPrefs();
+    notifyListeners();
+  }
+
+  void removeItem(CartModel item) {
+    _items.remove(item);
+
+    saveItemsToPrefs();
+    notifyListeners();
+  }
+
+  Future<void> saveItemsToPrefs() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String encodedData = json.encode(
+      _items.map((item) => item.toJson()).toList(),
+    );
+    await prefs.setString('cartItems', encodedData);
+  }
+
+  Future<void> loadItemsFromPrefs() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? itemsString = prefs.getString('cartItems');
+    if (itemsString != null) {
+      final List<dynamic> jsonData = json.decode(itemsString) as List<dynamic>;
+      _items = jsonData
+          .map((item) => CartModel.fromJson(item as Map<String, dynamic>))
+          .toList();
+      notifyListeners();
+    }
+  }
+
+  // Call this method to clear all items in cart
+  Future<void> clearCart() async {
+    _items = [];
+    await saveItemsToPrefs();
+    notifyListeners();
+  }
+}

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_firebase/pages/sign_up_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
@@ -6,6 +7,8 @@ import 'package:ecommerce_firebase/widgets/loading_button.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
+
+  static const routeName = '/login';
 
   @override
   State<SignInPage> createState() => _SignInPageState();
@@ -207,7 +210,7 @@ void route() {
             SizedBox(width: 5),
             GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, '/sign-up');
+                Navigator.pushNamed(context, SignUpPage.routeName);
               },
               child: Text(
                 "Sign Up",

@@ -8,6 +8,8 @@ import 'package:ecommerce_firebase/widgets/loading_button.dart';
 class SignUpPage extends StatefulWidget {
   SignUpPage({super.key});
 
+  static const routeName = '/register';
+
   @override
   State<SignUpPage> createState() => _SignUpPageState();
 }
@@ -29,8 +31,7 @@ class _SignUpPageState extends State<SignUpPage> {
       var user = _auth.currentUser;
       CollectionReference ref = firebaseFirestore.collection('users');
       ref.doc(user!.uid).set({'name': _nameController.text, 'username': _usernameController.text, 'email': _emailController.text, 'role': "customer"});
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => SignInPage()));
+      Navigator.pushNamed(context, SignInPage.routeName);
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: successColor,
@@ -307,7 +308,7 @@ class _SignUpPageState extends State<SignUpPage> {
             SizedBox(width: 5),
             GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, '/sign-in');
+                Navigator.pushNamed(context, SignInPage.routeName);
               },
               child: Text(
                 "Sign In",

@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_firebase/providers/cart_provider.dart';
 import 'package:ecommerce_firebase/providers/product_provider.dart';
+import 'package:ecommerce_firebase/providers/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
@@ -24,6 +26,10 @@ class _SplashPageState extends State<SplashPage> {
 
   getInit() async {
     await Provider.of<ProductProvider>(context, listen: false).getProducts();
+    await Provider.of<UserProvider>(context, listen: false).getUsers();
+    await Provider.of<UserProvider>(context, listen: false).getStaff();
+    await Provider.of<UserProvider>(context, listen: false).getCustomers();
+    await Provider.of<CartProvider>(context, listen: false).loadItemsFromPrefs();
 
     if(user?.uid != null) {
       var userDetail =

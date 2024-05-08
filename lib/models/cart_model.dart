@@ -1,31 +1,30 @@
-class ProductModel {
+class CartModel {
   late String id;
+  late String userId;
   late String name;
   late double price;
   late double discount;
   late int qty;
-  late String description;
-  // late DateTime createdAt;
   late List<String> images;
 
-  ProductModel({
+  CartModel({
     required this.id,
+    required this.userId,
     required this.name,
     required this.price,
     required this.discount,
     required this.qty,
-    required this.description,
     // required this.createdAt,
     required this.images,
   });
 
-  ProductModel.fromJson(Map<String, dynamic> json) {
+  CartModel.fromJson(Map<String, dynamic> json) {
     id = json["id"];
+    userId = json["user_id"];
     name = json["name"];
     price = double.parse(json["price"].toString());
     discount = double.parse(json["discount"].toString());
     qty = int.parse(json["qty"].toString());
-    description = json["description"];
     images = json['images'];
     // createdAt = DateTime.parse(json["created_at"]);
   }
@@ -33,11 +32,11 @@ class ProductModel {
   Map<String, dynamic> toJson() {
     return {
       "id": id,
+      "user_id": userId,
       "name": name,
       "price": price,
       "discount": discount,
       "qty": qty,
-      "description": description,
       "images": images,
       // "created_at": createdAt.toString(),
     };

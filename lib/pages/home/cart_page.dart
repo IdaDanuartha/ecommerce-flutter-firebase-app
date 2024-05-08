@@ -1,19 +1,28 @@
+import 'package:ecommerce_firebase/providers/cart_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 import 'package:ecommerce_firebase/widgets/cart_card.dart';
+import 'package:provider/provider.dart';
 
-class CartPage extends StatelessWidget {
+class CartPage extends StatefulWidget {
+  const CartPage({super.key});
+
+  static const routeName = '/carts';
+
+  @override
+  State<CartPage> createState() => _CartPageState();
+}
+
+class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
+    CartProvider cartProvider = Provider.of<CartProvider>(context);
 
     AppBar header() {
       return AppBar(
         backgroundColor: bgColor1,
         centerTitle: true,
-        leading: null,
-        // iconTheme: IconThemeData(
-        //   color: primaryTextColor,
-        // ),
+        automaticallyImplyLeading: false,
         title: Text(
           'My Carts',
           style: primaryTextStyle.copyWith(
@@ -44,54 +53,26 @@ class CartPage extends StatelessWidget {
                 fontWeight: medium,
               ),
             ),
-            SizedBox(
-              height: 12,
-            ),
-            Text(
-              'Let\'s find your favorite shoes',
-              style: secondaryTextStyle,
-            ),
-            Container(
-              width: 154,
-              height: 44,
-              margin: EdgeInsets.only(
-                top: 20,
-              ),
-              child: TextButton(
-                onPressed: () {
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, '/home', (route) => false);
-                },
-                style: TextButton.styleFrom(
-                  backgroundColor: primaryColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: Text(
-                  'Explore Store',
-                  style: primaryTextStyle.copyWith(
-                    fontSize: 16,
-                    fontWeight: medium,
-                  ),
-                ),
-              ),
-            ),
           ],
         ),
       );
     }
 
     Widget content() {
-      return ListView(
-        padding: EdgeInsets.symmetric(
-          horizontal: defaultMargin,
-        ),
-        children: [
-          CartCard(),
-          CartCard(),
-          CartCard(),
-        ]
+      return Consumer<CartProvider>(
+        builder: (context, cart, child) {
+          return ListView.builder(
+            itemCount: cart.items.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: defaultMargin
+                ),
+                child: CartCard(cart: cart.items[index]),
+              );
+            },
+          );
+        }
       );
     }
 
@@ -175,10 +156,9 @@ class CartPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: bgColor3,
       appBar: header(),
-      // body: cartProvider.carts.length == 0 ? emptyCart() : content(),
+      body: cartProvider.items.isEmpty ? emptyCart() : content(),
       // bottomNavigationBar:
       //     cartProvider.carts.length == 0 ? SizedBox() : customBottomNav(),
-      body: content(),
       bottomNavigationBar: customBottomNav(),
     );
   }

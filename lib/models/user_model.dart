@@ -3,7 +3,7 @@ class UserModel {
   late String name;
   late String username;
   late String email;
-  late String profilePath;
+  late String profileUrl;
   late String role;
 
   UserModel({
@@ -11,7 +11,7 @@ class UserModel {
     required this.name,
     required this.username,
     required this.email,
-    required this.profilePath,
+    required this.profileUrl,
     required this.role,
   });
 
@@ -20,7 +20,7 @@ class UserModel {
     name = json["name"];
     username = json["username"];
     email = json["email"];
-    profilePath = json["profile_path"];
+    profileUrl = json["profile_url"];
     role = json["role"];
   }
 
@@ -30,7 +30,7 @@ class UserModel {
       "name": name,
       "username": username,
       "email": email,
-      "profile_path": profilePath,
+      "profile_url": profileUrl,
       "role": role,
     };
   }

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_firebase/providers/product_provider.dart';
+import 'package:ecommerce_firebase/providers/user_provider.dart';
 import 'package:ecommerce_firebase/widgets/charts/bar_chart.dart';
 import 'package:ecommerce_firebase/widgets/charts/pie_chart.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,7 +19,12 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
+    UserProvider userProvider= Provider.of<UserProvider>(context);
+
     int productCount = productProvider.products.length;
+    int staffCount = userProvider.staff.length;
+    int customerCount = userProvider.customers.length;
+
     User? user = FirebaseAuth.instance.currentUser;
     var userDetail =
         FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
@@ -142,7 +148,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        "6",
+                        "-",
                         style: primaryTextStyle.copyWith(fontSize: 24),
                       ),
                     ],
@@ -169,7 +175,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        "6",
+                        staffCount.toString(),
                         style: primaryTextStyle.copyWith(fontSize: 24),
                       ),
                     ],
@@ -190,7 +196,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        "6",
+                        customerCount.toString(),
                         style: primaryTextStyle.copyWith(fontSize: 24),
                       ),
                     ],
@@ -252,7 +258,13 @@ class _DashboardPageState extends State<DashboardPage> {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: defaultMargin),
       child: ListView(
-        children: [header(), dataCount(), barChart(), pieChart()],
+        children: [
+          header(), 
+          dataCount(), 
+          barChart(), 
+          // pieChart()
+          SizedBox(height: 30)
+        ],
       ),
     );
   }

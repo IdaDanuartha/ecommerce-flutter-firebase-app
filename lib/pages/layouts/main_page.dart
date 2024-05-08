@@ -10,6 +10,8 @@ import 'package:ecommerce_firebase/themes.dart';
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
 
+  static const routeName = '/home';
+
   @override
   State<MainPage> createState() => _MainPageState();
 }

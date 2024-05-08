@@ -1,11 +1,14 @@
 import 'package:ecommerce_firebase/pages/admin/products/add_product_page.dart';
 import 'package:ecommerce_firebase/pages/admin/products/detail_product_page.dart';
 import 'package:ecommerce_firebase/pages/admin/products/edit_product_page.dart';
+import 'package:ecommerce_firebase/pages/home/cart_page.dart';
+import 'package:ecommerce_firebase/pages/home/detail_product_page.dart';
 import 'package:ecommerce_firebase/pages/layouts/admin_page.dart';
+import 'package:ecommerce_firebase/providers/cart_provider.dart';
 import 'package:ecommerce_firebase/providers/product_provider.dart';
+import 'package:ecommerce_firebase/providers/user_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_firebase/pages/home/cart_page.dart';
 import 'package:ecommerce_firebase/pages/checkout_page.dart';
 import 'package:ecommerce_firebase/pages/checkout_success_page.dart';
 import 'package:ecommerce_firebase/pages/edit_profile_page.dart';
@@ -32,20 +35,27 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ProductProvider()),
+        ChangeNotifierProvider(create: (context) => UserProvider()),
+        ChangeNotifierProvider(create: (context) => CartProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         routes: {
           '/': (context) => const SplashPage(),
-          '/sign-in': (context) => const SignInPage(),
-          '/sign-up': (context) => SignUpPage(),
-          '/dashboard': (context) => const AdminPage(),
+          SignInPage.routeName: (context) => const SignInPage(),
+          SignUpPage.routeName: (context) => SignUpPage(),
+
+          AdminPage.routeName: (context) => const AdminPage(),
           AddProductPage.routeName: (context) => const AddProductPage(),
           DetailProductPage.routeName: (context) => const DetailProductPage(),
           EditProductPage.routeName: (context) => const EditProductPage(),
-          '/home': (context) => const MainPage(),
+
+          MainPage.routeName: (context) => const MainPage(),
+          DetailProductHomePage.routeName: (context) => const DetailProductHomePage(),
+
           EditProfile.routeName: (context) => const EditProfile(),
-          '/carts': (context) => CartPage(),
+
+          CartPage.routeName: (context) => CartPage(),
           '/checkout': (context) => CheckoutPage(),
           '/checkout-success': (context) => CheckoutSuccessPage(),
         },

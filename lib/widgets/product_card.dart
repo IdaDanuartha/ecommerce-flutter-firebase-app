@@ -1,3 +1,4 @@
+import 'package:ecommerce_firebase/pages/home/detail_product_page.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/models/product_model.dart';
 import 'package:ecommerce_firebase/themes.dart';
@@ -44,11 +45,7 @@ class ProductCard extends StatelessWidget {
     return Row(children: [
       GestureDetector(
         onTap: () {
-          // Navigator.push(
-          //     context,x
-          //     MaterialPageRoute(
-          //         builder: (context) =>
-          //             ProductPage(product: product)));
+          Navigator.pushNamed(context, DetailProductHomePage.routeName, arguments: product);
         },
         child: Container(
           width: 200,
