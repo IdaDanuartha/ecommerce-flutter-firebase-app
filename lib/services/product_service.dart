@@ -62,4 +62,24 @@ class ProductService {
       return null;
     }
   }
+
+  Future<dynamic> delete(String productId) async {
+    final FirebaseFirestore db = FirebaseFirestore.instance;
+
+    DocumentReference productRef = db.collection("products").doc(productId);
+    await productRef.delete();
+    
+    // Use the product ID to fetch the document data
+    DocumentSnapshot productSnapshot = await productRef.get();
+
+    // Check if the document exists and retrieve the data
+    if (productSnapshot.exists) {
+      Map<String, dynamic> product = productSnapshot.data() as Map<String, dynamic>;
+      product['id'] = productRef.id;
+      return product;
+    } else {
+      print("Product document does not exist");
+      return null;
+    }
+  }
 }

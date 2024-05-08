@@ -54,7 +54,7 @@ class _EditProductPageState extends State<EditProductPage> {
 
     void updateProduct() async {
       // print(addProductImagesController.selectedImages);
-      var newProduct = await productProvider.update(args.id, {
+      var updateProduct = await productProvider.update(args.id, {
         "name": _nameController.text,
         "price": double.parse(_priceController.text),
         "discount": double.parse(_discountController.text),
@@ -68,7 +68,7 @@ class _EditProductPageState extends State<EditProductPage> {
       nav.pop();
       nav.pop();
 
-      if (newProduct) {
+      if (updateProduct) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: successColor,

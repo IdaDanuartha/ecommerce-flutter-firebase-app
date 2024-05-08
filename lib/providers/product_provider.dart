@@ -48,4 +48,18 @@ class ProductProvider with ChangeNotifier {
       return false;
     }
   }
+
+  Future<bool> delete(String productId) async {
+    try {
+      await ProductService().delete(productId);
+      int index = _products.indexWhere((item) => item.id == productId);
+      _products.removeAt(index);
+
+      notifyListeners();
+      return true;
+    } catch (e) {
+      print("Error: $e");
+      return false;
+    }
+  }
 }

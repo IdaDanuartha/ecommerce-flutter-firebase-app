@@ -25,7 +25,7 @@ class _ProductPageState extends State<ProductPage> {
   @override
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
-
+  
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
