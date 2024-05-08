@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_firebase/providers/product_provider.dart';
 import 'package:ecommerce_firebase/widgets/charts/bar_chart.dart';
 import 'package:ecommerce_firebase/widgets/charts/pie_chart.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
+import 'package:provider/provider.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -15,6 +17,8 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
+    ProductProvider productProvider = Provider.of<ProductProvider>(context);
+    int productCount = productProvider.products.length;
     User? user = FirebaseAuth.instance.currentUser;
     var userDetail =
         FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
@@ -117,7 +121,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        "6",
+                        productCount.toString(),
                         style: primaryTextStyle.copyWith(fontSize: 24),
                       ),
                     ],
