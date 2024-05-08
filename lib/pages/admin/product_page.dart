@@ -1,5 +1,7 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:ecommerce_firebase/controllers/add_product_images_controller.dart';
@@ -20,7 +22,7 @@ class ProductPage extends StatefulWidget {
 class _ProductPageState extends State<ProductPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
-  final TextEditingController _discountController = TextEditingController();
+  final TextEditingController _discountController = TextEditingController(text: "0");
   final TextEditingController _qtyController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 
@@ -40,19 +42,29 @@ class _ProductPageState extends State<ProductPage> {
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
 
-    storeProduct() async {
+    void storeProduct() async {
       setState(() {
         _isLoading = true;  
       });
 
-      if(await productProvider.store({
+      // print(addProductImagesController.selectedImages);
+      var newProduct = await productProvider.store({
         "name": _nameController.text,
-        "price": _priceController.text,
-        "discount": _discountController.text,
-        "qty": _qtyController.text,
+        "price": double.parse(_priceController.text),
+        "discount": double.parse(_discountController.text),
+        "qty": int.parse(_qtyController.text),
         "description": _descriptionController.text,
-        // "images": addProductImagesController.selectedImages,
-      })) {
+        "images": [],
+        "created_at": DateTime.now()
+      });
+      
+      Navigator.pop(context);
+
+      setState(() {
+        _isLoading = false;
+      });
+
+      if(newProduct) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: successColor,
@@ -75,12 +87,6 @@ class _ProductPageState extends State<ProductPage> {
           ),
         );
       }
-
-      Navigator.pop(context);
-
-      setState(() {
-        _isLoading = false;
-      });
     }
 
     Widget imageInput() {
@@ -360,9 +366,7 @@ class _ProductPageState extends State<ProductPage> {
         width: double.infinity,
         margin: const EdgeInsets.only(top: 20),
         child: ElevatedButton(
-          onPressed: () {
-            storeProduct();
-          },
+          onPressed: storeProduct,
           style: TextButton.styleFrom(
               backgroundColor: primaryColor,
               shape: RoundedRectangleBorder(
@@ -456,11 +460,11 @@ class _ProductPageState extends State<ProductPage> {
                   child: Column(
                     children: [
                       Table(
-                        columnWidths: {
-                          0: const FlexColumnWidth(3),
-                          1: const FlexColumnWidth(1),
-                          2: const FlexColumnWidth(1),
-                          3: const FlexColumnWidth(1),
+                        columnWidths: const {
+                          0: FlexColumnWidth(3),
+                          1: FlexColumnWidth(1),
+                          2: FlexColumnWidth(1),
+                          3: FlexColumnWidth(1),
                         }, 
                         defaultVerticalAlignment:
                             TableCellVerticalAlignment.middle,
@@ -516,11 +520,11 @@ class _ProductPageState extends State<ProductPage> {
                         ],
                       ),
                       Table(
-                        columnWidths: {
-                          0: const FlexColumnWidth(3),
-                          1: const FlexColumnWidth(1),
-                          2: const FlexColumnWidth(1),
-                          3: const FlexColumnWidth(1),
+                        columnWidths: const {
+                          0: FlexColumnWidth(3),
+                          1: FlexColumnWidth(1),
+                          2: FlexColumnWidth(1),
+                          3: FlexColumnWidth(1),
                         }, 
                         defaultVerticalAlignment:
                             TableCellVerticalAlignment.middle,

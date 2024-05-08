@@ -3,11 +3,12 @@ import 'package:ecommerce_firebase/models/product_model.dart';
 
 class ProductService {
 
+  final FirebaseFirestore db = FirebaseFirestore.instance;
+  List<ProductModel> productsModel = [];
+
   Future<List<ProductModel>> getProducts() async {
-    final FirebaseFirestore db = FirebaseFirestore.instance;
-    List<ProductModel> productsModel = [];
     
-    var products = db.collection("products").snapshots().listen(
+    var products = db.collection("products").orderBy("created_at").get().then(
       (querySnapshot) {
 
         productsModel.clear();
@@ -25,12 +26,24 @@ class ProductService {
     return productsModel;
   }
 
-  Future store(newData) async {
+  Future<dynamic> store(newData) async {
     final FirebaseFirestore db = FirebaseFirestore.instance;
 
-    await db.collection("products").add(newData).then(
-      (value) => print("Document successfully created!"),
-      onError: (e) => print("Error creating document $e")
-    );
+    DocumentReference productRef = await db.collection("products").add(newData);
+
+    // Use the product ID to fetch the document data
+    DocumentSnapshot productSnapshot = await productRef.get();
+
+    // Check if the document exists and retrieve the data
+    if (productSnapshot.exists) {
+      Map<String, dynamic> product = productSnapshot.data() as Map<String, dynamic>;
+      product['id'] = productRef.id;
+      productsModel.add(ProductModel.fromJson(product));
+      return product;
+    } else {
+      print("Product document does not exist");
+      return null;
+    }
+
   }
 }

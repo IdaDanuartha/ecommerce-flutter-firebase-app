@@ -19,7 +19,6 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(const MyApp());
-  // await dotenv.load(fileName: ".env");
 }
 
 class MyApp extends StatelessWidget {
@@ -34,12 +33,12 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         routes: {
-          '/': (context) => SplashPage(),
-          '/sign-in': (context) => SignInPage(),
+          '/': (context) => const SplashPage(),
+          '/sign-in': (context) => const SignInPage(),
           '/sign-up': (context) => SignUpPage(),
-          '/home': (context) => MainPage(),
-          '/dashboard': (context) => AdminPage(),
-          '/profile/edit': (context) => EditProfile(),
+          '/home': (context) => const MainPage(),
+          '/dashboard': (context) => const AdminPage(),
+          '/profile/edit': (context) => const EditProfile(),
           '/carts': (context) => CartPage(),
           '/checkout': (context) => CheckoutPage(),
           '/checkout-success': (context) => CheckoutSuccessPage(),

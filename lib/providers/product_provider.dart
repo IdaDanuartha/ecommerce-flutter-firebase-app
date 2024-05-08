@@ -22,10 +22,11 @@ class ProductProvider with ChangeNotifier {
 
   Future<bool> store(newData) async {
     try {
-      await ProductService().store(newData);
+      var product = await ProductService().store(newData);
+      _products.add(ProductModel.fromJson(product));
       return true;
     } catch (e) {
-      print(e);
+      print("Error: $e");
       return false;
     }
   }
