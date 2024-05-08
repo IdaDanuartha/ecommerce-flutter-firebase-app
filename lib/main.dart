@@ -1,5 +1,6 @@
 import 'package:ecommerce_firebase/pages/admin/products/add_product_page.dart';
 import 'package:ecommerce_firebase/pages/admin/products/detail_product_page.dart';
+import 'package:ecommerce_firebase/pages/admin/products/edit_product_page.dart';
 import 'package:ecommerce_firebase/pages/layouts/admin_page.dart';
 import 'package:ecommerce_firebase/providers/product_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -41,9 +42,9 @@ class MyApp extends StatelessWidget {
           '/dashboard': (context) => const AdminPage(),
           AddProductPage.routeName: (context) => const AddProductPage(),
           DetailProductPage.routeName: (context) => const DetailProductPage(),
-          '/product/edit': (context) => const AddProductPage(),
+          EditProductPage.routeName: (context) => const EditProductPage(),
           '/home': (context) => const MainPage(),
-          '/profile/edit': (context) => const EditProfile(),
+          EditProfile.routeName: (context) => const EditProfile(),
           '/carts': (context) => CartPage(),
           '/checkout': (context) => CheckoutPage(),
           '/checkout-success': (context) => CheckoutSuccessPage(),

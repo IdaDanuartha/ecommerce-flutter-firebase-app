@@ -35,7 +35,27 @@ class ProductService {
       Map<String, dynamic> product =
           productSnapshot.data() as Map<String, dynamic>;
       product['id'] = productRef.id;
-      productsModel.add(ProductModel.fromJson(product));
+      // productsModel.add(ProductModel.fromJson(product));
+      return product;
+    } else {
+      print("Product document does not exist");
+      return null;
+    }
+  }
+ 
+  Future<dynamic> update(String productId, Map<Object, Object> data) async {
+    final FirebaseFirestore db = FirebaseFirestore.instance;
+
+    DocumentReference productRef = db.collection("products").doc(productId);
+    await productRef.update(data);
+    
+    // Use the product ID to fetch the document data
+    DocumentSnapshot productSnapshot = await productRef.get();
+
+    // Check if the document exists and retrieve the data
+    if (productSnapshot.exists) {
+      Map<String, dynamic> product = productSnapshot.data() as Map<String, dynamic>;
+      product['id'] = productRef.id;
       return product;
     } else {
       print("Product document does not exist");

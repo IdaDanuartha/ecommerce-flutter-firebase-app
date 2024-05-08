@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_firebase/pages/edit_profile_page.dart';
 import 'package:ecommerce_firebase/pages/sign_in_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -134,7 +135,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, '/profile/edit');
+                Navigator.pushNamed(context, EditProfile.routeName);
               },
               child: menuItem("Edit Profile"),
             ),

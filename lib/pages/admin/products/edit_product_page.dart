@@ -5,22 +5,23 @@
 import 'dart:io';
 
 import 'package:ecommerce_firebase/controllers/add_product_images_controller.dart';
+import 'package:ecommerce_firebase/models/product_model.dart';
 import 'package:ecommerce_firebase/providers/product_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
-class AddProductPage extends StatefulWidget {
-  const AddProductPage({Key? key}) : super(key: key);
+class EditProductPage extends StatefulWidget {
+  const EditProductPage({Key? key}) : super(key: key);
 
-  static const routeName = '/product/add';
+  static const routeName = '/product/edit';
 
   @override
-  State<AddProductPage> createState() => _AddProductPageState();
+  State<EditProductPage> createState() => _EditProductPageState();
 }
 
-class _AddProductPageState extends State<AddProductPage> {
+class _EditProductPageState extends State<EditProductPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _discountController =
@@ -43,10 +44,17 @@ class _AddProductPageState extends State<AddProductPage> {
   @override
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
+    final args = ModalRoute.of(context)!.settings.arguments as ProductModel;
 
-    void storeProduct() async {
+    _nameController.text = args.name;
+    _priceController.text = args.price.toString();
+    _discountController.text = args.discount.toString();
+    _qtyController.text = args.qty.toString();
+    _descriptionController.text = args.description;
+
+    void updateProduct() async {
       // print(addProductImagesController.selectedImages);
-      var newProduct = await productProvider.store({
+      var newProduct = await productProvider.update(args.id, {
         "name": _nameController.text,
         "price": double.parse(_priceController.text),
         "discount": double.parse(_discountController.text),
@@ -56,7 +64,9 @@ class _AddProductPageState extends State<AddProductPage> {
         "created_at": DateTime.now()
       });
 
-      Navigator.pop(context);
+      var nav = Navigator.of(context);
+      nav.pop();
+      nav.pop();
 
       if (newProduct) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -64,7 +74,7 @@ class _AddProductPageState extends State<AddProductPage> {
             backgroundColor: successColor,
             duration: const Duration(milliseconds: 2500),
             content: const Text(
-              'Product created successfully',
+              'Product updated successfully',
               textAlign: TextAlign.center,
             ),
           ),
@@ -75,7 +85,7 @@ class _AddProductPageState extends State<AddProductPage> {
             backgroundColor: alertColor,
             duration: const Duration(milliseconds: 2500),
             content: const Text(
-              'Failed to create product',
+              'Failed to update product',
               textAlign: TextAlign.center,
             ),
           ),
@@ -112,7 +122,7 @@ class _AddProductPageState extends State<AddProductPage> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          'Add Product',
+          'Edit Product',
           style: primaryTextStyle.copyWith(fontSize: 18),
         ),
       );
@@ -381,13 +391,13 @@ class _AddProductPageState extends State<AddProductPage> {
         width: double.infinity,
         margin: const EdgeInsets.only(top: 20),
         child: ElevatedButton(
-          onPressed: storeProduct,
+          onPressed: updateProduct,
           style: TextButton.styleFrom(
               backgroundColor: primaryColor,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10))),
           child: Text(
-            'Create',
+            'Save changes',
             style:
                 primaryTextStyle.copyWith(fontSize: 16, fontWeight: semiBold),
           ),

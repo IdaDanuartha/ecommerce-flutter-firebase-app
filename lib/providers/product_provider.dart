@@ -34,4 +34,18 @@ class ProductProvider with ChangeNotifier {
       return false;
     }
   }
+
+  Future<bool> update(String productId, Map<Object, Object> data) async {
+    try {
+      var product = await ProductService().update(productId, data);
+      int index = _products.indexWhere((item) => item.id == productId);
+      _products[index] = ProductModel.fromJson(product);
+
+      notifyListeners();
+      return true;
+    } catch (e) {
+      print("Error: $e");
+      return false;
+    }
+  }
 }

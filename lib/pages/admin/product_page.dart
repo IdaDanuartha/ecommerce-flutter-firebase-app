@@ -174,7 +174,7 @@ List<TableRow> dataRows(ProductProvider productProvider, BuildContext context) {
                 child: Padding(
                   padding: const EdgeInsets.all(12),
                   child: Text(
-                    product.price.toString(),
+                    "\$${product.price.toString()}",
                     style: primaryTextStyle,
                   ),
                 ),

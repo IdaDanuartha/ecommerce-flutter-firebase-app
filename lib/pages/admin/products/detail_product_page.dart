@@ -3,6 +3,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:ecommerce_firebase/models/product_model.dart';
+import 'package:ecommerce_firebase/pages/admin/products/edit_product_page.dart';
 import 'package:ecommerce_firebase/providers/product_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
@@ -27,7 +28,7 @@ class _DetailProductPageState extends State<DetailProductPage> {
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
     final args = ModalRoute.of(context)!.settings.arguments as ProductModel;
-
+    
     AppBar header() {
       return AppBar(
         leading: IconButton(
@@ -200,6 +201,52 @@ class _DetailProductPageState extends State<DetailProductPage> {
       );
     }
 
+    Widget actionButtons() {
+      return Row(
+        children: [
+          Container(
+            height: 50,
+            // width: double.infinity,
+            margin: const EdgeInsets.only(top: 20),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, EditProductPage.routeName, arguments: args);
+              },
+              style: TextButton.styleFrom(
+                  backgroundColor: Colors.orange[600],
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10))),
+              child: Text(
+                'Edit',
+                style:
+                    primaryTextStyle.copyWith(fontSize: 16, fontWeight: semiBold),
+              ),
+            ),
+          ),
+          SizedBox(width: 20),
+          Container(
+            height: 50,
+            // width: double.infinity,
+            margin: const EdgeInsets.only(top: 20),
+            child: ElevatedButton(
+              onPressed: () {
+
+              },
+              style: TextButton.styleFrom(
+                  backgroundColor: Colors.red[600],
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10))),
+              child: Text(
+                'Delete',
+                style:
+                    primaryTextStyle.copyWith(fontSize: 16, fontWeight: semiBold),
+              ),
+            ),
+          )
+        ],
+      );
+    }
+
     return Scaffold(
       appBar: header(),
       backgroundColor: bgColor1,
@@ -211,13 +258,12 @@ class _DetailProductPageState extends State<DetailProductPage> {
           ),
           child: Column(
           children: [
+            actionButtons(),
             nameInput(),
             priceInput(),
             discountInput(),
             qtyInput(),
             descriptionInput(),
-            SizedBox(height: 30),
-            // addProductButton(),
           ],
         ),
         )),
