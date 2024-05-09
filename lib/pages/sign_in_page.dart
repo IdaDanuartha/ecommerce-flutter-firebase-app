@@ -56,9 +56,19 @@ void route() {
       );
 
       User? user = FirebaseAuth.instance.currentUser;
-      
-      await Provider.of<CartProvider>(context, listen: false).loadItemsFromPrefs();
-      await Provider.of<OrderProvider>(context, listen: false).getOrders(userId: user?.uid);
+      await FirebaseFirestore.instance.collection('users').doc(user!.uid).get().then(
+        (DocumentSnapshot doc) async {
+            final data = doc.data() as Map<String, dynamic>;
+            if(data["role"] == "admin" || data["role"] == "staff") {
+              await Provider.of<OrderProvider>(context, listen: false).getOrders();
+            } else {
+              await Provider.of<CartProvider>(context, listen: false).loadItemsFromPrefs();
+              await Provider.of<OrderProvider>(context, listen: false).getOrdersByUser(userId: user?.uid);
+            }
+          },
+          onError: (e) => print("Error getting document: $e"),
+        );
+
       route();
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(

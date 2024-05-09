@@ -9,14 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 import 'package:provider/provider.dart';
 
-class ProductPage extends StatefulWidget {
-  const ProductPage({Key? key}) : super(key: key);
+class CustomerPage extends StatefulWidget {
+  const CustomerPage({Key? key}) : super(key: key);
 
   @override
-  State<ProductPage> createState() => _ProductPageState();
+  State<CustomerPage> createState() => _CustomerPageState();
 }
 
-class _ProductPageState extends State<ProductPage> {
+class _CustomerPageState extends State<CustomerPage> {
   @override
   void initState() {
     super.initState();
@@ -37,7 +37,7 @@ class _ProductPageState extends State<ProductPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Data Products",
+                "Data Customers",
                 style: primaryTextStyle.copyWith(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -125,22 +125,6 @@ class _ProductPageState extends State<ProductPage> {
               ),
             ],
           ),
-        ),
-      );
-    }
-
-    Widget addButton() {
-      return FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, AddProductPage.routeName);
-        },
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(99)),
-        tooltip: "Add product",
-        backgroundColor: const Color.fromRGBO(172, 164, 232, 1),
-        child: Image.asset(
-          'assets/icon_add.png',
-          width: 20,
-          color: primaryColor,
         ),
       );
     }

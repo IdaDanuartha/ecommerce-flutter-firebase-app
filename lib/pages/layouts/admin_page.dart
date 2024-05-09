@@ -1,6 +1,8 @@
+import 'package:ecommerce_firebase/pages/admin/customer_page.dart';
 import 'package:ecommerce_firebase/pages/admin/dashboard_page.dart';
+import 'package:ecommerce_firebase/pages/admin/order_page.dart';
 import 'package:ecommerce_firebase/pages/admin/product_page.dart';
-import 'package:ecommerce_firebase/pages/home/cart_page.dart';
+import 'package:ecommerce_firebase/pages/admin/staff_page.dart';
 import 'package:ecommerce_firebase/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
@@ -18,9 +20,10 @@ class _AdminPageState extends State<AdminPage> {
   int _currentIndex = 0;
   final _screens = [
     const DashboardPage(),
-    ProductPage(),
-    CartPage(),
-    CartPage(),
+    const ProductPage(),
+    const OrderPage(),
+    const StaffPage(),
+    const CustomerPage(),
     const ProfilePage(),
   ];
 
@@ -105,10 +108,22 @@ class _AdminPageState extends State<AdminPage> {
                 icon: Container(
                   margin: const EdgeInsets.only(top: 20),
                   child: Image.asset(
+                    'assets/icon_users.png',
+                    width: 23,
+                    color:
+                        _currentIndex == 4 ? primaryColor : const Color(0XFF808191),
+                  ),
+                ),
+                label: '',
+              ),
+              BottomNavigationBarItem(
+                icon: Container(
+                  margin: const EdgeInsets.only(top: 20),
+                  child: Image.asset(
                     'assets/icon_settings.png',
                     width: 20,
                     color:
-                        _currentIndex == 4 ? primaryColor : const Color(0XFF808191),
+                        _currentIndex == 5 ? primaryColor : const Color(0XFF808191),
                   ),
                 ),
                 label: '',
@@ -118,7 +133,7 @@ class _AdminPageState extends State<AdminPage> {
     }
 
     return Scaffold(
-      backgroundColor: _currentIndex == 0 ? bgColor1 : bgColor3,
+      backgroundColor: bgColor1,
       // floatingActionButton: cartButton(),
       // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: customButtonNav(),

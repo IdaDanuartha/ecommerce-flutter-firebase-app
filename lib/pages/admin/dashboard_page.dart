@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_firebase/providers/order_provider.dart';
 import 'package:ecommerce_firebase/providers/product_provider.dart';
 import 'package:ecommerce_firebase/providers/user_provider.dart';
 import 'package:ecommerce_firebase/widgets/charts/bar_chart.dart';
@@ -20,16 +21,18 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
     UserProvider userProvider= Provider.of<UserProvider>(context);
+    OrderProvider orderProvider = Provider.of<OrderProvider>(context);
 
     int productCount = productProvider.products.length;
     int staffCount = userProvider.staff.length;
     int customerCount = userProvider.customers.length;
+    int orderCount = orderProvider.orders.length;
 
     User? user = FirebaseAuth.instance.currentUser;
     var userDetail =
         FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
 
-    List<double> weeklyTransactions = [20, 30, 10, 5, 50, 100, 35];
+    List<double> weeklyTransactions = [20, 30, 10, 5, 50, 100, 35, 40, 210, 180, 120, 200];
 
     Widget header() {
       return Container(
@@ -127,7 +130,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        productCount.toString(),
+                        productCount > 0 ? productCount.toString() : "-",
                         style: primaryTextStyle.copyWith(fontSize: 24),
                       ),
                     ],
@@ -148,7 +151,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        "-",
+                        orderCount > 0 ? orderCount.toString() : "-",
                         style: primaryTextStyle.copyWith(fontSize: 24),
                       ),
                     ],
@@ -175,7 +178,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        staffCount.toString(),
+                        staffCount > 0 ? staffCount.toString() : "-",
                         style: primaryTextStyle.copyWith(fontSize: 24),
                       ),
                     ],
@@ -196,7 +199,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        customerCount.toString(),
+                        customerCount > 0 ? customerCount.toString() : "-",
                         style: primaryTextStyle.copyWith(fontSize: 24),
                       ),
                     ],

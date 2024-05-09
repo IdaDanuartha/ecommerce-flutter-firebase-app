@@ -19,7 +19,7 @@ class _BarChart extends StatelessWidget {
         alignment: BarChartAlignment.spaceAround,
         maxY: weeklyTransactions
                 .reduce((value, element) => value > element ? value : element) +
-            20,
+            30,
       ),
     );
   }
@@ -50,31 +50,45 @@ class _BarChart extends StatelessWidget {
   Widget getTitles(double value, TitleMeta meta) {
     final style = TextStyle(
       color: Colors.white54,
-      fontWeight: FontWeight.bold,
-      fontSize: 14,
+      fontSize: 12,
     );
     String text;
     switch (value.toInt()) {
       case 0:
-        text = 'Mon';
+        text = 'Jan';
         break;
       case 1:
-        text = 'Tue';
+        text = 'Feb';
         break;
       case 2:
-        text = 'Wed';
+        text = 'Mar';
         break;
       case 3:
-        text = 'Thu';
+        text = 'Apr';
         break;
       case 4:
-        text = 'Fri';
+        text = 'May';
         break;
       case 5:
-        text = 'Sat';
+        text = 'Jun';
         break;
       case 6:
-        text = 'Sun';
+        text = 'Jul';
+        break;
+      case 7:
+        text = 'Aug';
+        break;
+      case 8:
+        text = 'Sep';
+        break;
+      case 9:
+        text = 'Oct';
+        break;
+      case 10:
+        text = 'Nov';
+        break;
+      case 11:
+        text = 'Dec';
         break;
       default:
         text = '';

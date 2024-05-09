@@ -13,7 +13,19 @@ class OrderProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getOrders({String? userId = ""}) async {
+  Future<void> getOrders() async {
+    try {
+      _orders.clear();
+      List<OrderModel> orders = await OrderService().getOrders();
+      _orders = orders;
+
+      notifyListeners();
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> getOrdersByUser({String? userId = ""}) async {
     try {
       _orders.clear();
       List<OrderModel> orders = await OrderService().getOrders();

@@ -46,7 +46,7 @@ class _SplashPageState extends State<SplashPage> {
             } else {
               Navigator.pushNamed(context, MainPage.routeName);
               await Provider.of<CartProvider>(context, listen: false).loadItemsFromPrefs();
-              await Provider.of<OrderProvider>(context, listen: false).getOrders(userId: user?.uid);
+              await Provider.of<OrderProvider>(context, listen: false).getOrdersByUser(userId: user?.uid);
             }
           },
           onError: (e) => print("Error getting document: $e"),
