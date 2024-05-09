@@ -6,7 +6,7 @@ class ProductModel {
   late int qty;
   late String description;
   // late DateTime createdAt;
-  late List<String> images;
+  late List<dynamic> images;
 
   ProductModel({
     required this.id,

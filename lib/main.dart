@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
 
           EditProfile.routeName: (context) => const EditProfile(),
 
-          CartPage.routeName: (context) => CartPage(),
+          CartPage.routeName: (context) => const CartPage(),
           '/checkout': (context) => CheckoutPage(),
           '/checkout-success': (context) => CheckoutSuccessPage(),
         },

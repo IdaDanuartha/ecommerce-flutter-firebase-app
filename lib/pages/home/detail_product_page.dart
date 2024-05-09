@@ -3,6 +3,7 @@ import 'package:ecommerce_firebase/models/cart_model.dart';
 import 'package:ecommerce_firebase/models/product_model.dart';
 import 'package:ecommerce_firebase/providers/cart_provider.dart';
 import 'package:ecommerce_firebase/themes.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,12 +18,14 @@ class DetailProductHomePage extends StatefulWidget {
 
 class _DetailProductHomePageState extends State<DetailProductHomePage> {
   int currentIndex = 0;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as ProductModel;
-    final argsCart = ModalRoute.of(context)!.settings.arguments as CartModel;
     CartProvider cartProvider = Provider.of<CartProvider>(context);
+
+    User? user = _auth.currentUser;
 
     Future<void> showSuccessDialog() async {
       return showDialog(
@@ -179,143 +182,154 @@ class _DetailProductHomePageState extends State<DetailProductHomePage> {
     }
 
     Widget content() {
-      int index = -1;
-
-      return Container(
-        width: double.infinity,
-        height: 460,
-        margin: EdgeInsets.only(top: 17),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(24),
+      return SingleChildScrollView(
+        child: Container(
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height - 180,
+          margin: EdgeInsets.only(top: 17),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(24),
+            ),
+            color: bgColor1,
           ),
-          color: bgColor1,
-        ),
-        child: Column(
-          children: [
-            // NOTE: HEADER
-            Container(
-              margin: EdgeInsets.only(
-                top: defaultMargin,
-                left: defaultMargin,
-                right: defaultMargin,
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          args.name,
-                          style: primaryTextStyle.copyWith(
-                            fontSize: 18,
-                            fontWeight: semiBold,
+          child: Column(
+            children: [
+              // NOTE: HEADER
+              Container(
+                margin: EdgeInsets.only(
+                  top: defaultMargin,
+                  left: defaultMargin,
+                  right: defaultMargin,
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            args.name,
+                            style: primaryTextStyle.copyWith(
+                              fontSize: 18,
+                              fontWeight: semiBold,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-
-            // NOTE: PRICE
-            Container(
-              width: double.infinity,
-              margin: EdgeInsets.only(
-                top: 20,
-                left: defaultMargin,
-                right: defaultMargin,
-              ),
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: bgColor2,
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Price starts from',
-                    style: primaryTextStyle,
-                  ),
-                  Text(
-                    '\$${args.price}',
-                    style: priceTextStyle.copyWith(
-                      fontSize: 16,
-                      fontWeight: semiBold,
+        
+              // NOTE: PRICE
+              Container(
+                width: double.infinity,
+                margin: EdgeInsets.only(
+                  top: 20,
+                  left: defaultMargin,
+                  right: defaultMargin,
+                ),
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: bgColor2,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Price starts from',
+                      style: primaryTextStyle,
                     ),
-                  ),
-                ],
-              ),
-            ),
-
-            // NOTE: DESCRIPTION
-            Container(
-              width: double.infinity,
-              margin: EdgeInsets.only(
-                top: defaultMargin,
-                left: defaultMargin,
-                right: defaultMargin,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Description',
-                    style: primaryTextStyle.copyWith(
-                      fontWeight: medium,
+                    Text(
+                      '\$${args.price}',
+                      style: priceTextStyle.copyWith(
+                        fontSize: 16,
+                        fontWeight: semiBold,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 12,
-                  ),
-                  Text(
-                    args.description,
-                    style: subtitleTextStyle.copyWith(
-                      fontWeight: light,
-                    ),
-                    textAlign: TextAlign.justify,
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-
-            // NOTE: BUTTONS
-            Container(
-              width: double.infinity,
-              margin: EdgeInsets.all(defaultMargin),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      height: 54,
-                      child: TextButton(
-                        onPressed: () {
-                          cartProvider.addItem(argsCart);
-                          showSuccessDialog();
-                        },
-                        style: TextButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          backgroundColor: primaryColor,
-                        ),
-                        child: Text(
-                          'Add to Cart',
-                          style: primaryTextStyle.copyWith(
-                            fontSize: 16,
-                            fontWeight: semiBold,
+        
+              // NOTE: DESCRIPTION
+              Container(
+                width: double.infinity,
+                margin: EdgeInsets.only(
+                  top: defaultMargin,
+                  left: defaultMargin,
+                  right: defaultMargin,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Description',
+                      style: primaryTextStyle.copyWith(
+                        fontWeight: medium,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 12,
+                    ),
+                    Text(
+                      args.description,
+                      style: subtitleTextStyle.copyWith(
+                        fontWeight: light,
+                      ),
+                      textAlign: TextAlign.justify,
+                    ),
+                  ],
+                ),
+              ),
+        
+              // NOTE: BUTTONS
+              Expanded(
+                child: Container(
+                  width: double.infinity,
+                  margin: EdgeInsets.all(defaultMargin),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          height: 54,
+                          child: TextButton(
+                            onPressed: () {
+                              cartProvider.addItem(CartModel(
+                                id: args.id, 
+                                userId: user!.uid ,
+                                name: args.name, 
+                                price: args.price, 
+                                discount: args.discount, 
+                                qty: 1,
+                                images: args.images
+                              ));
+                              showSuccessDialog();
+                            },
+                            style: TextButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              backgroundColor: primaryColor,
+                            ),
+                            child: Text(
+                              'Add to Cart',
+                              style: primaryTextStyle.copyWith(
+                                fontSize: 16,
+                                fontWeight: semiBold,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
     }

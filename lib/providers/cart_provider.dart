@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:ecommerce_firebase/models/cart_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -63,9 +64,14 @@ class CartProvider with ChangeNotifier {
   Future<void> loadItemsFromPrefs() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? itemsString = prefs.getString('cartItems');
+
+    User? user = FirebaseAuth.instance.currentUser;
+    
     if (itemsString != null) {
       final List<dynamic> jsonData = json.decode(itemsString) as List<dynamic>;
-      _items = jsonData
+      final Iterable<dynamic> getItemsByUser = jsonData.where((data) => data["user_id"] == user!.uid);
+
+      _items = getItemsByUser
           .map((item) => CartModel.fromJson(item as Map<String, dynamic>))
           .toList();
       notifyListeners();

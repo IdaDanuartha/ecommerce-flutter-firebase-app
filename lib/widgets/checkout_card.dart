@@ -1,12 +1,17 @@
+import 'package:ecommerce_firebase/models/cart_model.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 
 class CheckoutCard extends StatelessWidget {
+  CheckoutCard({super.key, required this.cart});
+
+  final CartModel cart;
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 12),
-      padding: EdgeInsets.symmetric(
+      margin: const EdgeInsets.only(top: 12),
+      padding: const EdgeInsets.symmetric(
         vertical: 20,
         horizontal: 12,
       ),
@@ -22,11 +27,11 @@ class CheckoutCard extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
               image: DecorationImage(
-                image: AssetImage('assets/image_shoes.png')
+                image: NetworkImage(cart.images[0])
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 12,
           ),
           Expanded(
@@ -34,27 +39,27 @@ class CheckoutCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'COURT VISION 2.0',
+                  cart.name,
                   style: primaryTextStyle.copyWith(
                     fontWeight: semiBold,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 2,
                 ),
                 Text(
-                  '\$49.23',
+                  '\$${cart.price.toString()}',
                   style: priceTextStyle,
                 ),
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 12,
           ),
           Text(
-            '2 Items',
+            '${cart.qty.toString()} Items',
             style: secondaryTextStyle.copyWith(
               fontSize: 12,
             ),

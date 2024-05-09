@@ -1,4 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_firebase/pages/layouts/admin_page.dart';
+import 'package:ecommerce_firebase/pages/layouts/main_page.dart';
+import 'package:ecommerce_firebase/pages/sign_in_page.dart';
 import 'package:ecommerce_firebase/providers/cart_provider.dart';
 import 'package:ecommerce_firebase/providers/product_provider.dart';
 import 'package:ecommerce_firebase/providers/user_provider.dart';
@@ -29,24 +32,23 @@ class _SplashPageState extends State<SplashPage> {
     await Provider.of<UserProvider>(context, listen: false).getUsers();
     await Provider.of<UserProvider>(context, listen: false).getStaff();
     await Provider.of<UserProvider>(context, listen: false).getCustomers();
-    await Provider.of<CartProvider>(context, listen: false).loadItemsFromPrefs();
 
     if(user?.uid != null) {
-      var userDetail =
       await FirebaseFirestore.instance.collection('users').doc(user!.uid).get().then(
-        (DocumentSnapshot doc) {
+        (DocumentSnapshot doc) async {
             final data = doc.data() as Map<String, dynamic>;
             if(data["role"] == "admin" || data["role"] == "staff") {
-              Navigator.pushNamed(context, '/dashboard');
+              Navigator.pushNamed(context, AdminPage.routeName);
             } else {
-              Navigator.pushNamed(context, '/home');
+              Navigator.pushNamed(context, MainPage.routeName);
+              await Provider.of<CartProvider>(context, listen: false).loadItemsFromPrefs();
             }
           },
           onError: (e) => print("Error getting document: $e"),
       );
       // Navigator.pushNamed(context, '/home');
     } else {
-      Navigator.pushNamed(context, '/sign-in');
+      Navigator.pushNamed(context, SignInPage.routeName);
     }
   }
 
@@ -58,7 +60,7 @@ class _SplashPageState extends State<SplashPage> {
         child: Container(
           width: 130,
           height: 150,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
               image: AssetImage('assets/image_splash.png')
             )

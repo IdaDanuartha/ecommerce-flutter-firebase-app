@@ -6,7 +6,7 @@ class ProductService {
   List<ProductModel> productsModel = [];
 
   Future<List<ProductModel>> getProducts() async {
-    var products = db.collection("products").orderBy("created_at").get().then(
+    var products = await db.collection("products").orderBy("created_at").get().then(
       (querySnapshot) {
         productsModel.clear();
         for (var item in querySnapshot.docs) {

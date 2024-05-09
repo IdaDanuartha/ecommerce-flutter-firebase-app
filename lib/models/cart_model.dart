@@ -5,7 +5,7 @@ class CartModel {
   late double price;
   late double discount;
   late int qty;
-  late List<String> images;
+  late List<dynamic> images;
 
   CartModel({
     required this.id,

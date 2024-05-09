@@ -82,8 +82,10 @@ class _CartPageState extends State<CartPage> {
         child: Column(
           children: [
             Container(
-              margin: EdgeInsets.symmetric(
-                horizontal: defaultMargin,
+              margin: EdgeInsets.only(
+                left: defaultMargin,
+                right: defaultMargin,
+                top: 14,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -93,7 +95,7 @@ class _CartPageState extends State<CartPage> {
                     style: primaryTextStyle,
                   ),
                   Text(
-                    '\$200.45',
+                    '\$${cartProvider.totalPrice.toStringAsFixed(2)}',
                     style: priceTextStyle.copyWith(
                       fontSize: 16,
                       fontWeight: semiBold,
@@ -157,9 +159,7 @@ class _CartPageState extends State<CartPage> {
       backgroundColor: bgColor3,
       appBar: header(),
       body: cartProvider.items.isEmpty ? emptyCart() : content(),
-      // bottomNavigationBar:
-      //     cartProvider.carts.length == 0 ? SizedBox() : customBottomNav(),
-      bottomNavigationBar: customBottomNav(),
+      bottomNavigationBar: cartProvider.items.isEmpty ? const SizedBox() : customBottomNav(),
     );
   }
 }
