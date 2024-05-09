@@ -1,12 +1,11 @@
 import 'package:ecommerce_firebase/models/cart_model.dart';
-import 'package:ecommerce_firebase/models/product_model.dart';
 import 'package:ecommerce_firebase/providers/cart_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 import 'package:provider/provider.dart';
 
 class CartCard extends StatelessWidget {  
-  CartCard({super.key, required this.cart});
+  const CartCard({super.key, required this.cart});
 
   final CartModel cart;
 

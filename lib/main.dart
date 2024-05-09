@@ -3,12 +3,13 @@ import 'package:ecommerce_firebase/pages/admin/products/detail_product_page.dart
 import 'package:ecommerce_firebase/pages/admin/products/edit_product_page.dart';
 import 'package:ecommerce_firebase/pages/home/cart_page.dart';
 import 'package:ecommerce_firebase/pages/home/detail_product_page.dart';
+import 'package:ecommerce_firebase/pages/home/order_page.dart';
 import 'package:ecommerce_firebase/pages/layouts/admin_page.dart';
 import 'package:ecommerce_firebase/providers/cart_provider.dart';
+import 'package:ecommerce_firebase/providers/order_provider.dart';
 import 'package:ecommerce_firebase/providers/product_provider.dart';
 import 'package:ecommerce_firebase/providers/user_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/pages/checkout_page.dart';
 import 'package:ecommerce_firebase/pages/checkout_success_page.dart';
 import 'package:ecommerce_firebase/pages/edit_profile_page.dart';
@@ -18,6 +19,7 @@ import 'package:ecommerce_firebase/pages/sign_up_page.dart';
 import 'package:ecommerce_firebase/pages/splash_page.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
+import 'package:flutter/material.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,6 +39,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => ProductProvider()),
         ChangeNotifierProvider(create: (context) => UserProvider()),
         ChangeNotifierProvider(create: (context) => CartProvider()),
+        ChangeNotifierProvider(create: (context) => OrderProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -56,8 +59,10 @@ class MyApp extends StatelessWidget {
           EditProfile.routeName: (context) => const EditProfile(),
 
           CartPage.routeName: (context) => const CartPage(),
-          '/checkout': (context) => CheckoutPage(),
-          '/checkout-success': (context) => CheckoutSuccessPage(),
+
+          OrderPage.routeName: (context) => const OrderPage(),
+          CheckoutPage.routeName: (context) => const CheckoutPage(),
+          CheckoutSuccessPage.routeName: (context) => const CheckoutSuccessPage(),
         },
       ),
     );

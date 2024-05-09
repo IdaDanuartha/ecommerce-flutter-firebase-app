@@ -1,3 +1,4 @@
+import 'package:ecommerce_firebase/pages/checkout_page.dart';
 import 'package:ecommerce_firebase/providers/cart_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
@@ -121,7 +122,7 @@ class _CartPageState extends State<CartPage> {
               ),
               child: TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/checkout');
+                  Navigator.pushNamed(context, CheckoutPage.routeName);
                 },
                 style: TextButton.styleFrom(
                   backgroundColor: primaryColor,

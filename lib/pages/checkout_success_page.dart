@@ -1,7 +1,12 @@
+import 'package:ecommerce_firebase/pages/home/order_page.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 
 class CheckoutSuccessPage extends StatelessWidget {
+  const CheckoutSuccessPage({super.key});
+
+  static const routeName = '/home/checkout/success';
+
   @override
   Widget build(BuildContext context) {
     AppBar header() {
@@ -10,6 +15,7 @@ class CheckoutSuccessPage extends StatelessWidget {
         centerTitle: true,
         title: Text(
           'Checkout Success',
+          style: primaryTextStyle,
         ),
         elevation: 0,
       );
@@ -38,7 +44,7 @@ class CheckoutSuccessPage extends StatelessWidget {
               height: 12,
             ),
             Text(
-              'Stay at home while we\nprepare your dream shoes',
+              'Stay at home while we\nprepare your dream product',
               style: secondaryTextStyle,
               textAlign: TextAlign.center,
             ),
@@ -60,7 +66,7 @@ class CheckoutSuccessPage extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  'Order Other Shoes',
+                  'Back to home',
                   style: primaryTextStyle.copyWith(
                     fontSize: 16,
                     fontWeight: medium,
@@ -68,30 +74,33 @@ class CheckoutSuccessPage extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
-              width: 196,
-              height: 44,
-              margin: EdgeInsets.only(
-                top: 12,
-              ),
-              child: TextButton(
-                onPressed: () {},
-                style: TextButton.styleFrom(
-                  backgroundColor: Color(0xff39374B),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: Text(
-                  'View My Order',
-                  style: primaryTextStyle.copyWith(
-                    fontSize: 16,
-                    fontWeight: medium,
-                    color: Color(0xffB7B6BF),
-                  ),
-                ),
-              ),
-            ),
+            // Container(
+            //   width: 196,
+            //   height: 44,
+            //   margin: EdgeInsets.only(
+            //     top: 12,
+            //   ),
+            //   child: TextButton(
+            //     onPressed: () {
+            //       Navigator.pushNamed(
+            //           context, OrderPage.routeName);
+            //     },
+            //     style: TextButton.styleFrom(
+            //       backgroundColor: Color(0xff39374B),
+            //       shape: RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.circular(12),
+            //       ),
+            //     ),
+            //     child: Text(
+            //       'View My Order',
+            //       style: primaryTextStyle.copyWith(
+            //         fontSize: 16,
+            //         fontWeight: medium,
+            //         color: Color(0xffB7B6BF),
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       );

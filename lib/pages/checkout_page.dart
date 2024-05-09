@@ -1,3 +1,4 @@
+import 'package:ecommerce_firebase/pages/checkout_success_page.dart';
 import 'package:ecommerce_firebase/providers/cart_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
@@ -6,6 +7,10 @@ import 'package:ecommerce_firebase/widgets/loading_button.dart';
 import 'package:provider/provider.dart';
 
 class CheckoutPage extends StatefulWidget {
+  const CheckoutPage({super.key});
+
+  static const routeName = '/home/checkout';
+
   @override
   _CheckoutPageState createState() => _CheckoutPageState();
 }
@@ -23,7 +28,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
       });
 
       Navigator.pushNamedAndRemoveUntil(
-          context, '/checkout-success', (route) => false);
+          context, CheckoutSuccessPage.routeName, (route) => false);
 
       setState(() {
         isLoading = false;
@@ -187,7 +192,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   ),
                 ),
                 Text(
-                  '3 Items',
+                  '${cartProvider.items.length} Items',
                   style: primaryTextStyle.copyWith(
                     fontWeight: medium,
                   ),

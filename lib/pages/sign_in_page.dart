@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_firebase/pages/sign_up_page.dart';
 import 'package:ecommerce_firebase/providers/cart_provider.dart';
+import 'package:ecommerce_firebase/providers/order_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
@@ -53,7 +54,11 @@ void route() {
         email: email,
         password: password,
       );
+
+      User? user = FirebaseAuth.instance.currentUser;
+      
       await Provider.of<CartProvider>(context, listen: false).loadItemsFromPrefs();
+      await Provider.of<OrderProvider>(context, listen: false).getOrders(userId: user?.uid);
       route();
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
