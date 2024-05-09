@@ -19,7 +19,7 @@ class _EditProfileState extends State<EditProfile> {
   AppBar header() {
     return AppBar(
       leading: IconButton(
-        icon: Icon(Icons.close, color: primaryTextColor,),
+        icon: Icon(Icons.chevron_left, color: primaryTextColor,),
         onPressed: () {
           Navigator.pop(context);
         },

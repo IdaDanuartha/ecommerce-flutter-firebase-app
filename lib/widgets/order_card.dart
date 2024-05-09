@@ -1,4 +1,5 @@
 import 'package:ecommerce_firebase/models/order_model.dart';
+import 'package:ecommerce_firebase/pages/home/order_detail_page.dart';
 import 'package:ecommerce_firebase/themes.dart';
 import 'package:ecommerce_firebase/widgets/order_item_card.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +12,10 @@ class OrderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {},
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, OrderDetailPage.routeName, arguments: order);
+      },
       child: Container(
         margin: const EdgeInsets.only(
           top: 20,
@@ -124,83 +127,6 @@ class OrderCard extends StatelessWidget {
                 )
               ],
             )
-            // Column(
-            //   mainAxisAlignment: MainAxisAlignment.start,
-            //   crossAxisAlignment: CrossAxisAlignment.start,
-            //   children: [
-            //     Row(
-            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //       children: [
-            //         Text(
-            //           "Subtotal",
-            //           style: primaryTextStyle.copyWith(
-            //             fontSize: 13
-            //           ),
-            //         ),
-            //         Text(
-            //           "\$${order.subTotal.toString()}",
-            //           style: primaryTextStyle.copyWith(
-            //             fontSize: 13
-            //           ),
-            //         ),
-            //       ],
-            //     ),
-            //     SizedBox(height: 10),
-            //     Row(
-            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //       children: [
-            //         Text(
-            //           "Discount",
-            //           style: primaryTextStyle.copyWith(
-            //             fontSize: 13
-            //           ),
-            //         ),
-            //         Text(
-            //           "\$${order.totalDiscount > 0 ? order.totalDiscount.toString() : "0"}",
-            //           style: primaryTextStyle.copyWith(
-            //             fontSize: 13
-            //           ),
-            //         ),
-            //       ],
-            //     ),
-            //     SizedBox(height: 10),
-            //     Row(
-            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //       children: [
-            //         Text(
-            //           "Delivery Fee",
-            //           style: primaryTextStyle.copyWith(
-            //             fontSize: 13
-            //           ),
-            //         ),
-            //         Text(
-            //           "\$${order.deliveryFee > 0 ? order.deliveryFee.toString() : "0"}",
-            //           style: primaryTextStyle.copyWith(
-            //             fontSize: 13
-            //           ),
-            //         ),
-            //       ],
-            //     ),
-            //     SizedBox(height: 10),
-            //     Row(
-            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //       children: [
-            //         Text(
-            //           "Payment Method",
-            //           style: primaryTextStyle.copyWith(
-            //             fontSize: 13
-            //           ),
-            //         ),
-            //         Text(
-            //           "${order.paymentMethod.toString()}",
-            //           style: primaryTextStyle.copyWith(
-            //             fontSize: 13
-            //           ),
-            //         ),
-            //       ],
-            //     ),
-            //   ],
-            // ),
           ],
         ),
       ),

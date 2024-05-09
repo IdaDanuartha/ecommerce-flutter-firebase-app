@@ -101,7 +101,7 @@ class _AddProductPageState extends State<AddProductPage> {
       return AppBar(
         leading: IconButton(
           icon: Icon(
-            Icons.close,
+            Icons.chevron_left,
             color: primaryTextColor,
           ),
           onPressed: () {

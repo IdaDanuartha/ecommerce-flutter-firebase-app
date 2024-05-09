@@ -7,16 +7,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class DetailProductHomePage extends StatefulWidget {
-  const DetailProductHomePage({super.key});
+class ProductDetailHomePage extends StatefulWidget {
+  const ProductDetailHomePage({super.key});
 
   static const routeName = '/home/product';
 
   @override
-  _DetailProductHomePageState createState() => _DetailProductHomePageState();
+  _ProductDetailHomePageState createState() => _ProductDetailHomePageState();
 }
 
-class _DetailProductHomePageState extends State<DetailProductHomePage> {
+class _ProductDetailHomePageState extends State<ProductDetailHomePage> {
   int currentIndex = 0;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 

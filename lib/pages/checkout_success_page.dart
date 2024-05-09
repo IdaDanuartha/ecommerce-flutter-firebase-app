@@ -15,7 +15,9 @@ class CheckoutSuccessPage extends StatelessWidget {
         centerTitle: true,
         title: Text(
           'Checkout Success',
-          style: primaryTextStyle,
+          style: primaryTextStyle.copyWith(
+            fontSize: 18,
+          ),
         ),
         elevation: 0,
       );

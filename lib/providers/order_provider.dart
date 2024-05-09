@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_firebase/models/order_model.dart';
 import 'package:ecommerce_firebase/services/order_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,18 +15,16 @@ class OrderProvider with ChangeNotifier {
 
   Future<void> getOrders({String? userId = ""}) async {
     try {
+      _orders.clear();
       List<OrderModel> orders = await OrderService().getOrders();
       User? user = FirebaseAuth.instance.currentUser;
 
-      // if (userId != "") {
-      //   final Iterable<dynamic> getOrdersByUser = orders.where((order) => order.userId == user!.uid);
-
-      //   _orders = getOrdersByUser
-      //       .map((item) => OrderModel.fromJson(item))
-      //       .toList();
-      // } else {
+      var foundItem = orders.firstWhere((order) => order.userId == user!.uid,
+          orElse: () => OrderModel(id: "", code: "", userId: "", subTotal: 0.0, totalDiscount: 0.0, deliveryFee: 0.0, status: 1, paymentMethod: "", createdAt: Timestamp.now(), items: []));
+    
+      if (foundItem.id != "") {
         _orders = orders;
-      // }
+      }
 
       notifyListeners();
     } catch (e) {

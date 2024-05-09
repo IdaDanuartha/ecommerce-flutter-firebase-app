@@ -2,7 +2,8 @@ import 'package:ecommerce_firebase/pages/admin/products/add_product_page.dart';
 import 'package:ecommerce_firebase/pages/admin/products/detail_product_page.dart';
 import 'package:ecommerce_firebase/pages/admin/products/edit_product_page.dart';
 import 'package:ecommerce_firebase/pages/home/cart_page.dart';
-import 'package:ecommerce_firebase/pages/home/detail_product_page.dart';
+import 'package:ecommerce_firebase/pages/home/order_detail_page.dart';
+import 'package:ecommerce_firebase/pages/home/product_detail_page.dart';
 import 'package:ecommerce_firebase/pages/home/order_page.dart';
 import 'package:ecommerce_firebase/pages/layouts/admin_page.dart';
 import 'package:ecommerce_firebase/providers/cart_provider.dart';
@@ -44,7 +45,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         routes: {
-          '/': (context) => const SplashPage(),
+          SplashPage.routeName: (context) => const SplashPage(),
           SignInPage.routeName: (context) => const SignInPage(),
           SignUpPage.routeName: (context) => SignUpPage(),
 
@@ -54,13 +55,13 @@ class MyApp extends StatelessWidget {
           EditProductPage.routeName: (context) => const EditProductPage(),
 
           MainPage.routeName: (context) => const MainPage(),
-          DetailProductHomePage.routeName: (context) => const DetailProductHomePage(),
+          ProductDetailHomePage.routeName: (context) => const ProductDetailHomePage(),
 
           EditProfile.routeName: (context) => const EditProfile(),
 
           CartPage.routeName: (context) => const CartPage(),
-
           OrderPage.routeName: (context) => const OrderPage(),
+          OrderDetailPage.routeName: (context) => const OrderDetailPage(),
           CheckoutPage.routeName: (context) => const CheckoutPage(),
           CheckoutSuccessPage.routeName: (context) => const CheckoutSuccessPage(),
         },
