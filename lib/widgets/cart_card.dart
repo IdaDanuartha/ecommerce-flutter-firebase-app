@@ -36,7 +36,7 @@ class CartCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                   image: DecorationImage(
                     image: NetworkImage(
-                      cart.images[0],
+                      cart.product.images[0],
                     ),
                   ),
                 ),
@@ -49,7 +49,7 @@ class CartCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      cart.name,
+                      cart.product.name,
                       style: primaryTextStyle.copyWith(
                         fontWeight: semiBold,
                       ),
@@ -57,13 +57,13 @@ class CartCard extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          '\$${(cart.price - cart.discount).toStringAsFixed(2)}',
+                          '\$${(cart.product.price - cart.product.discount).toStringAsFixed(2)}',
                           style: priceTextStyle,
                         ),
                         SizedBox(width: 5),
-                        cart.discount > 0 ? 
+                        cart.product.discount > 0 ? 
                           Text(
-                          '\$${cart.price}',
+                          '\$${cart.product.price}',
                           style: priceTextStyle.copyWith(
                             fontSize: 12,
                             color: Color.fromRGBO(255,255,255, .3),

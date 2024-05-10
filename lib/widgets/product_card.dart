@@ -200,11 +200,7 @@ class ProductCard extends StatelessWidget {
                             cartProvider.addItem(CartModel(
                                 id: product.id,
                                 userId: user!.uid,
-                                name: product.name,
-                                price: product.price,
-                                discount: product.discount,
                                 qty: 1,
-                                images: product.images,
                                 product: product));
                             showSuccessDialog();
                           },

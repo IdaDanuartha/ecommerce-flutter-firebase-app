@@ -322,11 +322,7 @@ class _ProductDetailHomePageState extends State<ProductDetailHomePage> {
                               cartProvider.addItem(CartModel(
                                   id: args.id,
                                   userId: user!.uid,
-                                  name: args.name,
-                                  price: args.price,
-                                  discount: args.discount,
-                                  qty: 1,
-                                  images: args.images,
+                                  qty: 1, 
                                   product: args));
                               showSuccessDialog();
                             },

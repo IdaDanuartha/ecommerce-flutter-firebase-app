@@ -26,7 +26,7 @@ class CheckoutCard extends StatelessWidget {
             height: 60,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
-              image: DecorationImage(image: NetworkImage(cart.images[0])),
+              image: DecorationImage(image: NetworkImage(cart.product.images[0])),
             ),
           ),
           const SizedBox(
@@ -37,7 +37,7 @@ class CheckoutCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  cart.name,
+                  cart.product.name,
                   style: primaryTextStyle.copyWith(
                     fontWeight: semiBold,
                   ),
@@ -49,13 +49,13 @@ class CheckoutCard extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      '\$${(cart.price - cart.discount).toStringAsFixed(2)}',
+                      '\$${(cart.product.price - cart.product.discount).toStringAsFixed(2)}',
                       style: priceTextStyle,
                     ),
                     SizedBox(width: 5),
-                    cart.discount > 0
+                    cart.product.discount > 0
                         ? Text(
-                            '\$${cart.price}',
+                            '\$${cart.product.price}',
                             style: priceTextStyle.copyWith(
                                 fontSize: 12,
                                 color: Color.fromRGBO(255, 255, 255, .3),

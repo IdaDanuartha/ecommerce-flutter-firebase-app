@@ -14,12 +14,12 @@ class CartProvider with ChangeNotifier {
 
   double get totalPrice {
     return _items.fold(
-        0, (total, current) => total + (current.price * current.qty));
+        0, (total, current) => total + (current.product.price * current.qty));
   }
 
     double get totalDiscount {
     return _items.fold(
-        0, (total, current) => total + (current.discount * current.qty));
+        0, (total, current) => total + (current.product.discount * current.qty));
   }
 
   void addItem(CartModel item) {
@@ -27,11 +27,7 @@ class CartProvider with ChangeNotifier {
         orElse: () => CartModel(
           id: "", 
           userId: "", 
-          name: '', 
-          price: 0.0, 
           qty: 0, 
-          discount: 0.0, 
-          images: [], 
           product: ProductModel(
             id: "",
             name: '',

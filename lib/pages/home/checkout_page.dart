@@ -52,7 +52,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
     String grandTotal = (cartProvider.totalPrice + 0 - cartProvider.totalDiscount).toStringAsFixed(2);
   
-    print(generateWithFormat());
     void handleCheckout() async {
       User? user = FirebaseAuth.instance.currentUser;
 
@@ -76,9 +75,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
         },
         "items": cartProvider.items.map((item) {
           return {
-            "price": item.price,
+            "price": item.product.price,
             "qty": item.qty,
-            "discount": item.discount,
+            "discount": item.product.discount,
             "product": {
               "id": item.product.id,
               "name": item.product.name,
