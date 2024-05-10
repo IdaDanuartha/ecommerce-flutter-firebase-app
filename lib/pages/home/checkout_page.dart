@@ -16,11 +16,33 @@ class CheckoutPage extends StatefulWidget {
 }
 
 class _CheckoutPageState extends State<CheckoutPage> {
+  final TextEditingController _customerNameController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _countryController = TextEditingController();
+  final TextEditingController _provinceController = TextEditingController();
+  final TextEditingController _cityController = TextEditingController();
+  final TextEditingController _subdistrictController = TextEditingController();
+  final TextEditingController _detailsController = TextEditingController();
+  final TextEditingController _paymentMethodController =
+      TextEditingController();
+
   bool isLoading = false;
+
+  List<DropdownMenuItem<String>> get dropdownItems{
+    List<DropdownMenuItem<String>> menuItems = [
+      const DropdownMenuItem(child: Text("Online Banking"),value: "Online Banking"),
+      const DropdownMenuItem(child: Text("COD"),value: "COD"),
+      const DropdownMenuItem(child: Text("Mastercard"),value: "Mastercard"),
+    ];
+    return menuItems;
+  }
+  String paymentSelected = "Online Banking";
 
   @override
   Widget build(BuildContext context) {
-  CartProvider cartProvider = Provider.of<CartProvider>(context);
+    CartProvider cartProvider = Provider.of<CartProvider>(context);
+
+    _paymentMethodController.text = paymentSelected;
 
     handleCheckout() async {
       setState(() {
@@ -66,19 +88,353 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 fontWeight: medium,
               ),
             ),
-            ...cartProvider.items.map((cart) => CheckoutCard(cart: cart)).toList()
+            ...cartProvider.items
+                .map((cart) => CheckoutCard(cart: cart))
+                .toList()
           ],
         ),
       );
     }
 
-    Widget addressDetails() {
-      return // NOTE: ADDRESS DETAILS
-          Container(
+    Widget customerNameInput() {
+      return Container(
+        margin: const EdgeInsets.only(bottom: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Text(
+            //   'Full name',
+            //   style: primaryTextStyle.copyWith(
+            //       fontSize: 16, fontWeight: medium, color: primaryTextColor),
+            // ),
+            // const SizedBox(height: 12),
+            Container(
+              height: 50,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(width: 1, color: const Color(0xFF797979))),
+              child: Center(
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: TextFormField(
+                      controller: _customerNameController,
+                      style: secondaryTextStyle.copyWith(fontSize: 14),
+                      decoration: InputDecoration(
+                          hintText: 'Input your full name',
+                          hintStyle: subtitleTextStyle,
+                          border: InputBorder.none),
+                    ))
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    }
+
+    Widget phoneInput() {
+      return Container(
+        margin: const EdgeInsets.only(bottom: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Text(
+            //   'Full name',
+            //   style: primaryTextStyle.copyWith(
+            //       fontSize: 16, fontWeight: medium, color: primaryTextColor),
+            // ),
+            // const SizedBox(height: 12),
+            Container(
+              height: 50,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(width: 1, color: const Color(0xFF797979))),
+              child: Center(
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: TextFormField(
+                      controller: _phoneController,
+                      style: secondaryTextStyle.copyWith(fontSize: 14),
+                      decoration: InputDecoration(
+                          hintText: 'Input your phone number',
+                          hintStyle: subtitleTextStyle,
+                          border: InputBorder.none),
+                    ))
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    }
+
+    Widget countryInput() {
+      return Container(
+        margin: const EdgeInsets.only(bottom: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Text(
+            //   'Full name',
+            //   style: primaryTextStyle.copyWith(
+            //       fontSize: 16, fontWeight: medium, color: primaryTextColor),
+            // ),
+            // const SizedBox(height: 12),
+            Container(
+              height: 50,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(width: 1, color: const Color(0xFF797979))),
+              child: Center(
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: TextFormField(
+                      controller: _countryController,
+                      style: secondaryTextStyle.copyWith(fontSize: 14),
+                      decoration: InputDecoration(
+                          hintText: 'Input your country',
+                          hintStyle: subtitleTextStyle,
+                          border: InputBorder.none),
+                    ))
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    }
+
+    Widget provinceInput() {
+      return Container(
+        margin: const EdgeInsets.only(bottom: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Text(
+            //   'Full name',
+            //   style: primaryTextStyle.copyWith(
+            //       fontSize: 16, fontWeight: medium, color: primaryTextColor),
+            // ),
+            // const SizedBox(height: 12),
+            Container(
+              height: 50,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(width: 1, color: const Color(0xFF797979))),
+              child: Center(
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: TextFormField(
+                      controller: _provinceController,
+                      style: secondaryTextStyle.copyWith(fontSize: 14),
+                      decoration: InputDecoration(
+                          hintText: 'Input your province',
+                          hintStyle: subtitleTextStyle,
+                          border: InputBorder.none),
+                    ))
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    }
+
+    Widget cityInput() {
+      return Container(
+        margin: const EdgeInsets.only(bottom: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Text(
+            //   'Full name',
+            //   style: primaryTextStyle.copyWith(
+            //       fontSize: 16, fontWeight: medium, color: primaryTextColor),
+            // ),
+            // const SizedBox(height: 12),
+            Container(
+              height: 50,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(width: 1, color: const Color(0xFF797979))),
+              child: Center(
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: TextFormField(
+                      controller: _cityController,
+                      style: secondaryTextStyle.copyWith(fontSize: 14),
+                      decoration: InputDecoration(
+                          hintText: 'Input your city',
+                          hintStyle: subtitleTextStyle,
+                          border: InputBorder.none),
+                    ))
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    }
+
+    Widget subdistrictInput() {
+      return Container(
+        margin: const EdgeInsets.only(bottom: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Text(
+            //   'Full name',
+            //   style: primaryTextStyle.copyWith(
+            //       fontSize: 16, fontWeight: medium, color: primaryTextColor),
+            // ),
+            // const SizedBox(height: 12),
+            Container(
+              height: 50,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(width: 1, color: const Color(0xFF797979))),
+              child: Center(
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: TextFormField(
+                      controller: _subdistrictController,
+                      style: secondaryTextStyle.copyWith(fontSize: 14),
+                      decoration: InputDecoration(
+                          hintText: 'Input your subdistrict',
+                          hintStyle: subtitleTextStyle,
+                          border: InputBorder.none),
+                    ))
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    }
+
+    Widget addressDetailInput() {
+      return Container(
+        margin: const EdgeInsets.only(bottom: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Text(
+            //   'Full name',
+            //   style: primaryTextStyle.copyWith(
+            //       fontSize: 16, fontWeight: medium, color: primaryTextColor),
+            // ),
+            // const SizedBox(height: 12),
+            Container(
+              height: 50,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(width: 1, color: const Color(0xFF797979))),
+              child: Center(
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: TextFormField(
+                      controller: _detailsController,
+                      style: secondaryTextStyle.copyWith(fontSize: 14),
+                      decoration: InputDecoration(
+                          hintText: 'Input your address details',
+                          hintStyle: subtitleTextStyle,
+                          border: InputBorder.none),
+                    ))
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    }
+
+    Widget paymentMethodInput() {
+      return Container(
+        margin: const EdgeInsets.only(bottom: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Text(
+            //   'Full name',
+            //   style: primaryTextStyle.copyWith(
+            //       fontSize: 16, fontWeight: medium, color: primaryTextColor),
+            // ),
+            // const SizedBox(height: 12),
+            Container(
+              height: 50,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(width: 1, color: const Color(0xFF797979))),
+              child: Center(
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: DropdownButtonFormField(
+                            decoration: const InputDecoration(
+                              border: InputBorder.none
+                              // enabledBorder: OutlineInputBorder(
+                              //   borderSide:
+                              //       BorderSide(color: Colors.blue, width: 2),
+                              //   borderRadius: BorderRadius.circular(20),
+                              // ),
+                              // border: OutlineInputBorder(
+                              //   borderSide:
+                              //       BorderSide(color: Colors.blue, width: 2),
+                              //   borderRadius: BorderRadius.circular(20),
+                              // ),
+                              // filled: true,
+                              // fillColor: Colors.blueAccent,
+                            ),
+                            elevation: 0,
+                            dropdownColor: bgColor3,
+                            style: TextStyle(
+                              color: primaryTextColor,
+                            ),
+                            value: paymentSelected,
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                paymentSelected = newValue!;
+                              });
+                            },
+                            items: dropdownItems))
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    }
+
+    Widget personalInformation() {
+      return Container(
+        width: MediaQuery.of(context).size.width,
         margin: EdgeInsets.only(
           top: defaultMargin,
         ),
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: bgColor4,
           borderRadius: BorderRadius.circular(12),
@@ -87,84 +443,92 @@ class _CheckoutPageState extends State<CheckoutPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Address Details',
+              'Personal Information',
               style: primaryTextStyle.copyWith(
                 fontSize: 16,
                 fontWeight: medium,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 12,
             ),
-            Row(
-              children: [
-                Column(
-                  children: [
-                    Image.asset(
-                      'assets/icon_store_location.png',
-                      width: 40,
-                    ),
-                    Image.asset(
-                      'assets/icon_line.png',
-                      height: 30,
-                    ),
-                    Image.asset(
-                      'assets/icon_your_address.png',
-                      width: 40,
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  width: 12,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Store Location',
-                      style: secondaryTextStyle.copyWith(
-                        fontSize: 12,
-                        fontWeight: light,
-                      ),
-                    ),
-                    Text(
-                      'Adidas Core',
-                      style: primaryTextStyle.copyWith(
-                        fontWeight: medium,
-                      ),
-                    ),
-                    SizedBox(
-                      height: defaultMargin,
-                    ),
-                    Text(
-                      'Your Address',
-                      style: secondaryTextStyle.copyWith(
-                        fontSize: 12,
-                        fontWeight: light,
-                      ),
-                    ),
-                    Text(
-                      'Marsemoon',
-                      style: primaryTextStyle.copyWith(
-                        fontWeight: medium,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+            customerNameInput(),
+            phoneInput()
+          ],
+        ),
+      );
+    }
+
+    Widget addressInformation() {
+      return Container(
+        width: MediaQuery.of(context).size.width,
+        margin: EdgeInsets.only(
+          top: defaultMargin,
+        ),
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: bgColor4,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Address Information',
+              style: primaryTextStyle.copyWith(
+                fontSize: 16,
+                fontWeight: medium,
+              ),
             ),
+            const SizedBox(
+              height: 12,
+            ),
+            countryInput(),
+            provinceInput(),
+            cityInput(),
+            subdistrictInput(),
+            addressDetailInput(),
+          ],
+        ),
+      );
+    }
+
+    Widget paymentMethod() {
+      return Container(
+        width: MediaQuery.of(context).size.width,
+        margin: EdgeInsets.only(
+          top: defaultMargin,
+        ),
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: bgColor4,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Payment Information',
+              style: primaryTextStyle.copyWith(
+                fontSize: 16,
+                fontWeight: medium,
+              ),
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            paymentMethodInput()
           ],
         ),
       );
     }
 
     Widget paymentSummary() {
-      return // NOTE: PAYMENT SUMMARY
-          Container(
+      return Container(
         margin: EdgeInsets.only(
           top: defaultMargin,
         ),
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: bgColor4,
           borderRadius: BorderRadius.circular(12),
@@ -179,87 +543,87 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 fontWeight: medium,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 12,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Product Quantity',
+                  'Subtotal',
                   style: secondaryTextStyle.copyWith(
-                    fontSize: 12,
+                    fontSize: 14,
                   ),
                 ),
                 Text(
-                  '${cartProvider.items.length} Items',
+                  "\$${cartProvider.totalPrice}",
                   style: primaryTextStyle.copyWith(
                     fontWeight: medium,
                   ),
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 12,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Product Price',
+                  'Discount',
                   style: secondaryTextStyle.copyWith(
-                    fontSize: 12,
+                    fontSize: 14,
                   ),
                 ),
                 Text(
-                  '\$200.90',
+                  "-\$${cartProvider.totalDiscount}",
                   style: primaryTextStyle.copyWith(
                     fontWeight: medium,
                   ),
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 12,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Shipping',
+                  'Delivery fee',
                   style: secondaryTextStyle.copyWith(
-                    fontSize: 12,
+                    fontSize: 14,
                   ),
                 ),
                 Text(
-                  'Free',
+                  "\$0",
                   style: primaryTextStyle.copyWith(
                     fontWeight: medium,
                   ),
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 12,
             ),
-            Divider(
+            const Divider(
               thickness: 1,
               color: Color(0xff2E3141),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Total',
+                  'Grand Total',
                   style: priceTextStyle.copyWith(
                     fontWeight: semiBold,
                   ),
                 ),
                 Text(
-                  '\$250.49',
+                  '\$${(cartProvider.totalPrice + 0 - cartProvider.totalDiscount).toStringAsFixed(2)}',
                   style: priceTextStyle.copyWith(
                     fontWeight: semiBold,
                   ),
@@ -278,13 +642,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
           SizedBox(
             height: defaultMargin,
           ),
-          Divider(
+          const Divider(
             thickness: 1,
             color: Color(0xff2E3141),
           ),
           isLoading
               ? Container(
-                  margin: EdgeInsets.only(
+                  margin: const EdgeInsets.only(
                     bottom: 30,
                   ),
                   child: LoadingButton(),
@@ -321,13 +685,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
       appBar: header(),
       body: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.symmetric(
-            horizontal: defaultMargin
-          ),
+          margin: EdgeInsets.symmetric(horizontal: defaultMargin),
           child: Column(
             children: [
               listItems(),
-              addressDetails(),
+              personalInformation(),
+              addressInformation(),
+              paymentMethod(),
               paymentSummary(),
               checkoutButton(),
             ],

@@ -149,12 +149,18 @@ class _ProductDetailHomePageState extends State<ProductDetailHomePage> {
           CarouselSlider(
             items: args.images
                 .map(
-                  (image) => Image.network(
-                    image,
-                    width: MediaQuery.of(context).size.width,
-                    height: 310,
-                    fit: BoxFit.cover,
-                  ),
+                  (image) => Container(
+                    margin: EdgeInsets.only(right: 15),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.network(
+                      image,
+                      width: MediaQuery.of(context).size.width,
+                      height: 310,
+                      fit: BoxFit.cover,
+                                        ),
+                    ),
+                  )
                 )
                 .toList(),
             options: CarouselOptions(
@@ -221,7 +227,7 @@ class _ProductDetailHomePageState extends State<ProductDetailHomePage> {
                   ],
                 ),
               ),
-        
+
               // NOTE: PRICE
               Container(
                 width: double.infinity,
@@ -239,20 +245,36 @@ class _ProductDetailHomePageState extends State<ProductDetailHomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Price starts from',
+                      'Price',
                       style: primaryTextStyle,
                     ),
-                    Text(
-                      '\$${args.price}',
-                      style: priceTextStyle.copyWith(
-                        fontSize: 16,
-                        fontWeight: semiBold,
-                      ),
-                    ),
+                    Row(
+                      children: [
+                        Text(
+                          '\$${(args.price - args.discount).toStringAsFixed(2)}',
+                          style: priceTextStyle.copyWith(
+                            fontSize: 16,
+                            fontWeight: semiBold,
+                          ),
+                        ),
+                        SizedBox(width: 5),
+                        args.discount > 0 ? 
+                          Text(
+                          '\$${args.price}',
+                          style: priceTextStyle.copyWith(
+                            fontSize: 12,
+                            fontWeight: semiBold,
+                            color: Color.fromRGBO(255,255,255, .3),
+                            decoration: TextDecoration.lineThrough,
+                            decorationColor: Color.fromRGBO(255,255,255, .3) 
+                          ),
+                        ) : Text(""),
+                      ],
+                    )
                   ],
                 ),
               ),
-        
+
               // NOTE: DESCRIPTION
               Container(
                 width: double.infinity,
@@ -283,7 +305,7 @@ class _ProductDetailHomePageState extends State<ProductDetailHomePage> {
                   ],
                 ),
               ),
-        
+
               // NOTE: BUTTONS
               Expanded(
                 child: Container(
@@ -298,14 +320,13 @@ class _ProductDetailHomePageState extends State<ProductDetailHomePage> {
                           child: TextButton(
                             onPressed: () {
                               cartProvider.addItem(CartModel(
-                                id: args.id, 
-                                userId: user!.uid ,
-                                name: args.name, 
-                                price: args.price, 
-                                discount: args.discount, 
-                                qty: 1,
-                                images: args.images
-                              ));
+                                  id: args.id,
+                                  userId: user!.uid,
+                                  name: args.name,
+                                  price: args.price,
+                                  discount: args.discount,
+                                  qty: 1,
+                                  images: args.images));
                               showSuccessDialog();
                             },
                             style: TextButton.styleFrom(

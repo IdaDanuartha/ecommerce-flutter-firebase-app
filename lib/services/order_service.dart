@@ -13,10 +13,6 @@ class OrderService {
         for (var item in querySnapshot.docs) {
           Map<String, dynamic> data = item.data();
           data['id'] = item.id;
-          // for (var order in data["items"]) {
-          //   data["items"][index] = OrderItemModel.fromJson(order);
-          //   index++;
-          // }
           orderService.add(OrderModel.fromJson(data));
         }
       },

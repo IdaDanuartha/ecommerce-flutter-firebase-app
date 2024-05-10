@@ -15,6 +15,11 @@ class CartProvider with ChangeNotifier {
         0, (total, current) => total + (current.price * current.qty));
   }
 
+    double get totalDiscount {
+    return _items.fold(
+        0, (total, current) => total + (current.discount * current.qty));
+  }
+
   void addItem(CartModel item) {
     var foundItem = _items.firstWhere((i) => i.id == item.id,
         orElse: () => CartModel(id: "", userId: "", name: '', price: 0.0, qty: 0, discount: 0.0, images: []));

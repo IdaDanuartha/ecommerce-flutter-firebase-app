@@ -1,4 +1,6 @@
+import 'package:ecommerce_firebase/helpers/my_separator.dart';
 import 'package:ecommerce_firebase/models/order_model.dart';
+import 'package:ecommerce_firebase/widgets/order_item_card.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 import 'package:intl/intl.dart';
@@ -60,7 +62,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                 ],
               ),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
                     "Order Date",
@@ -96,7 +98,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                 ],
               ),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
                     "Order Status",
@@ -137,15 +139,15 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
       );
     }
 
-    Widget divider() {
+    Widget divider({double top = 15, double bottom = 15}) {
       return Column(
         children: [
-          SizedBox(height: 10),
+          SizedBox(height: top),
           Divider(
-            thickness: 0.3,
+            thickness: 0.5,
             color: subtitleColor,
           ),
-          SizedBox(height: 10),
+          SizedBox(height: bottom),
         ],
       );
     }
@@ -158,7 +160,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               Image.asset(
                 "assets/icon_customer.png",
                 width: 24,
-                color: primaryColor,
+                color: priceColor,
               ),
               SizedBox(width: 10),
               Text(
@@ -169,17 +171,294 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               ),
             ],
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Name",
+                    style: primaryTextStyle.copyWith(
+                      color: Color.fromRGBO(255, 255, 255, .5),
+                    ),
+                  ),
+                  SizedBox(height: 5),
+                  Container(
+                    width: 200,
+                    child: Text(
+                      args.customerName,
+                      style: primaryTextStyle.copyWith(fontSize: 16),
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    "Phone",
+                    style: primaryTextStyle.copyWith(
+                        color: Color.fromRGBO(255, 255, 255, .5)),
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    args.phone,
+                    style: primaryTextStyle.copyWith(fontSize: 16),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      );
+    }
+
+    Widget addressInformation() {
+      return Column(
+        children: [
+          Row(
+            children: [
+              Image.asset(
+                "assets/icon_address.png",
+                width: 24,
+                color: priceColor,
+              ),
+              SizedBox(width: 10),
+              Text(
+                "Address Information",
+                style: primaryTextStyle.copyWith(
+                  fontSize: 16
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Country",
+                    style: primaryTextStyle.copyWith(
+                      color: Color.fromRGBO(255, 255, 255, .5),
+                    ),
+                  ),
+                  SizedBox(height: 5),
+                  Container(
+                    width: 200,
+                    child: Text(
+                      args.address.country,
+                      style: primaryTextStyle.copyWith(fontSize: 16),
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    "Province",
+                    style: primaryTextStyle.copyWith(
+                        color: Color.fromRGBO(255, 255, 255, .5)),
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    args.address.province,
+                    style: primaryTextStyle.copyWith(fontSize: 16),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "City",
+                    style: primaryTextStyle.copyWith(
+                      color: Color.fromRGBO(255, 255, 255, .5),
+                    ),
+                  ),
+                  SizedBox(height: 5),
+                  Container(
+                    width: 200,
+                    child: Text(
+                      args.address.city,
+                      style: primaryTextStyle.copyWith(fontSize: 16),
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    "Subdistrict",
+                    style: primaryTextStyle.copyWith(
+                        color: Color.fromRGBO(255, 255, 255, .5)),
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    args.address.subdistrict,
+                    style: primaryTextStyle.copyWith(fontSize: 16),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: 20),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Details",
+                    style: primaryTextStyle.copyWith(
+                      color: Color.fromRGBO(255, 255, 255, .5),
+                    ),
+                  ),
+                  SizedBox(height: 5),
+                  Container(
+                    width: MediaQuery.of(context).size.width - 80,
+                    child: Text(
+                      args.address.details,
+                      style: primaryTextStyle.copyWith(fontSize: 16),
+                      maxLines: 5,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ],
       );
     }
 
     Widget productItems() {
-      return Container();
+      return Column(
+        children: [
+          Row(
+            children: [
+              Image.asset(
+                "assets/icon_cart.png",
+                width: 24,
+                color: priceColor,
+              ),
+              SizedBox(width: 10),
+              Text(
+                "Items",
+                style: primaryTextStyle.copyWith(
+                  fontSize: 16
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 20),
+          ...args.items.map((item) => OrderItemCard(item: item)).toList(),
+        ]
+      );
     }
 
     Widget paymentInformation() {
-      return Container();
+      return Column(
+        children: [
+          Row(
+            children: [
+              Image.asset(
+                "assets/icon_payment.png",
+                width: 24,
+                color: priceColor,
+              ),
+              SizedBox(width: 10),
+              Text(
+                "Payment Information",
+                style: primaryTextStyle.copyWith(
+                  fontSize: 16
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Subtotal",
+                style: primaryTextStyle.copyWith(fontSize: 16),
+              ),
+              Text(
+                "\$${args.subTotal}",
+                style: primaryTextStyle.copyWith(fontSize: 16),
+              ),
+            ],
+          ),
+          SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Discount",
+                style: primaryTextStyle.copyWith(fontSize: 16),
+              ),
+              Text(
+                "-\$${args.totalDiscount}",
+                style: primaryTextStyle.copyWith(fontSize: 16),
+              ),
+            ],
+          ),
+          SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Delivery Fee",
+                style: primaryTextStyle.copyWith(fontSize: 16),
+              ),
+              Text(
+                "\$${args.deliveryFee}",
+                style: primaryTextStyle.copyWith(fontSize: 16),
+              ),
+            ],
+          ),
+          SizedBox(height: 15),
+          MySeparator(),
+          SizedBox(height: 15),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Grand Total",
+                style: primaryTextStyle.copyWith(fontSize: 16),
+              ),
+              Text(
+                "\$${args.subTotal + args.deliveryFee - args.totalDiscount}",
+                style: primaryTextStyle.copyWith(fontSize: 16),
+              ),
+            ],
+          ),
+          SizedBox(height: 10),
+        ],
+      );
     }
 
     Widget content() {
@@ -193,8 +472,10 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                 divider(),
                 customerInformation(),
                 divider(),
-                productItems(),
+                addressInformation(),
                 divider(),
+                productItems(),
+                divider(top: 10),
                 paymentInformation(),
               ],
             )),

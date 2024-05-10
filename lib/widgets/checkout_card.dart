@@ -26,9 +26,7 @@ class CheckoutCard extends StatelessWidget {
             height: 60,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
-              image: DecorationImage(
-                image: NetworkImage(cart.images[0])
-              ),
+              image: DecorationImage(image: NetworkImage(cart.images[0])),
             ),
           ),
           const SizedBox(
@@ -48,9 +46,25 @@ class CheckoutCard extends StatelessWidget {
                 const SizedBox(
                   height: 2,
                 ),
-                Text(
-                  '\$${cart.price.toString()}',
-                  style: priceTextStyle,
+                Row(
+                  children: [
+                    Text(
+                      '\$${(cart.price - cart.discount).toStringAsFixed(2)}',
+                      style: priceTextStyle,
+                    ),
+                    SizedBox(width: 5),
+                    cart.discount > 0
+                        ? Text(
+                            '\$${cart.price}',
+                            style: priceTextStyle.copyWith(
+                                fontSize: 12,
+                                color: Color.fromRGBO(255, 255, 255, .3),
+                                decoration: TextDecoration.lineThrough,
+                                decorationColor:
+                                    Color.fromRGBO(255, 255, 255, .3)),
+                          )
+                        : Text(""),
+                  ],
                 ),
               ],
             ),

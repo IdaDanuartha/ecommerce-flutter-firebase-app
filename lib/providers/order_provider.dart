@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_firebase/models/address_model.dart';
 import 'package:ecommerce_firebase/models/order_model.dart';
 import 'package:ecommerce_firebase/services/order_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -32,7 +33,26 @@ class OrderProvider with ChangeNotifier {
       User? user = FirebaseAuth.instance.currentUser;
 
       var foundItem = orders.firstWhere((order) => order.userId == user!.uid,
-          orElse: () => OrderModel(id: "", code: "", userId: "", subTotal: 0.0, totalDiscount: 0.0, deliveryFee: 0.0, status: 1, paymentMethod: "", createdAt: Timestamp.now(), items: []));
+          orElse: () => OrderModel(
+            id: "", 
+            code: "",
+            customerName: "",
+            phone: "", 
+            userId: "", 
+            subTotal: 0.0, 
+            totalDiscount: 0.0, 
+            deliveryFee: 0.0, 
+            status: 1, 
+            paymentMethod: "", 
+            createdAt: Timestamp.now(), 
+            items: [], 
+            address: AddressModel(
+              city: "", 
+              subdistrict: "", 
+              country: "", 
+              province: "", 
+              details: ""
+          )));
     
       if (foundItem.id != "") {
         _orders = orders;

@@ -14,6 +14,7 @@ class OrderItemCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         color: bgColor4,
       ),
+      margin: EdgeInsets.only(bottom: 15),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -44,11 +45,48 @@ class OrderItemCard extends StatelessWidget {
                           fontWeight: semiBold, fontSize: 15, overflow: TextOverflow.ellipsis),
                     ),
                     SizedBox(height: 5),
-                    Text(
-                      "\$${item.price.toString()}",
-                      style: primaryTextStyle.copyWith(
-                          fontSize: 12,
-                          color: Color.fromRGBO(255, 255, 255, .6)),
+                    Row(
+                      children: [
+                        Row(
+                          children: [
+                            item.discount > 0
+                                ? Text(
+                                    '\$${item.price}',
+                                    style: priceTextStyle.copyWith(
+                                        fontSize: 10,
+                                        color: Color.fromRGBO(255, 255, 255, .3),
+                                        decoration: TextDecoration.lineThrough,
+                                        decorationColor:
+                                            Color.fromRGBO(255, 255, 255, .3)),
+                                  )
+                                : Text(""),
+                            item.discount > 0 ? SizedBox(width: 5) : SizedBox(),
+                            Text(
+                              "\$${(item.price - item.discount).toStringAsFixed(2)}",
+                              style: primaryTextStyle.copyWith(
+                                  fontSize: 12, 
+                                  color: priceColor,
+                                )
+                            ),
+                          ],
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                          "x",
+                          style: primaryTextStyle.copyWith(
+                              fontSize: 12,
+                              color: priceColor,
+                            )
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                          item.qty.toString(),
+                          style: primaryTextStyle.copyWith(
+                              fontSize: 12,
+                              color: priceColor,
+                            )
+                        ),
+                      ],
                     ),
                   ],
                 ),

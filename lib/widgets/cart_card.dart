@@ -54,9 +54,24 @@ class CartCard extends StatelessWidget {
                         fontWeight: semiBold,
                       ),
                     ),
-                    Text(
-                      '\$${cart.price}',
-                      style: priceTextStyle,
+                    Row(
+                      children: [
+                        Text(
+                          '\$${(cart.price - cart.discount).toStringAsFixed(2)}',
+                          style: priceTextStyle,
+                        ),
+                        SizedBox(width: 5),
+                        cart.discount > 0 ? 
+                          Text(
+                          '\$${cart.price}',
+                          style: priceTextStyle.copyWith(
+                            fontSize: 12,
+                            color: Color.fromRGBO(255,255,255, .3),
+                            decoration: TextDecoration.lineThrough,
+                            decorationColor: Color.fromRGBO(255,255,255, .3) 
+                          ),
+                        ) : Text(""),
+                      ],
                     ),
                   ],
                 ),

@@ -84,7 +84,6 @@ class OrderCard extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             OrderItemCard(item: order.items.first),
-            const SizedBox(height: 10),
             order.items.isNotEmpty
                 ? Text(
                     "+${order.items.length - 1} other products",
