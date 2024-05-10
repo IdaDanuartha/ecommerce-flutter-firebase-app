@@ -204,7 +204,8 @@ class ProductCard extends StatelessWidget {
                                 price: product.price,
                                 discount: product.discount,
                                 qty: 1,
-                                images: product.images));
+                                images: product.images,
+                                product: product));
                             showSuccessDialog();
                           },
                           child: Image.asset(

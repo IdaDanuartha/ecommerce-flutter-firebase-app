@@ -63,4 +63,17 @@ class OrderProvider with ChangeNotifier {
       print(e);
     }
   }
+
+  Future<bool> checkout(newData) async {
+    try {
+      var order = await OrderService().checkout(newData);
+      _orders.add(OrderModel.fromJson(order));
+
+      notifyListeners();
+      return true;
+    } catch (e) {
+      print("Error: $e");
+      return false;
+    }
+  }
 }

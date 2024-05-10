@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_firebase/models/cart_model.dart';
+import 'package:ecommerce_firebase/models/product_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,7 +24,25 @@ class CartProvider with ChangeNotifier {
 
   void addItem(CartModel item) {
     var foundItem = _items.firstWhere((i) => i.id == item.id,
-        orElse: () => CartModel(id: "", userId: "", name: '', price: 0.0, qty: 0, discount: 0.0, images: []));
+        orElse: () => CartModel(
+          id: "", 
+          userId: "", 
+          name: '', 
+          price: 0.0, 
+          qty: 0, 
+          discount: 0.0, 
+          images: [], 
+          product: ProductModel(
+            id: "",
+            name: '',
+            price: 0.0,
+            discount: 0.0,
+            qty: 0,
+            images: [],
+            description: '',
+            createdAt: Timestamp.now()
+          )
+        ));
 
     if (foundItem.id != "") {
       foundItem.qty += 1;
@@ -61,7 +81,9 @@ class CartProvider with ChangeNotifier {
   Future<void> saveItemsToPrefs() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String encodedData = json.encode(
-      _items.map((item) => item.toJson()).toList(),
+      _items.map((item) {
+        return item.toJson();
+      }).toList(),
     );
     await prefs.setString('cartItems', encodedData);
   }

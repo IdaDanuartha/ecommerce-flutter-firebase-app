@@ -119,12 +119,12 @@ class _HomePageState extends State<HomePage> {
                 right: defaultMargin,
               ),
               child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: productProvider.products
-                        .map((product) => ProductCard(product: product))
-                        .toList(),
-                  ))
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: productProvider.products
+                      .map((product) => ProductCard(product: product))
+                      .toList(),
+                ))
           )
         ],
       );

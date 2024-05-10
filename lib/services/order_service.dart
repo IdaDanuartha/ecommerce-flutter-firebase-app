@@ -21,4 +21,24 @@ class OrderService {
 
     return orderService;
   }
+
+  Future<dynamic> checkout(newData) async {
+    final FirebaseFirestore db = FirebaseFirestore.instance;
+
+    DocumentReference orderRef = await db.collection("orders").add(newData);
+
+    // Use the order ID to fetch the document data
+    DocumentSnapshot orderSnapshot = await orderRef.get();
+
+    // Check if the document exists and retrieve the data
+    if (orderSnapshot.exists) {
+      Map<String, dynamic> order =
+          orderSnapshot.data() as Map<String, dynamic>;
+      order['id'] = orderRef.id;
+      return order;
+    } else {
+      print("Order document does not exist");
+      return null;
+    }
+  }
 }

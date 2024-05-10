@@ -1,3 +1,5 @@
+import 'package:ecommerce_firebase/models/product_model.dart';
+
 class CartModel {
   late String id;
   late String userId;
@@ -6,6 +8,7 @@ class CartModel {
   late double discount;
   late int qty;
   late List<dynamic> images;
+  late ProductModel product;
 
   CartModel({
     required this.id,
@@ -14,8 +17,8 @@ class CartModel {
     required this.price,
     required this.discount,
     required this.qty,
-    // required this.createdAt,
     required this.images,
+    required this.product,
   });
 
   CartModel.fromJson(Map<String, dynamic> json) {
@@ -26,6 +29,7 @@ class CartModel {
     discount = double.parse(json["discount"].toString());
     qty = int.parse(json["qty"].toString());
     images = json['images'];
+    product = ProductModel.fromJson(json["product"]);
     // createdAt = DateTime.parse(json["created_at"]);
   }
 
@@ -38,6 +42,7 @@ class CartModel {
       "discount": discount,
       "qty": qty,
       "images": images,
+      "product": product.toJson(),
       // "created_at": createdAt.toString(),
     };
   }

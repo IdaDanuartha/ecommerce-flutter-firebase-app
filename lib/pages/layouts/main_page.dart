@@ -3,7 +3,7 @@ import 'package:ecommerce_firebase/pages/profile_page.dart';
 import 'package:ecommerce_firebase/pages/home/order_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_firebase/services/home_page.dart';
+import 'package:ecommerce_firebase/pages/home/home_page.dart';
 import 'package:ecommerce_firebase/themes.dart';
 
 class MainPage extends StatefulWidget {

@@ -326,7 +326,8 @@ class _ProductDetailHomePageState extends State<ProductDetailHomePage> {
                                   price: args.price,
                                   discount: args.discount,
                                   qty: 1,
-                                  images: args.images));
+                                  images: args.images,
+                                  product: args));
                               showSuccessDialog();
                             },
                             style: TextButton.styleFrom(

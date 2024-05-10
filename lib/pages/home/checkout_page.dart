@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_firebase/pages/home/checkout_success_page.dart';
 import 'package:ecommerce_firebase/providers/cart_provider.dart';
+import 'package:ecommerce_firebase/providers/order_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 import 'package:ecommerce_firebase/widgets/checkout_card.dart';
@@ -41,20 +44,66 @@ class _CheckoutPageState extends State<CheckoutPage> {
   @override
   Widget build(BuildContext context) {
     CartProvider cartProvider = Provider.of<CartProvider>(context);
+    OrderProvider orderProvider = Provider.of<OrderProvider>(context);
 
     _paymentMethodController.text = paymentSelected;
 
-    handleCheckout() async {
-      setState(() {
-        isLoading = true;
+    String grandTotal = (cartProvider.totalPrice + 0 - cartProvider.totalDiscount).toStringAsFixed(2);
+
+    void handleCheckout() async {
+      User? user = FirebaseAuth.instance.currentUser;
+
+      var newOrder = await orderProvider.checkout({
+        "user_id": user!.uid,
+        "customer_name": _customerNameController.text,
+        "phone": _phoneController.text,
+        "code": "",
+        "status": 1,
+        "payment_method": _paymentMethodController.text,
+        "sub_total": cartProvider.totalPrice,
+        "total_discount": cartProvider.totalDiscount,
+        "delivery_fee": 0.0,
+        "created_at": DateTime.now(),
+        "address": {
+          "country": _countryController.text,
+          "province": _provinceController.text,
+          "city": _cityController.text,
+          "subdistrict": _subdistrictController.text,
+          "details": _detailsController.text,
+        },
+        "items": cartProvider.items.map((item) {
+          return {
+            "price": item.price,
+            "quantity": item.qty,
+            "discount": item.discount,
+            "product": {
+              "id": item.product.id,
+              "name": item.product.name,
+              "price": item.product.price,
+              "discount": item.product.discount,
+              "qty": item.product.qty,
+              "description": item.product.description,
+              "created_at": item.product.createdAt,
+              "images": item.product.images
+            },
+          };
+        })
       });
 
-      Navigator.pushNamedAndRemoveUntil(
-          context, CheckoutSuccessPage.routeName, (route) => false);
-
-      setState(() {
-        isLoading = false;
-      });
+      if (newOrder) {
+        Navigator.pushNamed(context, CheckoutSuccessPage.routeName);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: alertColor,
+            duration: const Duration(milliseconds: 2500),
+            content: const Text(
+              'Failed to place your order',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      }
     }
 
     AppBar header() {
@@ -623,7 +672,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   ),
                 ),
                 Text(
-                  '\$${(cartProvider.totalPrice + 0 - cartProvider.totalDiscount).toStringAsFixed(2)}',
+                  '\$${grandTotal}',
                   style: priceTextStyle.copyWith(
                     fontWeight: semiBold,
                   ),
@@ -668,7 +717,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       ),
                     ),
                     child: Text(
-                      'Checkout Now',
+                      'Checkout',
                       style: primaryTextStyle.copyWith(
                         fontSize: 16,
                         fontWeight: semiBold,

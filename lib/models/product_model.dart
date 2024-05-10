@@ -22,6 +22,7 @@ class ProductModel {
   });
 
   ProductModel.fromJson(Map<String, dynamic> json) {
+    print(json["images"]);
     id = json["id"];
     name = json["name"];
     price = double.parse(json["price"].toString());
@@ -29,7 +30,7 @@ class ProductModel {
     qty = int.parse(json["qty"].toString());
     description = json["description"];
     images = json['images'];
-    createdAt = json["created_at"];
+    createdAt = json["created_at"] is String ? Timestamp.now() : json['created_at'];
   }
 
   Map<String, dynamic> toJson() {

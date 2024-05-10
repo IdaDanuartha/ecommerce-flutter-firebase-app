@@ -2,8 +2,7 @@
 // import 'package:firebase_auth/firebase_auth.dart';
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:ecommerce_firebase/pages/admin/products/add_product_page.dart';
-import 'package:ecommerce_firebase/pages/admin/products/add_staff_page.dart';
+import 'package:ecommerce_firebase/pages/admin/staff/add_staff_page.dart';
 import 'package:ecommerce_firebase/pages/admin/products/detail_product_page.dart';
 import 'package:ecommerce_firebase/providers/product_provider.dart';
 import 'package:flutter/material.dart';
