@@ -45,42 +45,42 @@ class _AddProductPageState extends State<AddProductPage> {
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
 
     void storeProduct() async {
-      // print(addProductImagesController.selectedImages);
-      var newProduct = await productProvider.store({
-        "name": _nameController.text,
-        "price": double.parse(_priceController.text),
-        "discount": double.parse(_discountController.text),
-        "qty": int.parse(_qtyController.text),
-        "description": _descriptionController.text,
-        "images": [],
-        "created_at": DateTime.now()
-      });
+      print(addProductImagesController.selectedImages);
+      // var newProduct = await productProvider.store({
+      //   "name": _nameController.text,
+      //   "price": double.parse(_priceController.text),
+      //   "discount": double.parse(_discountController.text),
+      //   "qty": int.parse(_qtyController.text),
+      //   "description": _descriptionController.text,
+      //   "images": [],
+      //   "created_at": DateTime.now()
+      // });
 
-      Navigator.pop(context);
+      // Navigator.pop(context);
 
-      if (newProduct) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: successColor,
-            duration: const Duration(milliseconds: 2500),
-            content: const Text(
-              'Product created successfully',
-              textAlign: TextAlign.center,
-            ),
-          ),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: alertColor,
-            duration: const Duration(milliseconds: 2500),
-            content: const Text(
-              'Failed to create product',
-              textAlign: TextAlign.center,
-            ),
-          ),
-        );
-      }
+      // if (newProduct) {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //     SnackBar(
+      //       backgroundColor: successColor,
+      //       duration: const Duration(milliseconds: 2500),
+      //       content: const Text(
+      //         'Product created successfully',
+      //         textAlign: TextAlign.center,
+      //       ),
+      //     ),
+      //   );
+      // } else {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //     SnackBar(
+      //       backgroundColor: alertColor,
+      //       duration: const Duration(milliseconds: 2500),
+      //       content: const Text(
+      //         'Failed to create product',
+      //         textAlign: TextAlign.center,
+      //       ),
+      //     ),
+      //   );
+      // }
     }
 
     Widget imageInput() {

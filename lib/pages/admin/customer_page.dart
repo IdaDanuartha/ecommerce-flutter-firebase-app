@@ -2,9 +2,8 @@
 // import 'package:firebase_auth/firebase_auth.dart';
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:ecommerce_firebase/pages/admin/products/add_product_page.dart';
 import 'package:ecommerce_firebase/pages/admin/products/detail_product_page.dart';
-import 'package:ecommerce_firebase/providers/product_provider.dart';
+import 'package:ecommerce_firebase/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +23,7 @@ class _CustomerPageState extends State<CustomerPage> {
 
   @override
   Widget build(BuildContext context) {
-    ProductProvider productProvider = Provider.of<ProductProvider>(context);
+    UserProvider userProvider = Provider.of<UserProvider>(context);
   
     Widget content() {
       return SingleChildScrollView(
@@ -47,15 +46,14 @@ class _CustomerPageState extends State<CustomerPage> {
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Container(
-                  width: MediaQuery.of(context).size.width,
+                  width: MediaQuery.of(context).size.width + 120,
                   child: Column(
                     children: [
                       Table(
                         columnWidths: const {
                           0: FlexColumnWidth(3),
-                          1: FlexColumnWidth(1),
-                          2: FlexColumnWidth(1),
-                          3: FlexColumnWidth(1),
+                          1: FlexColumnWidth(3),
+                          2: FlexColumnWidth(4),
                         }, 
                         defaultVerticalAlignment:
                             TableCellVerticalAlignment.middle,
@@ -86,7 +84,7 @@ class _CustomerPageState extends State<CustomerPage> {
                                       vertical: 10
                                     ),
                                     child: Text(
-                                      "Price",
+                                      "Username",
                                       style: primaryTextStyle,
                                     ),
                                   ),
@@ -100,7 +98,7 @@ class _CustomerPageState extends State<CustomerPage> {
                                       vertical: 10
                                     ),
                                     child: Text(
-                                      "Qty",
+                                      "Email",
                                       style: primaryTextStyle,
                                     ),
                                   ),
@@ -111,13 +109,12 @@ class _CustomerPageState extends State<CustomerPage> {
                       Table(
                         columnWidths: const {
                           0: FlexColumnWidth(3),
-                          1: FlexColumnWidth(1),
-                          2: FlexColumnWidth(1),
-                          3: FlexColumnWidth(1),
+                          1: FlexColumnWidth(3),
+                          2: FlexColumnWidth(4),
                         }, 
                         defaultVerticalAlignment:
                             TableCellVerticalAlignment.middle,
-                        children: dataRows(productProvider, context),
+                        children: dataRows(userProvider, context),
                       ),
                     ],
                   ),
@@ -140,51 +137,51 @@ class _CustomerPageState extends State<CustomerPage> {
   }
 }
 
-List<TableRow> dataRows(ProductProvider productProvider, BuildContext context) {
-  return productProvider.products
-      .map((product) => TableRow(children: [
-            InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, DetailProductPage.routeName, arguments: product);
-              },
-              child: TableCell(
-                verticalAlignment: TableCellVerticalAlignment.middle,
+List<TableRow> dataRows(UserProvider userProvider, BuildContext context) {
+  return userProvider.customers
+      .map((user) => TableRow(children: [
+            TableCell(
+              verticalAlignment: TableCellVerticalAlignment.middle,
+              child: InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, DetailProductPage.routeName, arguments: user);
+                },
                 child: Padding(
-                  padding: const EdgeInsets.only(
-                    left: 16
-                  ),
+                  padding: const EdgeInsets.all(12),
                   child: Text(
-                    product.name,
+                    user.name,
+                    style: primaryTextStyle,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ),
+            ),
+            TableCell(
+              verticalAlignment: TableCellVerticalAlignment.middle,
+              child: InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, DetailProductPage.routeName, arguments: user);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Text(
+                    user.username,
                     style: primaryTextStyle,
                   ),
                 ),
               ),
             ),
-            InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, DetailProductPage.routeName, arguments: product);
-              },
-              child: TableCell(
-                verticalAlignment: TableCellVerticalAlignment.middle,
+            TableCell(
+              verticalAlignment: TableCellVerticalAlignment.middle,
+              child: InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, DetailProductPage.routeName, arguments: user);
+                },
                 child: Padding(
                   padding: const EdgeInsets.all(12),
                   child: Text(
-                    "\$${product.price.toString()}",
-                    style: primaryTextStyle,
-                  ),
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, DetailProductPage.routeName, arguments: product);
-              },
-              child: TableCell(
-                verticalAlignment: TableCellVerticalAlignment.middle,
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Text(
-                    product.qty.toString(),
+                    user.email,
                     style: primaryTextStyle,
                   ),
                 ),

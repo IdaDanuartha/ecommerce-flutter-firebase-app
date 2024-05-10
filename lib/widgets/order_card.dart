@@ -37,7 +37,7 @@ class OrderCard extends StatelessWidget {
                       Text(
                         "Order #${order.code}",
                         style: primaryTextStyle.copyWith(
-                            fontWeight: semiBold, fontSize: 15),
+                            fontWeight: semiBold),
                       ),
                       const SizedBox(height: 5),
                       Text(
@@ -84,7 +84,7 @@ class OrderCard extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             OrderItemCard(item: order.items.first),
-            order.items.isNotEmpty
+            (order.items.length - 1) > 0
                 ? Text(
                     "+${order.items.length - 1} other products",
                     style: primaryTextStyle.copyWith(
@@ -92,7 +92,7 @@ class OrderCard extends StatelessWidget {
                         color: const Color.fromRGBO(255, 255, 255, .5)),
                   )
                 : const Text(""),
-            const SizedBox(height: 20),
+            (order.items.length - 1) > 0 ? const SizedBox(height: 20) : const SizedBox(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -105,7 +105,7 @@ class OrderCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      "\$${order.subTotal + order.totalDiscount + order.deliveryFee}",
+                      "\$${(order.subTotal + order.totalDiscount + order.deliveryFee).toStringAsFixed(2)}",
                       style: priceTextStyle,
                     ),
                   ],

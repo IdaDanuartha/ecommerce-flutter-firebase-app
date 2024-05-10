@@ -27,18 +27,21 @@ class _ProductPageState extends State<ProductPage> {
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
   
   Widget addButton() {
-      return FloatingActionButton(
-        mini: true,
+      return TextButton(
         onPressed: () {
           Navigator.pushNamed(context, AddProductPage.routeName);
         },
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(99)),
-        tooltip: "Add product",
-        backgroundColor: const Color.fromRGBO(172, 164, 232, 1),
-        child: Image.asset(
-          'assets/icon_add.png',
-          width: 16,
-          color: primaryColor,
+        child: Container(
+          padding: EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Color.fromRGBO(172, 164, 232, .1),
+            borderRadius: BorderRadius.circular(999)
+          ),
+          child: Image.asset(
+            'assets/icon_add.png',
+            width: 16,
+            color: primaryColor,
+          ),
         ),
       );
     }
@@ -166,16 +169,14 @@ class _ProductPageState extends State<ProductPage> {
 List<TableRow> dataRows(ProductProvider productProvider, BuildContext context) {
   return productProvider.products
       .map((product) => TableRow(children: [
-            InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, DetailProductPage.routeName, arguments: product);
-              },
-              child: TableCell(
-                verticalAlignment: TableCellVerticalAlignment.middle,
+            TableCell(
+              verticalAlignment: TableCellVerticalAlignment.middle,
+              child: InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, DetailProductPage.routeName, arguments: product);
+                },
                 child: Padding(
-                  padding: const EdgeInsets.only(
-                    left: 16
-                  ),
+                  padding: const EdgeInsets.all(12),
                   child: Text(
                     product.name,
                     style: primaryTextStyle,
@@ -183,12 +184,12 @@ List<TableRow> dataRows(ProductProvider productProvider, BuildContext context) {
                 ),
               ),
             ),
-            InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, DetailProductPage.routeName, arguments: product);
-              },
-              child: TableCell(
-                verticalAlignment: TableCellVerticalAlignment.middle,
+            TableCell(
+              verticalAlignment: TableCellVerticalAlignment.middle,
+              child: InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, DetailProductPage.routeName, arguments: product);
+                },
                 child: Padding(
                   padding: const EdgeInsets.all(12),
                   child: Text(
@@ -198,12 +199,12 @@ List<TableRow> dataRows(ProductProvider productProvider, BuildContext context) {
                 ),
               ),
             ),
-            InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, DetailProductPage.routeName, arguments: product);
-              },
-              child: TableCell(
-                verticalAlignment: TableCellVerticalAlignment.middle,
+            TableCell(
+              verticalAlignment: TableCellVerticalAlignment.middle,
+              child: InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, DetailProductPage.routeName, arguments: product);
+                },
                 child: Padding(
                   padding: const EdgeInsets.all(12),
                   child: Text(

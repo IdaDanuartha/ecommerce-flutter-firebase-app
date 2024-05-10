@@ -52,12 +52,13 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   Text(
                     "Order Code",
                     style: primaryTextStyle.copyWith(
-                        color: Color.fromRGBO(255, 255, 255, .5)),
+                        color: Color.fromRGBO(255, 255, 255, .5),
+                        fontSize: 12),
                   ),
                   SizedBox(height: 5),
                   Text(
                     "#${args.code}",
-                    style: primaryTextStyle.copyWith(fontSize: 16),
+                    style: primaryTextStyle.copyWith(fontSize: 14),
                   ),
                 ],
               ),
@@ -67,12 +68,13 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   Text(
                     "Order Date",
                     style: primaryTextStyle.copyWith(
-                        color: Color.fromRGBO(255, 255, 255, .5)),
+                        color: Color.fromRGBO(255, 255, 255, .5),
+                        fontSize: 12),
                   ),
                   SizedBox(height: 5),
                   Text(
                     DateFormat.yMMMd().format(args.createdAt.toDate()),
-                    style: primaryTextStyle.copyWith(fontSize: 16),
+                    style: primaryTextStyle.copyWith(fontSize: 14),
                   ),
                 ],
               )
@@ -88,12 +90,13 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   Text(
                     "Order Time",
                     style: primaryTextStyle.copyWith(
-                        color: Color.fromRGBO(255, 255, 255, .5)),
+                        color: Color.fromRGBO(255, 255, 255, .5),
+                        fontSize: 12),
                   ),
                   SizedBox(height: 5),
                   Text(
                     DateFormat.jms().format(args.createdAt.toDate()),
-                    style: primaryTextStyle.copyWith(fontSize: 16),
+                    style: primaryTextStyle.copyWith(fontSize: 14),
                   ),
                 ],
               ),
@@ -103,7 +106,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   Text(
                     "Order Status",
                     style: primaryTextStyle.copyWith(
-                        color: Color.fromRGBO(255, 255, 255, .5)),
+                        color: Color.fromRGBO(255, 255, 255, .5),
+                        fontSize: 12),
                   ),
                   SizedBox(height: 5),
                   Container(
@@ -124,6 +128,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                               : "Delivered",
                       style: primaryTextStyle.copyWith(
                           fontWeight: FontWeight.bold,
+                          fontSize: 12,
                           color: args.status == 1
                               ? Colors.amber[700]
                               : args.status == 2
@@ -183,6 +188,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     "Name",
                     style: primaryTextStyle.copyWith(
                       color: Color.fromRGBO(255, 255, 255, .5),
+                      fontSize: 12
                     ),
                   ),
                   SizedBox(height: 5),
@@ -190,7 +196,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     width: 200,
                     child: Text(
                       args.customerName,
-                      style: primaryTextStyle.copyWith(fontSize: 16),
+                      style: primaryTextStyle.copyWith(fontSize: 14),
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -203,12 +209,13 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   Text(
                     "Phone",
                     style: primaryTextStyle.copyWith(
-                        color: Color.fromRGBO(255, 255, 255, .5)),
+                        color: Color.fromRGBO(255, 255, 255, .5),
+                        fontSize: 12),
                   ),
                   SizedBox(height: 5),
                   Text(
                     args.phone,
-                    style: primaryTextStyle.copyWith(fontSize: 16),
+                    style: primaryTextStyle.copyWith(fontSize: 14),
                   ),
                 ],
               ),
@@ -249,6 +256,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     "Country",
                     style: primaryTextStyle.copyWith(
                       color: Color.fromRGBO(255, 255, 255, .5),
+                      fontSize: 12
                     ),
                   ),
                   SizedBox(height: 5),
@@ -256,7 +264,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     width: 200,
                     child: Text(
                       args.address.country,
-                      style: primaryTextStyle.copyWith(fontSize: 16),
+                      style: primaryTextStyle.copyWith(fontSize: 14),
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -269,12 +277,12 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   Text(
                     "Province",
                     style: primaryTextStyle.copyWith(
-                        color: Color.fromRGBO(255, 255, 255, .5)),
+                        color: Color.fromRGBO(255, 255, 255, .5), fontSize: 12,)
                   ),
                   SizedBox(height: 5),
                   Text(
                     args.address.province,
-                    style: primaryTextStyle.copyWith(fontSize: 16),
+                    style: primaryTextStyle.copyWith(fontSize: 14),
                   ),
                 ],
               ),
@@ -292,6 +300,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     "City",
                     style: primaryTextStyle.copyWith(
                       color: Color.fromRGBO(255, 255, 255, .5),
+                      fontSize: 12
                     ),
                   ),
                   SizedBox(height: 5),
@@ -299,7 +308,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     width: 200,
                     child: Text(
                       args.address.city,
-                      style: primaryTextStyle.copyWith(fontSize: 16),
+                      style: primaryTextStyle.copyWith(fontSize: 14),
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -312,12 +321,12 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   Text(
                     "Subdistrict",
                     style: primaryTextStyle.copyWith(
-                        color: Color.fromRGBO(255, 255, 255, .5)),
+                        color: Color.fromRGBO(255, 255, 255, .5), fontSize: 12,)
                   ),
                   SizedBox(height: 5),
                   Text(
                     args.address.subdistrict,
-                    style: primaryTextStyle.copyWith(fontSize: 16),
+                    style: primaryTextStyle.copyWith(fontSize: 14),
                   ),
                 ],
               ),
@@ -334,6 +343,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     "Details",
                     style: primaryTextStyle.copyWith(
                       color: Color.fromRGBO(255, 255, 255, .5),
+                      fontSize: 12
                     ),
                   ),
                   SizedBox(height: 5),
@@ -341,7 +351,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     width: MediaQuery.of(context).size.width - 80,
                     child: Text(
                       args.address.details,
-                      style: primaryTextStyle.copyWith(fontSize: 16),
+                      style: primaryTextStyle.copyWith(fontSize: 14),
                       maxLines: 5,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -404,11 +414,11 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             children: [
               Text(
                 "Subtotal",
-                style: primaryTextStyle.copyWith(fontSize: 16),
+                style: primaryTextStyle.copyWith(fontSize: 14),
               ),
               Text(
                 "\$${args.subTotal}",
-                style: primaryTextStyle.copyWith(fontSize: 16),
+                style: primaryTextStyle.copyWith(fontSize: 14),
               ),
             ],
           ),
@@ -418,11 +428,11 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             children: [
               Text(
                 "Discount",
-                style: primaryTextStyle.copyWith(fontSize: 16),
+                style: primaryTextStyle.copyWith(fontSize: 14),
               ),
               Text(
                 "-\$${args.totalDiscount}",
-                style: primaryTextStyle.copyWith(fontSize: 16),
+                style: primaryTextStyle.copyWith(fontSize: 14),
               ),
             ],
           ),
@@ -432,11 +442,11 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             children: [
               Text(
                 "Delivery Fee",
-                style: primaryTextStyle.copyWith(fontSize: 16),
+                style: primaryTextStyle.copyWith(fontSize: 14),
               ),
               Text(
                 "\$${args.deliveryFee}",
-                style: primaryTextStyle.copyWith(fontSize: 16),
+                style: primaryTextStyle.copyWith(fontSize: 14),
               ),
             ],
           ),
@@ -448,11 +458,11 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             children: [
               Text(
                 "Grand Total",
-                style: primaryTextStyle.copyWith(fontSize: 16),
+                style: primaryTextStyle.copyWith(fontSize: 14),
               ),
               Text(
                 "\$${args.subTotal + args.deliveryFee - args.totalDiscount}",
-                style: primaryTextStyle.copyWith(fontSize: 16),
+                style: primaryTextStyle.copyWith(fontSize: 14),
               ),
             ],
           ),

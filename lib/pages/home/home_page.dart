@@ -168,7 +168,7 @@ class _HomePageState extends State<HomePage> {
       children: [
         header(),
         latestProducts(),
-        packages(),
+        // packages(),
         SizedBox(height: 50)
       ],
     );

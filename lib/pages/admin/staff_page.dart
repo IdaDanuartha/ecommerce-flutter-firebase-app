@@ -4,7 +4,7 @@
 
 import 'package:ecommerce_firebase/pages/admin/staff/add_staff_page.dart';
 import 'package:ecommerce_firebase/pages/admin/products/detail_product_page.dart';
-import 'package:ecommerce_firebase/providers/product_provider.dart';
+import 'package:ecommerce_firebase/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 import 'package:provider/provider.dart';
@@ -24,21 +24,24 @@ class _StaffPageState extends State<StaffPage> {
 
   @override
   Widget build(BuildContext context) {
-    ProductProvider productProvider = Provider.of<ProductProvider>(context);
+    UserProvider userProvider = Provider.of<UserProvider>(context);
   
     Widget addButton() {
-        return FloatingActionButton(
-          mini: true,
+        return TextButton(
           onPressed: () {
             Navigator.pushNamed(context, AddStaffPage.routeName);
           },
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(99)),
-          tooltip: "Add staff",
-          backgroundColor: const Color.fromRGBO(172, 164, 232, 1),
-          child: Image.asset(
-            'assets/icon_add.png',
-            width: 16,
-            color: primaryColor,
+          child: Container(
+            padding: EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Color.fromRGBO(172, 164, 232, .1),
+              borderRadius: BorderRadius.circular(999)
+            ),
+            child: Image.asset(
+              'assets/icon_add.png',
+              width: 16,
+              color: primaryColor,
+            ),
           ),
         );
       }
@@ -69,15 +72,14 @@ class _StaffPageState extends State<StaffPage> {
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Container(
-                  width: MediaQuery.of(context).size.width,
+                  width: MediaQuery.of(context).size.width + 100,
                   child: Column(
                     children: [
                       Table(
                         columnWidths: const {
                           0: FlexColumnWidth(3),
-                          1: FlexColumnWidth(1),
-                          2: FlexColumnWidth(1),
-                          3: FlexColumnWidth(1),
+                          1: FlexColumnWidth(3),
+                          2: FlexColumnWidth(4),
                         }, 
                         defaultVerticalAlignment:
                             TableCellVerticalAlignment.middle,
@@ -108,7 +110,7 @@ class _StaffPageState extends State<StaffPage> {
                                       vertical: 10
                                     ),
                                     child: Text(
-                                      "Price",
+                                      "Username",
                                       style: primaryTextStyle,
                                     ),
                                   ),
@@ -122,7 +124,7 @@ class _StaffPageState extends State<StaffPage> {
                                       vertical: 10
                                     ),
                                     child: Text(
-                                      "Qty",
+                                      "Email",
                                       style: primaryTextStyle,
                                     ),
                                   ),
@@ -133,13 +135,12 @@ class _StaffPageState extends State<StaffPage> {
                       Table(
                         columnWidths: const {
                           0: FlexColumnWidth(3),
-                          1: FlexColumnWidth(1),
-                          2: FlexColumnWidth(1),
-                          3: FlexColumnWidth(1),
+                          1: FlexColumnWidth(3),
+                          2: FlexColumnWidth(4),
                         }, 
                         defaultVerticalAlignment:
                             TableCellVerticalAlignment.middle,
-                        children: dataRows(productProvider, context),
+                        children: dataRows(userProvider, context),
                       ),
                     ],
                   ),
@@ -162,51 +163,51 @@ class _StaffPageState extends State<StaffPage> {
   }
 }
 
-List<TableRow> dataRows(ProductProvider productProvider, BuildContext context) {
-  return productProvider.products
-      .map((product) => TableRow(children: [
-            InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, DetailProductPage.routeName, arguments: product);
-              },
-              child: TableCell(
-                verticalAlignment: TableCellVerticalAlignment.middle,
+List<TableRow> dataRows(UserProvider userProvider, BuildContext context) {
+  return userProvider.staff
+      .map((user) => TableRow(children: [
+            TableCell(
+              verticalAlignment: TableCellVerticalAlignment.middle,
+              child: InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, DetailProductPage.routeName, arguments: user);
+                },
                 child: Padding(
-                  padding: const EdgeInsets.only(
-                    left: 16
-                  ),
+                  padding: const EdgeInsets.all(12),
                   child: Text(
-                    product.name,
+                    user.name,
+                    style: primaryTextStyle,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ),
+            ),
+            TableCell(
+              verticalAlignment: TableCellVerticalAlignment.middle,
+              child: InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, DetailProductPage.routeName, arguments: user);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Text(
+                    user.username,
                     style: primaryTextStyle,
                   ),
                 ),
               ),
             ),
-            InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, DetailProductPage.routeName, arguments: product);
-              },
-              child: TableCell(
-                verticalAlignment: TableCellVerticalAlignment.middle,
+            TableCell(
+              verticalAlignment: TableCellVerticalAlignment.middle,
+              child: InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, DetailProductPage.routeName, arguments: user);
+                },
                 child: Padding(
                   padding: const EdgeInsets.all(12),
                   child: Text(
-                    "\$${product.price.toString()}",
-                    style: primaryTextStyle,
-                  ),
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, DetailProductPage.routeName, arguments: product);
-              },
-              child: TableCell(
-                verticalAlignment: TableCellVerticalAlignment.middle,
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Text(
-                    product.qty.toString(),
+                    user.email,
                     style: primaryTextStyle,
                   ),
                 ),
