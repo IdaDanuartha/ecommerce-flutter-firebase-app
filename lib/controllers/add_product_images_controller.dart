@@ -99,6 +99,7 @@ class AddProductImagesController extends GetxController {
                   ElevatedButton(
                     onPressed: () {
                       selectImages("camera");
+                      Navigator.pop(context);
                     },
                     child: const Text('Camera'),
                   ),
@@ -106,6 +107,7 @@ class AddProductImagesController extends GetxController {
                   ElevatedButton(
                     onPressed: () {
                       selectImages("gallery");
+                      Navigator.pop(context);
                     },
                     child: const Text('Gallery'),
                   ),

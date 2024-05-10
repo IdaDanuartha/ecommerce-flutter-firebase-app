@@ -461,7 +461,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                 style: primaryTextStyle.copyWith(fontSize: 14),
               ),
               Text(
-                "\$${args.subTotal + args.deliveryFee - args.totalDiscount}",
+                "\$${(args.subTotal + args.deliveryFee - args.totalDiscount).toStringAsFixed(2)}",
                 style: primaryTextStyle.copyWith(fontSize: 14),
               ),
             ],

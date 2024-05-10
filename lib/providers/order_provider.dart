@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecommerce_firebase/models/address_model.dart';
 import 'package:ecommerce_firebase/models/order_model.dart';
 import 'package:ecommerce_firebase/providers/cart_provider.dart';
 import 'package:ecommerce_firebase/services/order_service.dart';
@@ -28,36 +26,18 @@ class OrderProvider with ChangeNotifier {
     }
   }
 
-  Future<void> getOrdersByUser({String? userId = ""}) async {
+  Future<void> getOrdersByUser({String? userId}) async {
     try {
       _orders.clear();
       List<OrderModel> orders = await OrderService().getOrders();
       User? user = FirebaseAuth.instance.currentUser;
 
-      var foundItem = orders.firstWhere((order) => order.userId == user!.uid,
-          orElse: () => OrderModel(
-            id: "", 
-            code: "",
-            customerName: "",
-            phone: "", 
-            userId: "", 
-            subTotal: 0.0, 
-            totalDiscount: 0.0, 
-            deliveryFee: 0.0, 
-            status: 1, 
-            paymentMethod: "", 
-            createdAt: Timestamp.now(), 
-            items: [], 
-            address: AddressModel(
-              city: "", 
-              subdistrict: "", 
-              country: "", 
-              province: "", 
-              details: ""
-          )));
+      var getOrdersByUser = orders.where((order) => order.userId == user!.uid);
     
-      if (foundItem.id != "") {
-        _orders = orders;
+      if (getOrdersByUser.isNotEmpty) {
+        for (var order in getOrdersByUser) {
+          _orders.add(order);
+        }
       }
 
       notifyListeners();

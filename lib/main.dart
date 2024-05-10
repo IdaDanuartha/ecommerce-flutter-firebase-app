@@ -19,6 +19,7 @@ import 'package:ecommerce_firebase/pages/layouts/main_page.dart';
 import 'package:ecommerce_firebase/pages/auth/sign_in_page.dart';
 import 'package:ecommerce_firebase/pages/auth/sign_up_page.dart';
 import 'package:ecommerce_firebase/pages/splash_page.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }
 

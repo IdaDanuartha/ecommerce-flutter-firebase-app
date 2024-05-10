@@ -35,6 +35,7 @@ class _SplashPageState extends State<SplashPage> {
     await Provider.of<UserProvider>(context, listen: false).getUsers();
     await Provider.of<UserProvider>(context, listen: false).getStaff();
     await Provider.of<UserProvider>(context, listen: false).getCustomers();
+    await Provider.of<UserProvider>(context, listen: false).getAdmins();
 
     if(user?.uid != null) {
       await FirebaseFirestore.instance.collection('users').doc(user!.uid).get().then(

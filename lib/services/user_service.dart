@@ -7,7 +7,7 @@ class UserService {
   Future<List<UserModel>> getUsers() async {
     List<UserModel> usersModel = [];
     
-    var users = await db.collection("users").get().then(
+    await db.collection("users").get().then(
       (querySnapshot) {
 
 
@@ -28,7 +28,7 @@ class UserService {
   Future<List<UserModel>> getStaff() async {
     List<UserModel> usersModel = [];
     
-    var users = await db.collection("users").where("role", isEqualTo: "staff").get().then(
+    await db.collection("users").where("role", isEqualTo: "staff").get().then(
       (querySnapshot) {
         for(var item in querySnapshot.docs) {
           Map<String, dynamic> data = item.data();
@@ -47,7 +47,26 @@ class UserService {
   Future<List<UserModel>> getCustomers() async {
     List<UserModel> usersModel = [];
     
-    var users = await db.collection("users").where("role", isEqualTo: "customer").get().then(
+    await db.collection("users").where("role", isEqualTo: "customer").get().then(
+      (querySnapshot) {
+        for(var item in querySnapshot.docs) {
+          Map<String, dynamic> data = item.data();
+          data['id'] = item.id;
+
+          usersModel.add(UserModel.fromJson(data));
+        }
+        
+      },
+      onError: (e) => print("Error completing: $e"),
+    );
+
+    return usersModel;
+  }
+
+    Future<List<UserModel>> getAdmins() async {
+    List<UserModel> usersModel = [];
+    
+    await db.collection("users").where("role", isEqualTo: "admin").get().then(
       (querySnapshot) {
         for(var item in querySnapshot.docs) {
           Map<String, dynamic> data = item.data();

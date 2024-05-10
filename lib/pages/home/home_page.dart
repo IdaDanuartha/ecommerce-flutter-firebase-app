@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                            image: NetworkImage(data["profile_url"]))),
+                            image: NetworkImage(data["profile_url"] != "" ? data["profile_url"] : "https://picsum.photos/id/64/100"))),
                   );
                 }
                 return Container();

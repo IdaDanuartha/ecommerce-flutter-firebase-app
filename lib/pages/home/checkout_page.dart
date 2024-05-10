@@ -1,15 +1,17 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_firebase/helpers/generate_random_string.dart';
 import 'package:ecommerce_firebase/pages/home/checkout_success_page.dart';
 import 'package:ecommerce_firebase/providers/cart_provider.dart';
 import 'package:ecommerce_firebase/providers/order_provider.dart';
+import 'package:ecommerce_firebase/providers/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 import 'package:ecommerce_firebase/widgets/checkout_card.dart';
 import 'package:ecommerce_firebase/widgets/loading_button.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:mailer/smtp_server.dart';
 import 'package:provider/provider.dart';
+import 'package:mailer/mailer.dart';
 
 class CheckoutPage extends StatefulWidget {
   const CheckoutPage({super.key});
@@ -47,19 +49,52 @@ class _CheckoutPageState extends State<CheckoutPage> {
   Widget build(BuildContext context) {
     CartProvider cartProvider = Provider.of<CartProvider>(context);
     OrderProvider orderProvider = Provider.of<OrderProvider>(context);
+    UserProvider userProvider = Provider.of<UserProvider>(context);
 
     _paymentMethodController.text = paymentSelected;
 
     String grandTotal = (cartProvider.totalPrice + 0 - cartProvider.totalDiscount).toStringAsFixed(2);
   
+     void sendToGmail(String orderCode, String totalPrice) async {
+
+      var username = dotenv.env["GMAIL_USERNAME"];
+      var password = dotenv.env["GMAIL_PASSWORD"];
+
+      final smtpServer = gmail(username!, password!);
+
+      final message = Message()
+        ..from = Address(username, 'Owner')
+        ..recipients.addAll([
+          ...userProvider.admins.map((admin) => admin.email),
+          ...userProvider.staff.map((staff) => staff.email),
+        ])
+        // ..ccRecipients.addAll(['example@gmail.com', 'example2@gmail.com'])
+        // ..bccRecipients.add(Address('example3@gmail.com'))
+        ..subject = 'New Order From Your Customer!'
+        ..html = "Order entered with ID $orderCode with a total price of \$$totalPrice";
+        // ..text = 'This is the plain text.\nThis is line 2 of the text part.';
+
+      try {
+        final sendReport = await send(message, smtpServer);
+        print('Message sent: ' + sendReport.toString());
+      } on MailerException catch (e) {
+        print('Message not sent.');
+        for (var p in e.problems) {
+          print('Problem: ${p.code}: ${p.msg}');
+        }
+      }
+    }
+
     void handleCheckout() async {
       User? user = FirebaseAuth.instance.currentUser;
+
+      String generateCode = generateWithFormat();
 
       var newOrder = await orderProvider.checkout({
         "user_id": user!.uid,
         "customer_name": _customerNameController.text,
         "phone": _phoneController.text,
-        "code": generateWithFormat(),
+        "code": generateCode,
         "status": 1,
         "payment_method": _paymentMethodController.text,
         "sub_total": cartProvider.totalPrice,
@@ -94,6 +129,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
       if (newOrder) {
         Navigator.pushNamed(context, CheckoutSuccessPage.routeName);
+        orderProvider.getOrdersByUser(userId: user.uid);
+
+        sendToGmail(generateCode, (cartProvider.totalPrice + 0 - cartProvider.totalDiscount).toStringAsFixed(2));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

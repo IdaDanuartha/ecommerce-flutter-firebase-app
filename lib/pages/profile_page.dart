@@ -33,7 +33,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                     return ClipOval(
                       child: Image.network(
-                        data["profile_url"],
+                        data["profile_url"] != "" ? data["profile_url"] : "https://picsum.photos/id/64/100",
                         width: 64,
                       ),
                     );
