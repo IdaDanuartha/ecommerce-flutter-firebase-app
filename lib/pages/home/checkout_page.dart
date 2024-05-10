@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_firebase/helpers/generate_random_string.dart';
 import 'package:ecommerce_firebase/pages/home/checkout_success_page.dart';
 import 'package:ecommerce_firebase/providers/cart_provider.dart';
 import 'package:ecommerce_firebase/providers/order_provider.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 import 'package:ecommerce_firebase/widgets/checkout_card.dart';
 import 'package:ecommerce_firebase/widgets/loading_button.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class CheckoutPage extends StatefulWidget {
@@ -49,7 +51,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
     _paymentMethodController.text = paymentSelected;
 
     String grandTotal = (cartProvider.totalPrice + 0 - cartProvider.totalDiscount).toStringAsFixed(2);
-
+  
+    print(generateWithFormat());
     void handleCheckout() async {
       User? user = FirebaseAuth.instance.currentUser;
 
@@ -57,7 +60,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
         "user_id": user!.uid,
         "customer_name": _customerNameController.text,
         "phone": _phoneController.text,
-        "code": "",
+        "code": generateWithFormat(),
         "status": 1,
         "payment_method": _paymentMethodController.text,
         "sub_total": cartProvider.totalPrice,
@@ -74,7 +77,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
         "items": cartProvider.items.map((item) {
           return {
             "price": item.price,
-            "quantity": item.qty,
+            "qty": item.qty,
             "discount": item.discount,
             "product": {
               "id": item.product.id,
@@ -88,7 +91,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
             },
           };
         })
-      });
+      }, context);
 
       if (newOrder) {
         Navigator.pushNamed(context, CheckoutSuccessPage.routeName);
@@ -605,7 +608,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   ),
                 ),
                 Text(
-                  "\$${cartProvider.totalPrice}",
+                  "\$${cartProvider.totalPrice.toStringAsFixed(2)}",
                   style: primaryTextStyle.copyWith(
                     fontWeight: medium,
                   ),
@@ -625,7 +628,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   ),
                 ),
                 Text(
-                  "-\$${cartProvider.totalDiscount}",
+                  "-\$${cartProvider.totalDiscount.toStringAsFixed(2)}",
                   style: primaryTextStyle.copyWith(
                     fontWeight: medium,
                   ),

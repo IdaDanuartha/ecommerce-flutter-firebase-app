@@ -22,7 +22,6 @@ class ProductModel {
   });
 
   ProductModel.fromJson(Map<String, dynamic> json) {
-    print(json["images"]);
     id = json["id"];
     name = json["name"];
     price = double.parse(json["price"].toString());

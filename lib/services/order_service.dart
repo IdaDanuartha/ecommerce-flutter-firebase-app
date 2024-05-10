@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_firebase/models/order_model.dart';
+import 'package:ecommerce_firebase/providers/cart_provider.dart';
 
 class OrderService {
   final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -35,6 +36,7 @@ class OrderService {
       Map<String, dynamic> order =
           orderSnapshot.data() as Map<String, dynamic>;
       order['id'] = orderRef.id;
+      
       return order;
     } else {
       print("Order document does not exist");

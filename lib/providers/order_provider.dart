@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_firebase/models/address_model.dart';
 import 'package:ecommerce_firebase/models/order_model.dart';
+import 'package:ecommerce_firebase/providers/cart_provider.dart';
 import 'package:ecommerce_firebase/services/order_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class OrderProvider with ChangeNotifier {
   List<OrderModel> _orders = [];
@@ -64,15 +66,18 @@ class OrderProvider with ChangeNotifier {
     }
   }
 
-  Future<bool> checkout(newData) async {
+  Future<bool> checkout(newData, BuildContext context) async {
     try {
       var order = await OrderService().checkout(newData);
       _orders.add(OrderModel.fromJson(order));
+      
+      await Provider.of<CartProvider>(context, listen: false).clearCart();
+      await getOrders();
 
       notifyListeners();
       return true;
     } catch (e) {
-      print("Error: $e");
+      print("Error on provider: $e");
       return false;
     }
   }
