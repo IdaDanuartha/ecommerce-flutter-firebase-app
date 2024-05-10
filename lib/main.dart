@@ -12,16 +12,17 @@ import 'package:ecommerce_firebase/providers/order_provider.dart';
 import 'package:ecommerce_firebase/providers/product_provider.dart';
 import 'package:ecommerce_firebase/providers/user_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:ecommerce_firebase/pages/checkout_page.dart';
-import 'package:ecommerce_firebase/pages/checkout_success_page.dart';
+import 'package:ecommerce_firebase/pages/home/checkout_page.dart';
+import 'package:ecommerce_firebase/pages/home/checkout_success_page.dart';
 import 'package:ecommerce_firebase/pages/edit_profile_page.dart';
 import 'package:ecommerce_firebase/pages/layouts/main_page.dart';
-import 'package:ecommerce_firebase/pages/sign_in_page.dart';
-import 'package:ecommerce_firebase/pages/sign_up_page.dart';
+import 'package:ecommerce_firebase/pages/auth/sign_in_page.dart';
+import 'package:ecommerce_firebase/pages/auth/sign_up_page.dart';
 import 'package:ecommerce_firebase/pages/splash_page.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
+// import 'package:connectivity_plus/connectivity_plus.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,6 +37,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // void checkConnection() async {
+    //   final List<ConnectivityResult> connectivityResult = await (Connectivity().checkConnectivity());
+    //   // ignore: unrelated_type_equality_checks
+    //   if (connectivityResult == ConnectivityResult.none) {
+    //     // ignore: use_build_context_synchronously
+    //     ScaffoldMessenger.of(context).showSnackBar(
+    //       const SnackBar(content: Text(
+    //         'You\'re not connected to a network')
+    //     ));
+    //   } else {
+    //     ScaffoldMessenger.of(context).showSnackBar(
+    //       const SnackBar(content: Text(
+    //         'You\'re connected to a network')
+    //     ));
+    //   }
+    // }
+
+    // checkConnection();
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ProductProvider()),

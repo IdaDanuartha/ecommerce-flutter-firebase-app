@@ -3,6 +3,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:ecommerce_firebase/pages/admin/products/add_product_page.dart';
+import 'package:ecommerce_firebase/pages/admin/products/add_staff_page.dart';
 import 'package:ecommerce_firebase/pages/admin/products/detail_product_page.dart';
 import 'package:ecommerce_firebase/providers/product_provider.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,22 @@ class _StaffPageState extends State<StaffPage> {
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
   
+    Widget addButton() {
+        return FloatingActionButton(
+          mini: true,
+          onPressed: () {
+            Navigator.pushNamed(context, AddStaffPage.routeName);
+          },
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(99)),
+          tooltip: "Add staff",
+          backgroundColor: const Color.fromRGBO(172, 164, 232, 1),
+          child: Image.asset(
+            'assets/icon_add.png',
+            width: 16,
+            color: primaryColor,
+          ),
+        );
+      }
     Widget content() {
       return SingleChildScrollView(
         child: Container(
@@ -36,12 +53,18 @@ class _StaffPageState extends State<StaffPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Data Staff",
-                style: primaryTextStyle.copyWith(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Data Staff",
+                    style: primaryTextStyle.copyWith(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  addButton()
+                ],
               ),
               const SizedBox(height: 20),
               SingleChildScrollView(
@@ -125,22 +148,6 @@ class _StaffPageState extends State<StaffPage> {
               ),
             ],
           ),
-        ),
-      );
-    }
-
-    Widget addButton() {
-      return FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, AddProductPage.routeName);
-        },
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(99)),
-        tooltip: "Add staff",
-        backgroundColor: const Color.fromRGBO(172, 164, 232, 1),
-        child: Image.asset(
-          'assets/icon_add.png',
-          width: 20,
-          color: primaryColor,
         ),
       );
     }

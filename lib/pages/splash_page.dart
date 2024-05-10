@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_firebase/pages/layouts/admin_page.dart';
 import 'package:ecommerce_firebase/pages/layouts/main_page.dart';
-import 'package:ecommerce_firebase/pages/sign_in_page.dart';
+import 'package:ecommerce_firebase/pages/auth/sign_in_page.dart';
 import 'package:ecommerce_firebase/providers/cart_provider.dart';
 import 'package:ecommerce_firebase/providers/order_provider.dart';
 import 'package:ecommerce_firebase/providers/product_provider.dart';

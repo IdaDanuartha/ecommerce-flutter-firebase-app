@@ -222,7 +222,7 @@ class _DashboardPageState extends State<DashboardPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Weekly Transactions",
+              "Monthly Transactions",
               style:
                   primaryTextStyle.copyWith(fontSize: 16, fontWeight: semiBold),
             ),
@@ -245,7 +245,7 @@ class _DashboardPageState extends State<DashboardPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Weekly Transactions",
+              "Monthly Transactions",
               style:
                   primaryTextStyle.copyWith(fontSize: 16, fontWeight: semiBold),
             ),

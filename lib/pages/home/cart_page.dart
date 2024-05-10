@@ -1,4 +1,4 @@
-import 'package:ecommerce_firebase/pages/checkout_page.dart';
+import 'package:ecommerce_firebase/pages/home/checkout_page.dart';
 import 'package:ecommerce_firebase/providers/cart_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';

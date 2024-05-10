@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecommerce_firebase/pages/sign_up_page.dart';
+import 'package:ecommerce_firebase/pages/auth/sign_up_page.dart';
 import 'package:ecommerce_firebase/providers/cart_provider.dart';
 import 'package:ecommerce_firebase/providers/order_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';

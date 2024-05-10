@@ -17,10 +17,9 @@ class _OrderPageState extends State<OrderPage> {
   @override
   Widget build(BuildContext context) {
     OrderProvider orderProvider = Provider.of<OrderProvider>(context);
-    print(orderProvider.orders);
+
     Widget header() {
-      return Container(
-        child: AppBar(
+      return AppBar(
           backgroundColor: bgColor1,
           centerTitle: true,
           title: Text(
@@ -33,8 +32,7 @@ class _OrderPageState extends State<OrderPage> {
           elevation: 0,
           automaticallyImplyLeading: false,
           leading: null,
-        ),
-      );
+        );
     }
 
     Widget emptyOrder() {

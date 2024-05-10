@@ -26,6 +26,23 @@ class _ProductPageState extends State<ProductPage> {
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
   
+  Widget addButton() {
+      return FloatingActionButton(
+        mini: true,
+        onPressed: () {
+          Navigator.pushNamed(context, AddProductPage.routeName);
+        },
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(99)),
+        tooltip: "Add product",
+        backgroundColor: const Color.fromRGBO(172, 164, 232, 1),
+        child: Image.asset(
+          'assets/icon_add.png',
+          width: 16,
+          color: primaryColor,
+        ),
+      );
+    }
+
     Widget content() {
       return SingleChildScrollView(
         child: Container(
@@ -36,17 +53,23 @@ class _ProductPageState extends State<ProductPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Data Products",
-                style: primaryTextStyle.copyWith(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Data Products",
+                    style: primaryTextStyle.copyWith(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  addButton()
+                ]
               ),
               const SizedBox(height: 20),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Container(
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: Column(
                     children: [
@@ -129,27 +152,11 @@ class _ProductPageState extends State<ProductPage> {
       );
     }
 
-    Widget addButton() {
-      return FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, AddProductPage.routeName);
-        },
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(99)),
-        tooltip: "Add product",
-        backgroundColor: const Color.fromRGBO(172, 164, 232, 1),
-        child: Image.asset(
-          'assets/icon_add.png',
-          width: 20,
-          color: primaryColor,
-        ),
-      );
-    }
-
     return Container(
       margin: EdgeInsets.symmetric(vertical: 20),
       child: Column(
         children: [
-          content()
+          content(),
         ],
       ),
     );
