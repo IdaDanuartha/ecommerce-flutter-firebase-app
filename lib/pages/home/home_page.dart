@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 import 'package:provider/provider.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatefulWidget  {
   const HomePage({super.key});
 
   @override
@@ -130,46 +130,34 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    Widget packages() {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            margin: EdgeInsets.only(
-              top: defaultMargin,
-              left: defaultMargin,
-              right: defaultMargin,
-            ),
-            child: Text(
-              'Packages',
-              style:
-                  primaryTextStyle.copyWith(fontSize: 22, fontWeight: semiBold),
-            ),
-          ),
-          Container(
-              margin: EdgeInsets.only(
-                top: 14,
-                left: defaultMargin,
-                right: defaultMargin,
-              ),
-              child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: productProvider.products
-                        .map((product) => ProductCard(product: product))
-                        .toList(),
-                  ))
-          )
-        ],
-      );
-    }
-
+    // return ListView(
+    //   children: [
+    //     header(),
+    //     latestProducts(),
+    //     // packages(),
+    //     SizedBox(height: 50)
+    //   ],
+    // );
+    
     return ListView(
       children: [
         header(),
-        latestProducts(),
-        // packages(),
-        SizedBox(height: 50)
+        SizedBox(height: defaultMargin),
+        Container(
+          margin: EdgeInsets.symmetric(
+            horizontal: 20
+          ),
+          child: Center(
+            child: Wrap(
+              spacing: 8.0, // gap between adjacent chips
+              runSpacing: 20, // gap between lines
+              children: productProvider.products
+                        .map((product) => ProductCard(product: product))
+                        .toList()
+            ),
+          ),
+        ),
+        SizedBox(height: defaultMargin),
       ],
     );
   }

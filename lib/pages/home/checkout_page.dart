@@ -102,8 +102,19 @@ class _CheckoutPageState extends State<CheckoutPage> {
       if (newOrder) {
         Navigator.pushNamed(context, CheckoutSuccessPage.routeName);
         orderProvider.getOrdersByUser(userId: user.uid);
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: successColor,
+            duration: const Duration(milliseconds: 2500),
+            content: const Text(
+              'Order placed successfully',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
 
-        sendToGmail("New Order From Your Customer!", "entered", generateCode, (cartProvider.totalPrice + 0 - cartProvider.totalDiscount).toStringAsFixed(2), userProvider, context);
+        sendToGmail("New Order From Your Customer!", "entered", generateCode, grandTotal, userProvider, context);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -118,7 +129,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
       }
 
       setState(() {
-        isLoading = true;
+        isLoading = false;
       });
     }
 

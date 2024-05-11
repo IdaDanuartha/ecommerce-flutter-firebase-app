@@ -122,22 +122,21 @@ class ProductCard extends StatelessWidget {
       
       return Image.network(
         product.images[0],
-        width: 200,
-        height: 150,
+        width: double.infinity,
+        height: 120,
         fit: BoxFit.cover,
       );
     }
-      
-    return Row(children: [
-      GestureDetector(
+
+    return GestureDetector(
         onTap: () {
           Navigator.pushNamed(context, ProductDetailHomePage.routeName, arguments: product);
         },
         child: Container(
-          width: 200,
+          width: MediaQuery.of(context).size.width - (2 * 120),
           // height: 276,
           margin: const EdgeInsets.only(right: 10),
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             color: bgColor4,
@@ -149,7 +148,7 @@ class ProductCard extends StatelessWidget {
                 child: image()
               ),
               Container(
-                margin: const EdgeInsets.symmetric(vertical: 5),
+                margin: const EdgeInsets.all(5),
                 width: double.infinity,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -158,7 +157,7 @@ class ProductCard extends StatelessWidget {
                     Text(
                       product.name,
                       style: primaryTextStyle.copyWith(
-                          fontSize: 16, fontWeight: semiBold),
+                          fontSize: 14, fontWeight: semiBold),
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(
@@ -169,14 +168,14 @@ class ProductCard extends StatelessWidget {
                         Text(
                           "\$${(product.price - product.discount).toStringAsFixed(2)}",
                           style: priceTextStyle.copyWith(
-                              fontSize: 14, fontWeight: medium),
+                              fontSize: 12, fontWeight: medium),
                         ),
                         SizedBox(width: 5),
                         product.discount > 0 ? 
                           Text(
                           '\$${product.price}',
                           style: priceTextStyle.copyWith(
-                            fontSize: 12,
+                            fontSize: 10,
                             color: Color.fromRGBO(255,255,255, .3),
                             decoration: TextDecoration.lineThrough,
                             decorationColor: Color.fromRGBO(255,255,255, .3) 
@@ -218,8 +217,6 @@ class ProductCard extends StatelessWidget {
             ],
           ),
         ),
-      ),
-      const SizedBox(height: 20)
-    ]);
+      );
   }
 }
