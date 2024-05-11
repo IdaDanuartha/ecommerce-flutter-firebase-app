@@ -1,9 +1,13 @@
 import 'package:ecommerce_firebase/helpers/my_separator.dart';
+import 'package:ecommerce_firebase/helpers/send_to_gmail.dart';
 import 'package:ecommerce_firebase/models/order_model.dart';
+import 'package:ecommerce_firebase/providers/order_provider.dart';
+import 'package:ecommerce_firebase/providers/user_provider.dart';
 import 'package:ecommerce_firebase/widgets/order_item_card.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class OrderDetailPage extends StatefulWidget {
   const OrderDetailPage({super.key});
@@ -15,9 +19,60 @@ class OrderDetailPage extends StatefulWidget {
 }
 
 class _OrderDetailPageState extends State<OrderDetailPage> {
+
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as OrderModel;
+    OrderProvider orderProvider = Provider.of<OrderProvider>(context);
+    UserProvider userProvider = Provider.of<UserProvider>(context);
+
+    void handleCancelOrder() async {
+      setState(() {
+        isLoading = true;
+      });
+
+      var updateOrder = await orderProvider.cancelOrder(args.id, {
+        "status": 4
+      });
+
+      String totalPrice = (args.subTotal + 0 - args.totalDiscount).toStringAsFixed(2);
+
+      sendToGmail("Order Cancelled", "cancelled", args.code, totalPrice, userProvider, context);
+
+      var nav = Navigator.of(context);
+      nav.pop();
+      nav.pop();
+
+      if (updateOrder) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: successColor,
+            duration: const Duration(milliseconds: 2500),
+            content: const Text(
+              'Order cancelled successfully',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: alertColor,
+            duration: const Duration(milliseconds: 2500),
+            content: const Text(
+              'Failed to cancel order',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      }
+
+      setState(() {
+        isLoading = true;
+      });
+    }
 
     AppBar header() {
       return AppBar(
@@ -36,6 +91,112 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           onPressed: () {
             Navigator.pop(context);
           },
+        ),
+      );
+    }
+
+    Widget cancelOrderBtn() {
+      return Container(
+        margin: EdgeInsets.only(bottom: 14),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: TextButton(
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      scrollable: true,
+                      backgroundColor: bgColor1,
+                      title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("Cancel Confirmation",
+                                style: primaryTextStyle.copyWith(
+                                    fontWeight: bold, fontSize: 20)),
+                            IconButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              icon: Icon(
+                                Icons.close,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ]),
+                      insetPadding: const EdgeInsets.all(10),
+                      content: Container(
+                        width: MediaQuery.of(context).size.width,
+                        child: Column(
+                          children: [
+                            Text(
+                              "Confirmation Order Cancelation: Are you sure you want to cancel this order? This action cannot be reversed and the order will permanently canceled from the system",
+                              style: primaryTextStyle.copyWith(
+                                fontSize: 14,
+                                color: Color.fromRGBO(255, 255, 255, .5)
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            Row(
+                              children: [
+                                Container(
+                                  height: 50,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    style: TextButton.styleFrom(
+                                        backgroundColor: Colors.grey[700],
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(10))),
+                                    child: Text(
+                                      'Close',
+                                      style: primaryTextStyle.copyWith(
+                                          fontSize: 16, fontWeight: semiBold),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 20),
+                                Container(
+                                  height: 50,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      handleCancelOrder();
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.red[500],
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(10))),
+                                    child: Text(
+                                      isLoading ? "Canceling order..." : "Yes, cancel it",
+                                      style: primaryTextStyle.copyWith(
+                                          fontSize: 16, fontWeight: semiBold),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+            },
+            style: TextButton.styleFrom(
+              backgroundColor: Colors.red,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+            child: Text(
+              'Cancel Order',
+              style: primaryTextStyle.copyWith(
+                fontSize: 14,
+                fontWeight: semiBold,
+              ),
+            ),
+          ),
         ),
       );
     }
@@ -116,24 +277,21 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     decoration: BoxDecoration(
                         color: args.status == 1
                             ? Colors.amber[100]
-                            : args.status == 2
-                                ? Colors.orange[100]
-                                : Colors.green[100],
+                            : args.status == 2 ? Colors.orange[100]
+                            : args.status == 3 ? Colors.green[100] : Colors.red[100],
                         borderRadius: BorderRadius.circular(4)),
                     child: Text(
                       args.status == 1
                           ? "Preparing Order"
-                          : args.status == 2
-                              ? "Out for Delivery"
-                              : "Delivered",
+                          : args.status == 2 ? "Out for Delivery"
+                          : args.status == 2 ? "Delivered" : "Cancelled",
                       style: primaryTextStyle.copyWith(
                           fontWeight: FontWeight.bold,
                           fontSize: 12,
                           color: args.status == 1
                               ? Colors.amber[700]
-                              : args.status == 2
-                                  ? Colors.orange[700]
-                                  : Colors.green[700]),
+                              : args.status == 2 ? Colors.orange[700]
+                              : args.status == 3 ? Colors.green[700] : Colors.red[700]),
                     ),
                   ),
                 ],
@@ -478,6 +636,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             color: bgColor3,
             child: Column(
               children: [
+                args.status == 1 ? cancelOrderBtn() : const SizedBox(),
                 basicInformation(),
                 divider(),
                 customerInformation(),

@@ -46,6 +46,23 @@ class OrderProvider with ChangeNotifier {
     }
   }
 
+  Future<bool> cancelOrder(String orderId, Map<Object, Object> data) async {
+    try {
+      var order = await OrderService().cancelOrder(orderId, data);
+      int index = _orders.indexWhere((item) => item.id == orderId);
+      
+      if(index != -1) {
+        _orders[index] = OrderModel.fromJson(order);
+      }
+
+      notifyListeners();
+      return true;
+    } catch (e) {
+      print("Error Provider: $e");
+      return false;
+    }
+  }
+
   Future<bool> checkout(newData, BuildContext context) async {
     try {
       var order = await OrderService().checkout(newData);

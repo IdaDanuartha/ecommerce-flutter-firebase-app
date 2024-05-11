@@ -1,7 +1,10 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_firebase/pages/admin/dashboard_page.dart';
 import 'package:ecommerce_firebase/pages/auth/sign_up_page.dart';
+import 'package:ecommerce_firebase/pages/home/home_page.dart';
+import 'package:ecommerce_firebase/pages/layouts/main_page.dart';
 import 'package:ecommerce_firebase/providers/cart_provider.dart';
 import 'package:ecommerce_firebase/providers/order_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -38,9 +41,17 @@ void route() {
       if (documentSnapshot.exists) {
         
         if (documentSnapshot.get('role') == "admin" || documentSnapshot.get('role') == "staff") {
-           Navigator.pushNamed(context, '/dashboard');
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            "/dashboard", 
+            ModalRoute.withName('/dashboard')
+          );
         }else{
-          Navigator.pushNamed(context, '/home');
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            "/home", 
+            ModalRoute.withName('/home')
+          );
         }
         // Navigator.pushNamed(context, '/home');
       } else {
