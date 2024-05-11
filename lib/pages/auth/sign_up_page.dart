@@ -45,22 +45,46 @@ class _SignUpPageState extends State<SignUpPage> {
     }
     
     void signUp(String email, String password) async {
-      await _auth
-        .createUserWithEmailAndPassword(email: email, password: password)
-        .then((value) => {postDetailsToFirestore()})
-        .catchError((e) {
-          print(e);
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                backgroundColor: alertColor,
-                duration: Duration(milliseconds: 1500),
-                content: Text(
-                  'Failed to create account',
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            );
-        });
+      setState(() {
+        isLoading = true;
+      });
+
+      try {
+        await _auth.createUserWithEmailAndPassword(email: email, password: password);
+        postDetailsToFirestore();
+    } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: alertColor,
+            duration: const Duration(milliseconds: 1500),
+            content: const Text(
+              'Failed to create account',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+    }
+
+      // await _auth
+      //   .createUserWithEmailAndPassword(email: email, password: password)
+      //   .then((value) => {postDetailsToFirestore()})
+      //   .catchError((e) {
+      //     // print(e);
+      //     ScaffoldMessenger.of(context).showSnackBar(
+      //         SnackBar(
+      //           backgroundColor: alertColor,
+      //           duration: const Duration(milliseconds: 1500),
+      //           content: const Text(
+      //             'Failed to create account',
+      //             textAlign: TextAlign.center,
+      //           ),
+      //         ),
+      //       );
+      //   });
+
+      setState(() {
+        isLoading = false;
+      });
     }
     
     Widget header() {
@@ -337,7 +361,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 usernameInput(),
                 emailInput(),
                 passwordInput(),
-                isLoading ? LoadingButton() : signInButton(),
+                isLoading ? const LoadingButton(text: "Creating...") : signInButton(),
                 Spacer(),
                 footer()
               ],

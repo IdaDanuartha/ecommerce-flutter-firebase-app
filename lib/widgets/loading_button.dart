@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 
 class LoadingButton extends StatelessWidget {
+  const LoadingButton({super.key, required this.text});
+
+  final String text;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,7 +37,7 @@ class LoadingButton extends StatelessWidget {
               width: 6,
             ),
             Text(
-              'Loading',
+              "$text...",
               style: primaryTextStyle.copyWith(
                 fontSize: 16,
                 fontWeight: medium,

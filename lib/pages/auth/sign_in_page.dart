@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_firebase/pages/auth/sign_up_page.dart';
 import 'package:ecommerce_firebase/providers/cart_provider.dart';
@@ -21,7 +23,7 @@ class _SignInPageState extends State<SignInPage> {
   TextEditingController _emailController = TextEditingController(text: '');
   TextEditingController _passwordController = TextEditingController(text: '');
 
-  bool _isLoading = false;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -48,9 +50,12 @@ void route() {
   }
 
   void signIn(String email, String password) async {
+    setState(() {
+      isLoading = true;
+    });
+
     try {
-      UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -70,7 +75,7 @@ void route() {
         );
 
       route();
-    } on FirebaseAuthException catch (e) {
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: alertColor,
@@ -82,6 +87,10 @@ void route() {
           ),
         );
     }
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
     Widget header() {
@@ -199,9 +208,7 @@ void route() {
         margin: EdgeInsets.only(top: defaultMargin),
         child: TextButton(
           onPressed: () async {
-            _isLoading = true;
             signIn(_emailController.text, _passwordController.text);
-            _isLoading = false;
           },
           style: TextButton.styleFrom(
               backgroundColor: primaryColor,
@@ -255,7 +262,7 @@ void route() {
                 header(),
                 emailInput(),
                 passwordInput(),
-                _isLoading ? LoadingButton() : signInButton(),
+                isLoading ? const LoadingButton(text: "Authenticating...") : signInButton(),
                 Spacer(),
                 footer()
               ],

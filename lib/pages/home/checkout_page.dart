@@ -86,6 +86,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
     }
 
     void handleCheckout() async {
+      setState(() {
+        isLoading = true;
+      });
+
       User? user = FirebaseAuth.instance.currentUser;
 
       String generateCode = generateWithFormat();
@@ -144,6 +148,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
           ),
         );
       }
+
+      setState(() {
+        isLoading = true;
+      });
     }
 
     AppBar header() {
@@ -740,7 +748,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   margin: const EdgeInsets.only(
                     bottom: 30,
                   ),
-                  child: LoadingButton(),
+                  child: const LoadingButton(text: "Checking your order..."),
                 )
               : Container(
                   height: 50,
