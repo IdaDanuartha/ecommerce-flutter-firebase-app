@@ -1,4 +1,5 @@
 import 'package:ecommerce_firebase/helpers/generate_random_string.dart';
+import 'package:ecommerce_firebase/helpers/location_picker_alert.dart';
 import 'package:ecommerce_firebase/helpers/send_to_gmail.dart';
 import 'package:ecommerce_firebase/pages/home/checkout_success_page.dart';
 import 'package:ecommerce_firebase/providers/cart_provider.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 import 'package:ecommerce_firebase/widgets/checkout_card.dart';
 import 'package:ecommerce_firebase/widgets/loading_button.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class CheckoutPage extends StatefulWidget {
@@ -42,6 +44,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
     return menuItems;
   }
   String paymentSelected = "Online Banking";
+
+  LatLng? selectedLocation;
 
   @override
   Widget build(BuildContext context) {
@@ -445,6 +449,40 @@ class _CheckoutPageState extends State<CheckoutPage> {
       );
     }
 
+    Widget showLocationFromMap() {
+      return Container(
+        width: double.infinity,
+        margin: EdgeInsets.only(bottom: 20),
+        child: ElevatedButton.icon(
+          onPressed: () async {
+            await showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return LocationPickerAlert(
+                  onLocationSelected: (LatLng userLocation) {
+                    selectedLocation = userLocation;
+                    print("Selected location - latitude : ${userLocation.latitude}, longitude : ${userLocation.longitude}");
+                  }
+                );
+              }
+            );
+          },
+          style: ElevatedButton.styleFrom(
+            foregroundColor: primaryColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10)
+            )
+          ),
+          icon: Icon(
+            Icons.location_on
+          ),
+          label: const Text(
+            "Select Location from Map",
+          ),
+        ),
+      );
+    }
+
     Widget paymentMethodInput() {
       return Container(
         margin: const EdgeInsets.only(bottom: 20),
@@ -559,10 +597,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
             const SizedBox(
               height: 12,
             ),
-            countryInput(),
-            provinceInput(),
-            cityInput(),
-            subdistrictInput(),
+            // countryInput(),
+            // provinceInput(),
+            // cityInput(),
+            // subdistrictInput(),
+            showLocationFromMap(),
             addressDetailInput(),
           ],
         ),

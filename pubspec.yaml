@@ -54,6 +54,8 @@ dependencies:
   connectivity_plus: ^6.0.3
   mailer: ^6.1.0
   flutter_dotenv: ^5.1.0
+  google_maps_flutter: ^2.6.1
+  geolocator: ^11.0.0
 
 dev_dependencies:
   flutter_test:

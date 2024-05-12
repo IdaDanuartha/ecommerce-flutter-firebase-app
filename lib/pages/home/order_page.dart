@@ -103,11 +103,14 @@ class _OrderPageState extends State<OrderPage> {
       );
     }
 
-    return Column(
-      children: [
-        header(),
-        orderProvider.orders.isEmpty ? emptyOrder() : content()
-      ],
+    return Container(
+      margin: EdgeInsets.only(bottom: 40),
+      child: Column(
+        children: [
+          header(),
+          orderProvider.orders.isEmpty ? emptyOrder() : content()
+        ],
+      ),
     );
   }
 }
