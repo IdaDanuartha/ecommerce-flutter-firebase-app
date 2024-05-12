@@ -20,7 +20,7 @@ void sendToGmail(String title, String status, String orderCode, String totalPric
     // ..bccRecipients.add(Address('example3@gmail.com'))
     ..subject = title
     ..html =
-        "Order $status with ID $orderCode with a total price of \$$totalPrice";
+        "Order $status with ID #$orderCode with a total price of \$$totalPrice";
   // ..text = 'This is the plain text.\nThis is line 2 of the text part.';
 
   try {
