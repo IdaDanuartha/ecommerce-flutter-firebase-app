@@ -96,6 +96,33 @@ class OrderProvider with ChangeNotifier {
     }
   }
 
+  Future<bool> changeStatusOrder(String orderId, Map<Object, Object> data, BuildContext context) async {
+    try {
+      ProductProvider productProvider = Provider.of<ProductProvider>(context, listen: false);
+
+      var order = await OrderService().changeStatusOrder(orderId, data);
+      int index = _orders.indexWhere((item) => item.id == orderId);
+
+      // await Future.forEach(order.items, (item) async {
+      //   await productProvider.update(item., {
+      //     "qty": item.product.qty + item.qty
+      //   });
+      // });
+
+      if(index != -1) {
+        _orders[index] = OrderModel.fromJson(order);
+      }
+
+      await productProvider.getProducts();
+
+      notifyListeners();
+      return true;
+    } catch (e) {
+      print("Error Provider: $e");
+      return false;
+    }
+  }
+
   Future<bool> checkout(newData, BuildContext context) async {
     try {
       ProductProvider productProvider = Provider.of<ProductProvider>(context, listen: false);

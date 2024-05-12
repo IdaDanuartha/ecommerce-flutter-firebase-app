@@ -32,12 +32,12 @@ class _SplashPageState extends State<SplashPage> {
 
   getInit() async {
     await Provider.of<ProductProvider>(context, listen: false).getProducts();
-    await Provider.of<UserProvider>(context, listen: false).getUser(user!.uid);
     await Provider.of<UserProvider>(context, listen: false).getStaff();
     await Provider.of<UserProvider>(context, listen: false).getCustomers();
     await Provider.of<UserProvider>(context, listen: false).getAdmins();
 
     if(user?.uid != null) {
+      await Provider.of<UserProvider>(context, listen: false).getUser(user!.uid);
       await FirebaseFirestore.instance.collection('users').doc(user!.uid).get().then(
         (DocumentSnapshot doc) async {
             final data = doc.data() as Map<String, dynamic>;

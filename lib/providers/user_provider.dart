@@ -43,6 +43,15 @@ class UserProvider with ChangeNotifier {
       print(e);
     }
   }
+  
+  Future<UserModel?> getUserById(String id) async {
+    try {
+      UserModel? user = await UserService().getUser(id);
+      return user;
+    } catch (e) {
+      print(e);
+    }
+  }
 
   Future<void> getStaff() async {
     try {
@@ -74,6 +83,20 @@ class UserProvider with ChangeNotifier {
       notifyListeners();
     } catch (e) {
       print(e);
+    }
+  }
+
+  Future<bool> updateProfile(Map<Object, Object> data) async {
+    try {
+      var user = await UserService().updateProfile(data);
+
+      _user = UserModel.fromJson(user);
+
+      notifyListeners();
+      return true;
+    } catch (e) {
+      print("Error: $e");
+      return false;
     }
   }
 }

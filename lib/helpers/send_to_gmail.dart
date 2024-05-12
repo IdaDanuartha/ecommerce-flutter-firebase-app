@@ -11,7 +11,7 @@ void sendToGmail(String title, String status, String orderCode, String totalPric
   final smtpServer = gmail(username!, password!);
 
   final message = Message()
-    ..from = Address(username, 'Owner')
+    ..from = Address(username, 'E-Commerce Owner')
     ..recipients.addAll([
       ...userProvider.admins.map((admin) => admin.email),
       ...userProvider.staff.map((staff) => staff.email),
@@ -20,7 +20,32 @@ void sendToGmail(String title, String status, String orderCode, String totalPric
     // ..bccRecipients.add(Address('example3@gmail.com'))
     ..subject = title
     ..html =
-        "Order $status with ID $orderCode with a total price of \$$totalPrice";
+        "Order $status with code $orderCode with a total price of \$$totalPrice";
+  // ..text = 'This is the plain text.\nThis is line 2 of the text part.';
+
+  try {
+    final sendReport = await send(message, smtpServer);
+    print('Message sent: ' + sendReport.toString());
+  } on MailerException catch (e) {
+    print('Message not sent.');
+    for (var p in e.problems) {
+      print('Problem: ${p.code}: ${p.msg}');
+    }
+  }
+}
+
+void sendMessageToCustomer(String title, String status, String orderCode, String email, BuildContext context) async {
+  var username = dotenv.env["GMAIL_USERNAME"];
+  var password = dotenv.env["GMAIL_PASSWORD"];
+
+  final smtpServer = gmail(username!, password!);
+
+  final message = Message()
+    ..from = Address(username, 'E-Commerce Owner')
+    ..recipients.add(email)
+    ..subject = title
+    ..html =
+        "Your order with code $orderCode has arrived";
   // ..text = 'This is the plain text.\nThis is line 2 of the text part.';
 
   try {
