@@ -32,7 +32,7 @@ class _SplashPageState extends State<SplashPage> {
 
   getInit() async {
     await Provider.of<ProductProvider>(context, listen: false).getProducts();
-    await Provider.of<UserProvider>(context, listen: false).getUsers();
+    await Provider.of<UserProvider>(context, listen: false).getUser(user!.uid);
     await Provider.of<UserProvider>(context, listen: false).getStaff();
     await Provider.of<UserProvider>(context, listen: false).getCustomers();
     await Provider.of<UserProvider>(context, listen: false).getAdmins();
@@ -44,6 +44,7 @@ class _SplashPageState extends State<SplashPage> {
             if(data["role"] == "admin" || data["role"] == "staff") {
               Navigator.pushNamed(context, AdminPage.routeName);
               await Provider.of<OrderProvider>(context, listen: false).getOrders();
+              await Provider.of<OrderProvider>(context, listen: false).getOrdersMonthly();
             } else {
               Navigator.pushNamed(context, MainPage.routeName);
               await Provider.of<CartProvider>(context, listen: false).loadItemsFromPrefs();

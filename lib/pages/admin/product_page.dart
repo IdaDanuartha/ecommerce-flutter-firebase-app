@@ -3,7 +3,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:ecommerce_firebase/pages/admin/products/add_product_page.dart';
-import 'package:ecommerce_firebase/pages/admin/products/detail_product_page.dart';
+import 'package:ecommerce_firebase/pages/admin/products/product_detail_page.dart';
 import 'package:ecommerce_firebase/providers/product_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
@@ -175,7 +175,7 @@ List<TableRow> dataRows(ProductProvider productProvider, BuildContext context) {
               verticalAlignment: TableCellVerticalAlignment.middle,
               child: InkWell(
                 onTap: () {
-                  Navigator.pushNamed(context, DetailProductPage.routeName, arguments: product);
+                  Navigator.pushNamed(context, ProductDetailPage.routeName, arguments: product);
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(12),
@@ -190,7 +190,7 @@ List<TableRow> dataRows(ProductProvider productProvider, BuildContext context) {
               verticalAlignment: TableCellVerticalAlignment.middle,
               child: InkWell(
                 onTap: () {
-                  Navigator.pushNamed(context, DetailProductPage.routeName, arguments: product);
+                  Navigator.pushNamed(context, ProductDetailPage.routeName, arguments: product);
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(12),
@@ -205,7 +205,7 @@ List<TableRow> dataRows(ProductProvider productProvider, BuildContext context) {
               verticalAlignment: TableCellVerticalAlignment.middle,
               child: InkWell(
                 onTap: () {
-                  Navigator.pushNamed(context, DetailProductPage.routeName, arguments: product);
+                  Navigator.pushNamed(context, ProductDetailPage.routeName, arguments: product);
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(12),

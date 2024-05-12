@@ -20,7 +20,7 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
-    UserProvider userProvider= Provider.of<UserProvider>(context);
+    UserProvider userProvider = Provider.of<UserProvider>(context);
     OrderProvider orderProvider = Provider.of<OrderProvider>(context);
 
     int productCount = productProvider.products.length;
@@ -28,11 +28,9 @@ class _DashboardPageState extends State<DashboardPage> {
     int customerCount = userProvider.customers.length;
     int orderCount = orderProvider.orders.length;
 
-    User? user = FirebaseAuth.instance.currentUser;
-    var userDetail =
-        FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
+    String userRole = userProvider.user!.role;
 
-    List<double> weeklyTransactions = [20, 30, 10, 5, 50, 100, 35, 40, 210, 180, 120, 200];
+    List<double> ordersMonthly = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
     Widget header() {
       return Container(
@@ -45,170 +43,177 @@ class _DashboardPageState extends State<DashboardPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  FutureBuilder<DocumentSnapshot>(
-                    future: userDetail,
-                    builder: (BuildContext context,
-                        AsyncSnapshot<DocumentSnapshot> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        Map<String, dynamic> data =
-                            snapshot.data!.data() as Map<String, dynamic>;
-
-                        return Text(
-                          "Hello, ${data["name"]}",
-                          style: primaryTextStyle.copyWith(
-                              fontSize: 24, fontWeight: semiBold),
-                        );
-                      }
-                      return const Text("");
-                    },
+                  Text(
+                    "Hello, ${userProvider.user!.name}",
+                    style: primaryTextStyle.copyWith(
+                        fontSize: 24, fontWeight: semiBold),
                   ),
-                  FutureBuilder<DocumentSnapshot>(
-                    future: userDetail,
-                    builder: (BuildContext context,
-                        AsyncSnapshot<DocumentSnapshot> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        Map<String, dynamic> data =
-                            snapshot.data!.data() as Map<String, dynamic>;
-
-                        return Text(
-                          "@${data["username"]}",
-                          style: subtitleTextStyle.copyWith(fontSize: 16),
-                        );
-                      }
-                      return const Text("");
-                    },
+                  Text(
+                    "@${userProvider.user!.username}",
+                    style: subtitleTextStyle.copyWith(fontSize: 16),
                   ),
                 ],
               ),
             ),
-            FutureBuilder<DocumentSnapshot>(
-              future: userDetail,
-              builder: (BuildContext context,
-                  AsyncSnapshot<DocumentSnapshot> snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  Map<String, dynamic> data =
-                      snapshot.data!.data() as Map<String, dynamic>;
-
-                  return Container(
-                    width: 54,
-                    height: 54,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                            image: NetworkImage(data["profile_url"]))),
-                  );
-                }
-                return Container();
-              },
+            ClipOval(
+              child: Image.network(
+                userProvider.user!.profileUrl != ""
+                    ? userProvider.user!.profileUrl
+                    : "https://picsum.photos/id/64/100",
+                width: 54,
+              ),
             ),
           ],
         ),
       );
     }
 
+    List<Widget> dataAdmin = [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            width: (MediaQuery.of(context).size.width - 80) / 2,
+            padding: EdgeInsets.all(15),
+            decoration: BoxDecoration(
+                color: bgColor3, borderRadius: BorderRadius.circular(8)),
+            child: Column(
+              children: [
+                Text(
+                  "Total Products",
+                  style: primaryTextStyle.copyWith(
+                      fontSize: 12, color: Color.fromRGBO(255, 255, 255, .5)),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  productCount > 0 ? productCount.toString() : "-",
+                  style: primaryTextStyle.copyWith(fontSize: 24),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            width: (MediaQuery.of(context).size.width - 80) / 2,
+            padding: EdgeInsets.all(15),
+            decoration: BoxDecoration(
+                color: bgColor3, borderRadius: BorderRadius.circular(8)),
+            child: Column(
+              children: [
+                Text(
+                  "Total Transactions",
+                  style: primaryTextStyle.copyWith(
+                      fontSize: 12, color: Color.fromRGBO(255, 255, 255, .5)),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  orderCount > 0 ? orderCount.toString() : "-",
+                  style: primaryTextStyle.copyWith(fontSize: 24),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+      SizedBox(height: 20),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            width: (MediaQuery.of(context).size.width - 80) / 2,
+            padding: EdgeInsets.all(15),
+            decoration: BoxDecoration(
+                color: bgColor3, borderRadius: BorderRadius.circular(8)),
+            child: Column(
+              children: [
+                Text(
+                  "Total Staff",
+                  style: primaryTextStyle.copyWith(
+                      fontSize: 12, color: Color.fromRGBO(255, 255, 255, .5)),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  staffCount > 0 ? staffCount.toString() : "-",
+                  style: primaryTextStyle.copyWith(fontSize: 24),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            width: (MediaQuery.of(context).size.width - 80) / 2,
+            padding: EdgeInsets.all(15),
+            decoration: BoxDecoration(
+                color: bgColor3, borderRadius: BorderRadius.circular(8)),
+            child: Column(
+              children: [
+                Text(
+                  "Total Customers",
+                  style: primaryTextStyle.copyWith(
+                      fontSize: 12, color: Color.fromRGBO(255, 255, 255, .5)),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  customerCount > 0 ? customerCount.toString() : "-",
+                  style: primaryTextStyle.copyWith(fontSize: 24),
+                ),
+              ],
+            ),
+          ),
+        ],
+      )
+    ];
+
+    List<Widget> dataStaff = [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            width: (MediaQuery.of(context).size.width - 80) / 2,
+            padding: EdgeInsets.all(15),
+            decoration: BoxDecoration(
+                color: bgColor3, borderRadius: BorderRadius.circular(8)),
+            child: Column(
+              children: [
+                Text(
+                  "Total Customers",
+                  style: primaryTextStyle.copyWith(
+                      fontSize: 12, color: Color.fromRGBO(255, 255, 255, .5)),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  customerCount > 0 ? customerCount.toString() : "-",
+                  style: primaryTextStyle.copyWith(fontSize: 24),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            width: (MediaQuery.of(context).size.width - 80) / 2,
+            padding: EdgeInsets.all(15),
+            decoration: BoxDecoration(
+                color: bgColor3, borderRadius: BorderRadius.circular(8)),
+            child: Column(
+              children: [
+                Text(
+                  "Total Transactions",
+                  style: primaryTextStyle.copyWith(
+                      fontSize: 12, color: Color.fromRGBO(255, 255, 255, .5)),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  orderCount > 0 ? orderCount.toString() : "-",
+                  style: primaryTextStyle.copyWith(fontSize: 24),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    ];
     Widget dataCount() {
       return Container(
         margin: const EdgeInsets.only(top: 50),
         width: MediaQuery.of(context).size.width,
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  width: (MediaQuery.of(context).size.width - 80) / 2,
-                  padding: EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                      color: bgColor3, borderRadius: BorderRadius.circular(8)),
-                  child: Column(
-                    children: [
-                      Text(
-                        "Total Products",
-                        style: primaryTextStyle.copyWith(
-                            fontSize: 12,
-                            color: Color.fromRGBO(255, 255, 255, .5)),
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        productCount > 0 ? productCount.toString() : "-",
-                        style: primaryTextStyle.copyWith(fontSize: 24),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  width: (MediaQuery.of(context).size.width - 80) / 2,
-                  padding: EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                      color: bgColor3, borderRadius: BorderRadius.circular(8)),
-                  child: Column(
-                    children: [
-                      Text(
-                        "Total Transactions",
-                        style: primaryTextStyle.copyWith(
-                            fontSize: 12,
-                            color: Color.fromRGBO(255, 255, 255, .5)),
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        orderCount > 0 ? orderCount.toString() : "-",
-                        style: primaryTextStyle.copyWith(fontSize: 24),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  width: (MediaQuery.of(context).size.width - 80) / 2,
-                  padding: EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                      color: bgColor3, borderRadius: BorderRadius.circular(8)),
-                  child: Column(
-                    children: [
-                      Text(
-                        "Total Staff",
-                        style: primaryTextStyle.copyWith(
-                            fontSize: 12,
-                            color: Color.fromRGBO(255, 255, 255, .5)),
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        staffCount > 0 ? staffCount.toString() : "-",
-                        style: primaryTextStyle.copyWith(fontSize: 24),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  width: (MediaQuery.of(context).size.width - 80) / 2,
-                  padding: EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                      color: bgColor3, borderRadius: BorderRadius.circular(8)),
-                  child: Column(
-                    children: [
-                      Text(
-                        "Total Customers",
-                        style: primaryTextStyle.copyWith(
-                            fontSize: 12,
-                            color: Color.fromRGBO(255, 255, 255, .5)),
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        customerCount > 0 ? customerCount.toString() : "-",
-                        style: primaryTextStyle.copyWith(fontSize: 24),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            )
-          ],
-        ),
+        child: Column(children: userRole == "admin" ? dataAdmin : dataStaff),
       );
     }
 
@@ -228,7 +233,10 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
             SizedBox(
               height: 300,
-              child: BarChartSample3(weeklyTransactions: weeklyTransactions),
+              child: BarChartSample3(
+                  weeklyTransactions: orderProvider.ordersMonthly.isNotEmpty
+                      ? orderProvider.ordersMonthly
+                      : ordersMonthly),
             ),
           ],
         ),
@@ -262,9 +270,9 @@ class _DashboardPageState extends State<DashboardPage> {
       margin: EdgeInsets.symmetric(horizontal: defaultMargin),
       child: ListView(
         children: [
-          header(), 
-          dataCount(), 
-          barChart(), 
+          header(),
+          dataCount(),
+          barChart(),
           // pieChart()
           SizedBox(height: 30)
         ],

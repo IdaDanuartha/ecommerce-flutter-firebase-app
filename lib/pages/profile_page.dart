@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_firebase/pages/edit_profile_page.dart';
 import 'package:ecommerce_firebase/pages/auth/sign_in_page.dart';
+import 'package:ecommerce_firebase/providers/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
+import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -13,153 +15,9 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  Widget header(user, handleLogout) {
-    return AppBar(
-      backgroundColor: bgColor1,
-      automaticallyImplyLeading: false,
-      elevation: 0,
-      flexibleSpace: SafeArea(
-        child: Container(
-          padding: EdgeInsets.all(defaultMargin),
-          child: Row(
-            children: [
-              FutureBuilder<DocumentSnapshot>(
-                future: user,
-                builder: (BuildContext context,
-                    AsyncSnapshot<DocumentSnapshot> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    Map<String, dynamic> data =
-                        snapshot.data!.data() as Map<String, dynamic>;
-
-                    return ClipOval(
-                      child: Image.network(
-                        data["profile_url"] != "" ? data["profile_url"] : "https://picsum.photos/id/64/100",
-                        width: 64,
-                      ),
-                    );
-                  }
-                  return Container();
-                },
-              ),
-              SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    FutureBuilder<DocumentSnapshot>(
-                      future: user,
-                      builder: (BuildContext context,
-                          AsyncSnapshot<DocumentSnapshot> snapshot) {
-                        if (snapshot.connectionState == ConnectionState.done) {
-                          Map<String, dynamic> data =
-                              snapshot.data!.data() as Map<String, dynamic>;
-
-                          return Text(
-                            data["name"],
-                            style: primaryTextStyle.copyWith(
-                                fontSize: 24, fontWeight: semiBold),
-                          );
-                        }
-                        return Text("");
-                      },
-                    ),
-                    FutureBuilder<DocumentSnapshot>(
-                      future: user,
-                      builder: (BuildContext context,
-                          AsyncSnapshot<DocumentSnapshot> snapshot) {
-                        if (snapshot.connectionState == ConnectionState.done) {
-                          Map<String, dynamic> data =
-                              snapshot.data!.data() as Map<String, dynamic>;
-
-                          return Text(
-                            "@${data["username"]}",
-                            style: subtitleTextStyle.copyWith(
-                              fontSize: 16,
-                            ),
-                          );
-                        }
-                        return Text("");
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              GestureDetector(
-                onTap: handleLogout,
-                child: Image.asset(
-                  'assets/button_exit.png',
-                  width: 20,
-                  color: primaryTextColor,
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget menuItem(String text) {
-    return Container(
-      margin: EdgeInsets.only(top: 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            text,
-            style: secondaryTextStyle.copyWith(fontSize: 15),
-          ),
-          Icon(
-            Icons.chevron_right,
-            color: primaryTextColor,
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget content() {
-    return Expanded(
-      child: Container(
-        width: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: defaultMargin),
-        decoration: BoxDecoration(color: bgColor3),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 20),
-            Text(
-              'Account',
-              style:
-                  primaryTextStyle.copyWith(fontSize: 18, fontWeight: semiBold),
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(context, EditProfile.routeName);
-              },
-              child: menuItem("Edit Profile"),
-            ),
-            menuItem("Help"),
-            SizedBox(height: 30),
-            Text(
-              'General',
-              style:
-                  primaryTextStyle.copyWith(fontSize: 18, fontWeight: semiBold),
-            ),
-            menuItem("Privacy & Policy"),
-            menuItem("Terms of Service"),
-            menuItem("Rate App"),
-          ],
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    User? user = FirebaseAuth.instance.currentUser;
-    var userDetail =
-        FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
+    UserProvider userProvider = Provider.of<UserProvider>(context);
 
     final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -169,8 +27,116 @@ class _ProfilePageState extends State<ProfilePage> {
           context, MaterialPageRoute(builder: (context) => SignInPage()));
     }
 
+    Widget header() {
+      return AppBar(
+        backgroundColor: bgColor1,
+        automaticallyImplyLeading: false,
+        elevation: 0,
+        flexibleSpace: SafeArea(
+          child: Container(
+            padding: EdgeInsets.all(defaultMargin),
+            child: Row(
+              children: [
+                ClipOval(
+                  child: Image.network(
+                    userProvider.user!.profileUrl != ""
+                        ? userProvider.user!.profileUrl
+                        : "https://picsum.photos/id/64/100",
+                    width: 64,
+                  ),
+                ),
+                SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        userProvider.user!.name,
+                        style: primaryTextStyle.copyWith(
+                            fontSize: 24, fontWeight: semiBold),
+                      ),
+                      Text(
+                        "@${userProvider.user!.username}",
+                        style: subtitleTextStyle.copyWith(
+                          fontSize: 16,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                GestureDetector(
+                  onTap: handleLogout,
+                  child: Image.asset(
+                    'assets/button_exit.png',
+                    width: 20,
+                    color: primaryTextColor,
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    Widget menuItem(String text) {
+      return Container(
+        margin: EdgeInsets.only(top: 16),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              text,
+              style: secondaryTextStyle.copyWith(fontSize: 15),
+            ),
+            Icon(
+              Icons.chevron_right,
+              color: primaryTextColor,
+            )
+          ],
+        ),
+      );
+    }
+
+    Widget content() {
+      return Expanded(
+        child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(horizontal: defaultMargin),
+          decoration: BoxDecoration(color: bgColor3),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 20),
+              Text(
+                'Account',
+                style: primaryTextStyle.copyWith(
+                    fontSize: 18, fontWeight: semiBold),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, EditProfile.routeName);
+                },
+                child: menuItem("Edit Profile"),
+              ),
+              menuItem("Help"),
+              SizedBox(height: 30),
+              Text(
+                'General',
+                style: primaryTextStyle.copyWith(
+                    fontSize: 18, fontWeight: semiBold),
+              ),
+              menuItem("Privacy & Policy"),
+              menuItem("Terms of Service"),
+              menuItem("Rate App"),
+            ],
+          ),
+        ),
+      );
+    }
+
     return Column(
-      children: [header(userDetail, handleLogout), content()],
+      children: [header(), content()],
     );
   }
 }

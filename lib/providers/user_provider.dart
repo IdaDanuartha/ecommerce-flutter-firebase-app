@@ -3,18 +3,18 @@ import 'package:ecommerce_firebase/services/user_service.dart';
 import 'package:flutter/material.dart';
 
 class UserProvider with ChangeNotifier {
-  List<UserModel> _users = [];
+  late UserModel? _user;
   List<UserModel> _staff = [];
   List<UserModel> _customers = [];
   List<UserModel> _admins = [];
 
-  List<UserModel> get users => _users;
+  UserModel? get user => _user;
   List<UserModel> get staff => _staff;
   List<UserModel> get customers => _customers;
   List<UserModel> get admins => _admins;
 
-  set users(List<UserModel> users) {
-    _users = users;
+  set user(UserModel? user) {
+    _user = user;
     notifyListeners();
   }
 
@@ -33,10 +33,10 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getUsers() async {
+  Future<void> getUser(String id) async {
     try {
-      List<UserModel> users = await UserService().getUsers();
-      _users = users;
+      UserModel? user = await UserService().getUser(id);
+      _user = user;
 
       notifyListeners();
     } catch (e) {

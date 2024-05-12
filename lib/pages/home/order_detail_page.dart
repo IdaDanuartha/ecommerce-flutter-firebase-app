@@ -35,7 +35,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
 
       var updateOrder = await orderProvider.cancelOrder(args.id, {
         "status": 4
-      });
+      }, context);
 
       String totalPrice = (args.subTotal + 0 - args.totalDiscount).toStringAsFixed(2);
 
