@@ -3,7 +3,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:ecommerce_firebase/pages/admin/staff/add_staff_page.dart';
-import 'package:ecommerce_firebase/pages/admin/products/detail_product_page.dart';
+import 'package:ecommerce_firebase/pages/admin/products/product_detail_page.dart';
 import 'package:ecommerce_firebase/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
@@ -170,7 +170,7 @@ List<TableRow> dataRows(UserProvider userProvider, BuildContext context) {
               verticalAlignment: TableCellVerticalAlignment.middle,
               child: InkWell(
                 onTap: () {
-                  Navigator.pushNamed(context, DetailProductPage.routeName, arguments: user);
+                  Navigator.pushNamed(context, ProductDetailPage.routeName, arguments: user);
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(12),
@@ -187,7 +187,7 @@ List<TableRow> dataRows(UserProvider userProvider, BuildContext context) {
               verticalAlignment: TableCellVerticalAlignment.middle,
               child: InkWell(
                 onTap: () {
-                  Navigator.pushNamed(context, DetailProductPage.routeName, arguments: user);
+                  Navigator.pushNamed(context, ProductDetailPage.routeName, arguments: user);
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(12),
@@ -202,7 +202,7 @@ List<TableRow> dataRows(UserProvider userProvider, BuildContext context) {
               verticalAlignment: TableCellVerticalAlignment.middle,
               child: InkWell(
                 onTap: () {
-                  Navigator.pushNamed(context, DetailProductPage.routeName, arguments: user);
+                  Navigator.pushNamed(context, ProductDetailPage.routeName, arguments: user);
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(12),

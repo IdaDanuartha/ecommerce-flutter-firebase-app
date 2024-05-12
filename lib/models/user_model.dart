@@ -34,4 +34,6 @@ class UserModel {
       "role": role,
     };
   }
+
+  void add(UserModel userModel) {}
 }

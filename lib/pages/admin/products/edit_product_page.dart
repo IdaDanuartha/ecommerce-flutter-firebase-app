@@ -7,6 +7,7 @@ import 'dart:io';
 import 'package:ecommerce_firebase/controllers/add_product_images_controller.dart';
 import 'package:ecommerce_firebase/models/product_model.dart';
 import 'package:ecommerce_firebase/providers/product_provider.dart';
+import 'package:ecommerce_firebase/widgets/loading_button.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 import 'package:get/get.dart';
@@ -39,7 +40,7 @@ class _EditProductPageState extends State<EditProductPage> {
 
   TextEditingController controller = TextEditingController();
 
-  bool _isLoading = false;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +54,9 @@ class _EditProductPageState extends State<EditProductPage> {
     _descriptionController.text = args.description;
 
     void updateProduct() async {
-      // print(addProductImagesController.selectedImages);
+      setState(() {
+        isLoading = true;
+      });
       var updateProduct = await productProvider.update(args.id, {
         "name": _nameController.text,
         "price": double.parse(_priceController.text),
@@ -91,6 +94,10 @@ class _EditProductPageState extends State<EditProductPage> {
           ),
         );
       }
+
+      setState(() {
+        isLoading = false;
+      });
     }
 
     Widget imageInput() {
@@ -136,30 +143,33 @@ class _EditProductPageState extends State<EditProductPage> {
           return imageController.selectedImages.length > 0
               ? Container(
                   width: MediaQuery.of(context).size.width - 20,
-                  height: 100,
+                  height: imageController.selectedImages.length > 3 ? 180 : 100,
                   margin: const EdgeInsets.symmetric(vertical: 20),
                   child: GridView.builder(
                     itemCount: imageController.selectedImages.length,
                     physics: const BouncingScrollPhysics(),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 20,
+                      crossAxisCount: 3,
+                      mainAxisSpacing: 10,
                       crossAxisSpacing: 10,
                     ),
                     itemBuilder: (BuildContext context, int index) {
                       return Stack(
                         children: [
-                          Image.file(
-                            File(addProductImagesController
-                                .selectedImages[index].path),
-                            fit: BoxFit.cover,
-                            height: 100,
-                            width: 120,
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(4),
+                            child: Image.file(
+                              File(addProductImagesController
+                                  .selectedImages[index].path),
+                              fit: BoxFit.cover,
+                              height: 100,
+                              width: 120,
+                            ),
                           ),
                           Positioned(
-                            right: 24,
-                            top: -3,
+                            right: 0,
+                            top: 0,
                             child: InkWell(
                               onTap: () {
                                 imageController.removeImages(index);
@@ -180,6 +190,41 @@ class _EditProductPageState extends State<EditProductPage> {
                 )
               : const SizedBox.shrink();
         },
+      );
+    }
+
+    Widget oldImages() {
+      return Container(
+        margin: const EdgeInsets.only(top: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Old Images',
+                style: primaryTextStyle.copyWith(
+                    fontSize: 16, fontWeight: medium, color: primaryTextColor),
+              ),
+            ),
+            const SizedBox(height: 12),
+            Wrap(
+                spacing: 10,
+                runSpacing: 20,
+                children: [
+                  for(var image in args.images ) ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: Image.network(
+                      image,
+                      width: 110,
+                      height: 110,
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                ]
+            )
+          ],
+        ),
       );
     }
 
@@ -417,13 +462,26 @@ class _EditProductPageState extends State<EditProductPage> {
           child: Column(
           children: [
             imageInput(),
+            oldImages(),
+            addProductImagesController.selectedImages.length > 0 ?
+            Container(
+              margin: EdgeInsets.only(top: 15),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'New Images',
+                  style: primaryTextStyle.copyWith(
+                      fontSize: 16, fontWeight: medium, color: primaryTextColor),
+                ),
+              ),
+            ) : SizedBox.shrink(),
             showImages(),
             nameInput(),
             priceInput(),
             discountInput(),
             qtyInput(),
             descriptionInput(),
-            addProductButton(),
+            isLoading ? LoadingButton(text: "Saving") : addProductButton(),
           ],
         ),
         )),

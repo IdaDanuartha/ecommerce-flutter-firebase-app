@@ -8,6 +8,7 @@ import 'package:ecommerce_firebase/controllers/add_product_images_controller.dar
 import 'package:ecommerce_firebase/helpers/generate_random_string.dart';
 import 'package:ecommerce_firebase/helpers/upload_image.dart';
 import 'package:ecommerce_firebase/providers/product_provider.dart';
+import 'package:ecommerce_firebase/widgets/loading_button.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
@@ -42,48 +43,58 @@ class _AddProductPageState extends State<AddProductPage> {
 
   TextEditingController controller = TextEditingController();
 
-  bool _isLoading = false;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
 
     void storeProduct() async {
-      var newProduct = await productProvider.store({
-        "name": _nameController.text,
-        "price": double.parse(_priceController.text),
-        "discount": double.parse(_discountController.text),
-        "qty": int.parse(_qtyController.text),
-        "description": _descriptionController.text,
-        "images": uploadMultipleImages(addProductImagesController.selectedImages),
-        "created_at": DateTime.now()
+      setState(() {
+        isLoading = true;
       });
+      print(uploadMultipleImages(addProductImagesController.selectedImages));
+      // var newProduct = await productProvider.store({
+      //   "name": _nameController.text,
+      //   "price": double.parse(_priceController.text),
+      //   "discount": double.parse(_discountController.text),
+      //   "qty": int.parse(_qtyController.text),
+      //   "description": _descriptionController.text,
+      //   "images": uploadMultipleImages(addProductImagesController.selectedImages),
+      //   "created_at": DateTime.now()
+      // });
+      //
+      // if (newProduct) {
+      //   Navigator.pop(context);
+      //
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //     SnackBar(
+      //       backgroundColor: successColor,
+      //       duration: const Duration(milliseconds: 2500),
+      //       content: const Text(
+      //         'Product created successfully',
+      //         textAlign: TextAlign.center,
+      //       ),
+      //     ),
+      //   );
+      //
+      //   addProductImagesController.selectedImages.clear();
+      // } else {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //     SnackBar(
+      //       backgroundColor: alertColor,
+      //       duration: const Duration(milliseconds: 2500),
+      //       content: const Text(
+      //         'Failed to create product',
+      //         textAlign: TextAlign.center,
+      //       ),
+      //     ),
+      //   );
+      // }
 
-      if (newProduct) {
-        Navigator.pop(context);
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: successColor,
-            duration: const Duration(milliseconds: 2500),
-            content: const Text(
-              'Product created successfully',
-              textAlign: TextAlign.center,
-            ),
-          ),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: alertColor,
-            duration: const Duration(milliseconds: 2500),
-            content: const Text(
-              'Failed to create product',
-              textAlign: TextAlign.center,
-            ),
-          ),
-        );
-      }
+      setState(() {
+        isLoading = false;
+      });
     }
 
     Widget imageInput() {
@@ -123,57 +134,60 @@ class _AddProductPageState extends State<AddProductPage> {
 
     Widget showImages() {
       return //show Images
-          GetBuilder<AddProductImagesController>(
-        init: AddProductImagesController(),
-        builder: (imageController) {
-          return imageController.selectedImages.length > 0
-              ? Container(
-                  width: MediaQuery.of(context).size.width - 20,
-                  height: 100,
-                  margin: const EdgeInsets.symmetric(vertical: 20),
-                  child: GridView.builder(
-                    itemCount: imageController.selectedImages.length,
-                    physics: const BouncingScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 20,
-                      crossAxisSpacing: 10,
-                    ),
-                    itemBuilder: (BuildContext context, int index) {
-                      return Stack(
-                        children: [
-                          Image.file(
-                            File(addProductImagesController
-                                .selectedImages[index].path),
-                            fit: BoxFit.cover,
-                            height: 100,
-                            width: 120,
-                          ),
-                          Positioned(
-                            right: 24,
-                            top: -3,
-                            child: InkWell(
-                              onTap: () {
-                                imageController.removeImages(index);
-                              },
-                              child: CircleAvatar(
-                                backgroundColor: Colors.white24,
-                                child: Icon(
-                                  Icons.close,
-                                  color: primaryTextColor,
-                                ),
-                              ),
+        GetBuilder<AddProductImagesController>(
+          init: AddProductImagesController(),
+          builder: (imageController) {
+            return imageController.selectedImages.length > 0
+                ? Container(
+              width: MediaQuery.of(context).size.width - 20,
+              height: imageController.selectedImages.length > 3 ? 180 : 100,
+              margin: const EdgeInsets.symmetric(vertical: 20),
+              child: GridView.builder(
+                itemCount: imageController.selectedImages.length,
+                physics: const BouncingScrollPhysics(),
+                gridDelegate:
+                const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                ),
+                itemBuilder: (BuildContext context, int index) {
+                  return Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(4),
+                        child: Image.file(
+                          File(addProductImagesController
+                              .selectedImages[index].path),
+                          fit: BoxFit.cover,
+                          height: 100,
+                          width: 120,
+                        ),
+                      ),
+                      Positioned(
+                        right: 0,
+                        top: 0,
+                        child: InkWell(
+                          onTap: () {
+                            imageController.removeImages(index);
+                          },
+                          child: CircleAvatar(
+                            backgroundColor: Colors.white24,
+                            child: Icon(
+                              Icons.close,
+                              color: primaryTextColor,
                             ),
                           ),
-                        ],
-                      );
-                    },
-                  ),
-                )
-              : const SizedBox.shrink();
-        },
-      );
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            )
+                : const SizedBox.shrink();
+          },
+        );
     }
 
     Widget nameInput() {
@@ -413,7 +427,7 @@ class _AddProductPageState extends State<AddProductPage> {
             discountInput(),
             qtyInput(),
             descriptionInput(),
-            addProductButton(),
+            isLoading ? LoadingButton(text: "Creating") : addProductButton(),
           ],
         ),
       )),

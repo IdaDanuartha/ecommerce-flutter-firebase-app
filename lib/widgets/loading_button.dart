@@ -37,7 +37,7 @@ class LoadingButton extends StatelessWidget {
               width: 6,
             ),
             Text(
-              "$text...",
+              "$text",
               style: primaryTextStyle.copyWith(
                 fontSize: 16,
                 fontWeight: medium,

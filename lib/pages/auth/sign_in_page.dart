@@ -7,6 +7,7 @@ import 'package:ecommerce_firebase/pages/home/home_page.dart';
 import 'package:ecommerce_firebase/pages/layouts/main_page.dart';
 import 'package:ecommerce_firebase/providers/cart_provider.dart';
 import 'package:ecommerce_firebase/providers/order_provider.dart';
+import 'package:ecommerce_firebase/providers/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
@@ -39,7 +40,6 @@ void route() {
             .get()
             .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
-        
         if (documentSnapshot.get('role') == "admin" || documentSnapshot.get('role') == "staff") {
           Navigator.pushNamedAndRemoveUntil(
             context,
@@ -75,6 +75,8 @@ void route() {
       await FirebaseFirestore.instance.collection('users').doc(user!.uid).get().then(
         (DocumentSnapshot doc) async {
             final data = doc.data() as Map<String, dynamic>;
+            
+            await Provider.of<UserProvider>(context, listen: false).getUser(user!.uid);
             if(data["role"] == "admin" || data["role"] == "staff") {
               await Provider.of<OrderProvider>(context, listen: false).getOrders();
             } else {

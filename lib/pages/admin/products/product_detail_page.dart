@@ -9,16 +9,16 @@ import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 import 'package:provider/provider.dart';
 
-class DetailProductPage extends StatefulWidget {
-  const DetailProductPage({Key? key}) : super(key: key);
+class ProductDetailPage extends StatefulWidget {
+  const ProductDetailPage({Key? key}) : super(key: key);
 
   static const routeName = '/product/detail';
 
   @override
-  State<DetailProductPage> createState() => _DetailProductPageState();
+  State<ProductDetailPage> createState() => _ProductDetailPageState();
 }
 
-class _DetailProductPageState extends State<DetailProductPage> {
+class _ProductDetailPageState extends State<ProductDetailPage> {
   @override
   void initState() {
     super.initState();
@@ -79,6 +79,41 @@ class _DetailProductPageState extends State<DetailProductPage> {
         title: Text(
           'Detail Product',
           style: primaryTextStyle.copyWith(fontSize: 18),
+        ),
+      );
+    }
+
+    Widget showImages() {
+      return Container(
+        margin: const EdgeInsets.only(top: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Product Images',
+                style: primaryTextStyle.copyWith(
+                    fontSize: 16, fontWeight: medium, color: primaryTextColor),
+              ),
+            ),
+            const SizedBox(height: 12),
+            Wrap(
+              spacing: 10,
+              runSpacing: 20,
+              children: [
+                for(var image in args.images ) ClipRRect(
+                  borderRadius: BorderRadius.circular(4),
+                  child: Image.network(
+                      image,
+                    width: 110,
+                    height: 110,
+                    fit: BoxFit.cover,
+                  ),
+                )
+              ]
+            )
+          ],
         ),
       );
     }
@@ -370,6 +405,7 @@ class _DetailProductPageState extends State<DetailProductPage> {
         child: Column(
           children: [
             actionButtons(),
+            showImages(),
             nameInput(),
             priceInput(),
             discountInput(),

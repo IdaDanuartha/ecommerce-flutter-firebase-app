@@ -10,8 +10,16 @@ class OrderProvider with ChangeNotifier {
   List<OrderModel> _orders = [];
   List<OrderModel> get orders => _orders;
 
+  List<double> _ordersMonthly = [];
+  List<double> get ordersMonthly => _ordersMonthly;
+
   set orders(List<OrderModel> orders) {
     _orders = orders;
+    notifyListeners();
+  }
+
+  set ordersMonthly(List<double> ordersMonthly) {
+    _ordersMonthly = ordersMonthly;
     notifyListeners();
   }
 
@@ -20,6 +28,20 @@ class OrderProvider with ChangeNotifier {
       _orders.clear();
       List<OrderModel> orders = await OrderService().getOrders();
       _orders = orders;
+
+      notifyListeners();
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> getOrdersMonthly() async {
+    try {
+      // _ordersMonthly.clear();
+      for(int i = 1; i <= 12; i++) {
+        double ordersCount = await OrderService().getOrdersMonthly(i);
+        _ordersMonthly.add(ordersCount);
+      }
 
       notifyListeners();
     } catch (e) {
@@ -47,14 +69,51 @@ class OrderProvider with ChangeNotifier {
     }
   }
 
-  Future<bool> cancelOrder(String orderId, Map<Object, Object> data) async {
+  Future<bool> cancelOrder(String orderId, Map<Object, Object> data, BuildContext context) async {
     try {
+      ProductProvider productProvider = Provider.of<ProductProvider>(context, listen: false);
+
       var order = await OrderService().cancelOrder(orderId, data);
       int index = _orders.indexWhere((item) => item.id == orderId);
-      
+
+      // await Future.forEach(order.items, (item) async {
+      //   await productProvider.update(item., {
+      //     "qty": item.product.qty + item.qty
+      //   });
+      // });
+
       if(index != -1) {
         _orders[index] = OrderModel.fromJson(order);
       }
+
+      await productProvider.getProducts();
+
+      notifyListeners();
+      return true;
+    } catch (e) {
+      print("Error Provider: $e");
+      return false;
+    }
+  }
+
+  Future<bool> changeStatusOrder(String orderId, Map<Object, Object> data, BuildContext context) async {
+    try {
+      ProductProvider productProvider = Provider.of<ProductProvider>(context, listen: false);
+
+      var order = await OrderService().changeStatusOrder(orderId, data);
+      int index = _orders.indexWhere((item) => item.id == orderId);
+
+      // await Future.forEach(order.items, (item) async {
+      //   await productProvider.update(item., {
+      //     "qty": item.product.qty + item.qty
+      //   });
+      // });
+
+      if(index != -1) {
+        _orders[index] = OrderModel.fromJson(order);
+      }
+
+      await productProvider.getProducts();
 
       notifyListeners();
       return true;

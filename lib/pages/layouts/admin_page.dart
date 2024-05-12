@@ -4,8 +4,10 @@ import 'package:ecommerce_firebase/pages/admin/order_page.dart';
 import 'package:ecommerce_firebase/pages/admin/product_page.dart';
 import 'package:ecommerce_firebase/pages/admin/staff_page.dart';
 import 'package:ecommerce_firebase/pages/profile_page.dart';
+import 'package:ecommerce_firebase/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
+import 'package:provider/provider.dart';
 
 class AdminPage extends StatefulWidget {
   const AdminPage({super.key});
@@ -18,7 +20,7 @@ class AdminPage extends StatefulWidget {
 
 class _AdminPageState extends State<AdminPage> {
   int _currentIndex = 0;
-  final _screens = [
+  final _screensAdmin = [
     const DashboardPage(),
     const ProductPage(),
     const OrderPage(),
@@ -27,20 +29,135 @@ class _AdminPageState extends State<AdminPage> {
     const ProfilePage(),
   ];
 
+  final _screensStaff = [
+    const DashboardPage(),
+    const OrderPage(),
+    const CustomerPage(),
+    const ProfilePage(),
+  ];
+
   @override
   Widget build(BuildContext context) {
-    // Widget cartButton() {
-    //   return FloatingActionButton(
-    //     onPressed: () {
-    //       Navigator.pushNamed(context, "/cart");
-    //     },
-    //     backgroundColor: secondaryColor,
-    //     child: Image.asset(
-    //       'assets/icon_cart.png',
-    //       width: 20,
-    //     ),
-    //   );
-    // }
+    UserProvider userProvider = Provider.of<UserProvider>(context);
+    String userRole = userProvider.user!.role;
+
+    List screens = userRole == "admin" ? _screensAdmin : _screensStaff;
+
+    List<BottomNavigationBarItem> getNavigationAdmin = [
+      BottomNavigationBarItem(
+        icon: Container(
+          margin: const EdgeInsets.only(top: 20),
+          child: Image.asset(
+            'assets/icon_analytics.png',
+            width: 21,
+            color: _currentIndex == 0 ? primaryColor : const Color(0XFF808191),
+          ),
+        ),
+        label: '',
+      ),
+      BottomNavigationBarItem(
+        icon: Container(
+          margin: const EdgeInsets.only(top: 20),
+          child: Image.asset(
+            'assets/icon_product.png',
+            width: 28,
+            color: _currentIndex == 1 ? primaryColor : const Color(0XFF808191),
+          ),
+        ),
+        label: '',
+      ),
+      BottomNavigationBarItem(
+        icon: Container(
+          margin: const EdgeInsets.only(top: 20),
+          child: Image.asset(
+            'assets/icon_order.png',
+            width: 23,
+            color: _currentIndex == 2 ? primaryColor : const Color(0XFF808191),
+          ),
+        ),
+        label: '',
+      ),
+      BottomNavigationBarItem(
+        icon: Container(
+          margin: const EdgeInsets.only(top: 20),
+          child: Image.asset(
+            'assets/icon_users.png',
+            width: 23,
+            color: _currentIndex == 3 ? primaryColor : const Color(0XFF808191),
+          ),
+        ),
+        label: '',
+      ),
+      BottomNavigationBarItem(
+        icon: Container(
+          margin: const EdgeInsets.only(top: 20),
+          child: Image.asset(
+            'assets/icon_users.png',
+            width: 23,
+            color: _currentIndex == 4 ? primaryColor : const Color(0XFF808191),
+          ),
+        ),
+        label: '',
+      ),
+      BottomNavigationBarItem(
+        icon: Container(
+          margin: const EdgeInsets.only(top: 20),
+          child: Image.asset(
+            'assets/icon_settings.png',
+            width: 20,
+            color: _currentIndex == 5 ? primaryColor : const Color(0XFF808191),
+          ),
+        ),
+        label: '',
+      ),
+    ];
+
+    List<BottomNavigationBarItem> getNavigationStaff = [
+      BottomNavigationBarItem(
+        icon: Container(
+          margin: const EdgeInsets.only(top: 20),
+          child: Image.asset(
+            'assets/icon_analytics.png',
+            width: 21,
+            color: _currentIndex == 0 ? primaryColor : const Color(0XFF808191),
+          ),
+        ),
+        label: '',
+      ),
+      BottomNavigationBarItem(
+        icon: Container(
+          margin: const EdgeInsets.only(top: 20),
+          child: Image.asset(
+            'assets/icon_order.png',
+            width: 23,
+            color: _currentIndex == 1 ? primaryColor : const Color(0XFF808191),
+          ),
+        ),
+        label: '',
+      ),
+      BottomNavigationBarItem(
+        icon: Container(
+          margin: const EdgeInsets.only(top: 20),
+          child: Image.asset(
+            'assets/icon_users.png',
+            width: 23,
+            color: _currentIndex == 2 ? primaryColor : const Color(0XFF808191),
+          ),
+        ),
+        label: '',
+      ),
+      BottomNavigationBarItem(
+        icon: Container(
+          margin: const EdgeInsets.only(top: 20),
+          child: Image.asset(
+            'assets/icon_settings.png',
+            width: 20,
+            color: _currentIndex == 3 ? primaryColor : const Color(0XFF808191),
+          ),
+        ),
+        label: '',
+      ),
+    ];
 
     Widget customButtonNav() {
       return ClipRRect(
@@ -55,100 +172,25 @@ class _AdminPageState extends State<AdminPage> {
               });
             },
             type: BottomNavigationBarType.fixed,
-            items: [
-              BottomNavigationBarItem(
-                icon: Container(
-                  margin: const EdgeInsets.only(top: 20),
-                  child: Image.asset(
-                    'assets/icon_analytics.png',
-                    width: 21,
-                    color:
-                        _currentIndex == 0 ? primaryColor : const Color(0XFF808191),
-                  ),
-                ),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Container(
-                  margin: const EdgeInsets.only(top: 20),
-                  child: Image.asset(
-                    'assets/icon_product.png',
-                    width: 28,
-                    color:
-                        _currentIndex == 1 ? primaryColor : const Color(0XFF808191),
-                  ),
-                ),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Container(
-                  margin: const EdgeInsets.only(top: 20),
-                  child: Image.asset(
-                    'assets/icon_order.png',
-                    width: 23,
-                    color:
-                        _currentIndex == 2 ? primaryColor : const Color(0XFF808191),
-                  ),
-                ),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Container(
-                  margin: const EdgeInsets.only(top: 20),
-                  child: Image.asset(
-                    'assets/icon_users.png',
-                    width: 23,
-                    color:
-                        _currentIndex == 3 ? primaryColor : const Color(0XFF808191),
-                  ),
-                ),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Container(
-                  margin: const EdgeInsets.only(top: 20),
-                  child: Image.asset(
-                    'assets/icon_users.png',
-                    width: 23,
-                    color:
-                        _currentIndex == 4 ? primaryColor : const Color(0XFF808191),
-                  ),
-                ),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Container(
-                  margin: const EdgeInsets.only(top: 20),
-                  child: Image.asset(
-                    'assets/icon_settings.png',
-                    width: 20,
-                    color:
-                        _currentIndex == 5 ? primaryColor : const Color(0XFF808191),
-                  ),
-                ),
-                label: '',
-              ),
-            ]),
+            items: userRole == "admin" ? getNavigationAdmin : getNavigationStaff
+          ),
       );
     }
 
     return Scaffold(
       backgroundColor: bgColor1,
-      // floatingActionButton: cartButton(),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: customButtonNav(),
       body: Stack(
-        children: _screens
+          children: screens
               .asMap()
               .map((i, screen) => MapEntry(
-                i,
-                Offstage(
-                  offstage: _currentIndex != i,
-                  child: screen,
-                )))
+                  i,
+                  Offstage(
+                    offstage: _currentIndex != i,
+                    child: screen,
+                  )))
               .values
-              .toList()
-      ),
+              .toList()),
     );
   }
 }
