@@ -48,40 +48,34 @@ class _CustomerDetailPageState extends State<CustomerDetailPage> {
       );
     }
 
-    // Widget showImages() {
-    //   return Container(
-    //     margin: const EdgeInsets.only(top: 20),
-    //     child: Column(
-    //       crossAxisAlignment: CrossAxisAlignment.start,
-    //       children: [
-    //         Align(
-    //           alignment: Alignment.centerLeft,
-    //           child: Text(
-    //             'Product Images',
-    //             style: primaryTextStyle.copyWith(
-    //                 fontSize: 16, fontWeight: medium, color: primaryTextColor),
-    //           ),
-    //         ),
-    //         const SizedBox(height: 12),
-    //         Wrap(
-    //           spacing: 10,
-    //           runSpacing: 20,
-    //           children: [
-    //             for(var image in args.images ) ClipRRect(
-    //               borderRadius: BorderRadius.circular(4),
-    //               child: Image.network(
-    //                   image,
-    //                 width: 110,
-    //                 height: 110,
-    //                 fit: BoxFit.cover,
-    //               ),
-    //             )
-    //           ]
-    //         )
-    //       ],
-    //     ),
-    //   );
-    // }
+    Widget showImage() {
+      return Container(
+        margin: const EdgeInsets.only(top: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Profile Image',
+                style: primaryTextStyle.copyWith(
+                    fontSize: 16, fontWeight: medium, color: primaryTextColor),
+              ),
+            ),
+            const SizedBox(height: 12),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: Image.network(
+                args.profileUrl,
+                width: 110,
+                height: 110,
+                fit: BoxFit.cover,
+              ),
+            )
+          ],
+        ),
+      );
+    }
 
     Widget nameInput() {
       return Container(
@@ -181,7 +175,7 @@ class _CustomerDetailPageState extends State<CustomerDetailPage> {
         margin: EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 20),
         child: Column(
           children: [
-            // showImages(),
+            args.profileUrl != "" ? showImage() : const SizedBox(),
             nameInput(),
             usernameInput(),
             emailInput(),

@@ -5,6 +5,7 @@ class UserModel {
   late String email;
   late String profileUrl;
   late String role;
+  late String password;
 
   UserModel({
     required this.id,
@@ -13,6 +14,7 @@ class UserModel {
     required this.email,
     required this.profileUrl,
     required this.role,
+    required this.password,
   });
 
   UserModel.fromJson(Map<String, dynamic> json) {
@@ -22,6 +24,7 @@ class UserModel {
     email = json["email"];
     profileUrl = json["profile_url"];
     role = json["role"];
+    password = json["password"];
   }
 
   Map<String, dynamic> toJson() {
@@ -32,8 +35,7 @@ class UserModel {
       "email": email,
       "profile_url": profileUrl,
       "role": role,
+      "password": password,
     };
   }
-
-  void add(UserModel userModel) {}
 }

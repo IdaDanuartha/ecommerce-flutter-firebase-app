@@ -2,23 +2,24 @@
 // import 'package:firebase_auth/firebase_auth.dart';
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:ecommerce_firebase/models/product_model.dart';
+import 'package:ecommerce_firebase/models/user_model.dart';
 import 'package:ecommerce_firebase/pages/admin/products/edit_product_page.dart';
-import 'package:ecommerce_firebase/providers/product_provider.dart';
+import 'package:ecommerce_firebase/pages/admin/staff/edit_staff_page.dart';
+import 'package:ecommerce_firebase/providers/staff_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 import 'package:provider/provider.dart';
 
-class ProductDetailPage extends StatefulWidget {
-  const ProductDetailPage({Key? key}) : super(key: key);
+class StaffDetailPage extends StatefulWidget {
+  const StaffDetailPage({Key? key}) : super(key: key);
 
-  static const routeName = '/product/detail';
+  static const routeName = '/staff/detail';
 
   @override
-  State<ProductDetailPage> createState() => _ProductDetailPageState();
+  State<StaffDetailPage> createState() => _StaffDetailPageState();
 }
 
-class _ProductDetailPageState extends State<ProductDetailPage> {
+class _StaffDetailPageState extends State<StaffDetailPage> {
   @override
   void initState() {
     super.initState();
@@ -26,24 +27,23 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    ProductProvider productProvider = Provider.of<ProductProvider>(context);
-    final args = ModalRoute.of(context)!.settings.arguments as ProductModel;
+    StaffProvider staffProvider = Provider.of<StaffProvider>(context);
+    final args = ModalRoute.of(context)!.settings.arguments as UserModel;
 
-    void deleteProduct() async {
-      // print(addProductImagesController.selectedImages);
-      var deleteProduct= await productProvider.delete(args.id);
+    void deleteStaff() async {
+      var deleteStaff= await staffProvider.delete(args.id);
 
       var nav = Navigator.of(context);
       nav.pop();
       nav.pop();
 
-      if (deleteProduct) {
+      if (deleteStaff) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: successColor,
             duration: const Duration(milliseconds: 2500),
             content: const Text(
-              'Product deleted successfully',
+              'Staff deleted successfully',
               textAlign: TextAlign.center,
             ),
           ),
@@ -54,7 +54,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             backgroundColor: alertColor,
             duration: const Duration(milliseconds: 2500),
             content: const Text(
-              'Failed to delete product',
+              'Failed to delete staff',
               textAlign: TextAlign.center,
             ),
           ),
@@ -77,13 +77,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          'Detail Product',
+          'Detail Staff',
           style: primaryTextStyle.copyWith(fontSize: 18),
         ),
       );
     }
 
-    Widget showImages() {
+    Widget showImage() {
       return Container(
         margin: const EdgeInsets.only(top: 20),
         child: Column(
@@ -92,27 +92,21 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                'Product Images',
+                'Profile Image',
                 style: primaryTextStyle.copyWith(
                     fontSize: 16, fontWeight: medium, color: primaryTextColor),
               ),
             ),
             const SizedBox(height: 12),
-            Wrap(
-              spacing: 10,
-              runSpacing: 20,
-              children: [
-                for(var image in args.images ) ClipRRect(
+            ClipRRect(
                   borderRadius: BorderRadius.circular(4),
                   child: Image.network(
-                      image,
-                    width: 100,
-                    height: 100,
+                    args.profileUrl,
+                    width: 110,
+                    height: 110,
                     fit: BoxFit.cover,
                   ),
                 )
-              ]
-            )
           ],
         ),
       );
@@ -125,7 +119,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Product name',
+              'Full Name',
               style: primaryTextStyle.copyWith(
                   fontSize: 16, fontWeight: medium, color: primaryTextColor),
             ),
@@ -148,14 +142,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       );
     }
 
-    Widget priceInput() {
+    Widget usernameInput() {
       return Container(
         margin: const EdgeInsets.only(top: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Price',
+              'Username',
               style: primaryTextStyle.copyWith(
                   fontSize: 16, fontWeight: medium, color: primaryTextColor),
             ),
@@ -168,7 +162,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   border: Border.all(width: 1, color: const Color(0xFF797979))),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Text("\$${args.price.toString()}",
+                child: Text(args.username,
                     style: primaryTextStyle.copyWith(
                         color: Color.fromRGBO(255, 255, 255, .7))),
               ),
@@ -178,14 +172,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       );
     }
 
-    Widget discountInput() {
+    Widget emailInput() {
       return Container(
         margin: const EdgeInsets.only(top: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Discount',
+              'Email',
               style: primaryTextStyle.copyWith(
                   fontSize: 16, fontWeight: medium, color: primaryTextColor),
             ),
@@ -198,71 +192,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   border: Border.all(width: 1, color: const Color(0xFF797979))),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Text(
-                    args.discount > 0 ? args.discount.toString() : "\$0",
+                child: Text(args.email,
                     style: primaryTextStyle.copyWith(
                         color: Color.fromRGBO(255, 255, 255, .7))),
-              ),
-            )
-          ],
-        ),
-      );
-    }
-
-    Widget qtyInput() {
-      return Container(
-        margin: const EdgeInsets.only(top: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Quantity',
-              style: primaryTextStyle.copyWith(
-                  fontSize: 16, fontWeight: medium, color: primaryTextColor),
-            ),
-            const SizedBox(height: 12),
-            Container(
-              height: 60,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(width: 1, color: const Color(0xFF797979))),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text("${args.qty.toString()} items",
-                    style: primaryTextStyle.copyWith(
-                        color: Color.fromRGBO(255, 255, 255, .7))),
-              ),
-            )
-          ],
-        ),
-      );
-    }
-
-    Widget descriptionInput() {
-      return Container(
-        margin: const EdgeInsets.only(top: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text(
-              'Description',
-              style: primaryTextStyle.copyWith(
-                  fontSize: 16, fontWeight: medium, color: primaryTextColor),
-            ),
-            const SizedBox(height: 12),
-            Container(
-              height: 120,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(width: 1, color: const Color(0xFF797979))),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: Text(args.description,
-                    style: primaryTextStyle.copyWith(
-                        color: const Color.fromRGBO(255, 255, 255, .7))),
               ),
             )
           ],
@@ -279,7 +211,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             margin: const EdgeInsets.only(top: 20),
             child: ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, EditProductPage.routeName,
+                Navigator.pushNamed(context, EditStaffPage.routeName,
                     arguments: args);
               },
               style: TextButton.styleFrom(
@@ -328,7 +260,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         child: Column(
                           children: [
                             Text(
-                              "Confirmation Product Deletion: Are you sure you want to delete this product? This action cannot be reversed and the product will permanently deleted from the system",
+                              "Confirmation Staff Deletion: Are you sure you want to delete this staff? This action cannot be reversed and the staff will permanently deleted from the system",
                               style: primaryTextStyle.copyWith(
                                 fontSize: 14,
                                 color: Color.fromRGBO(255, 255, 255, .5)
@@ -359,7 +291,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                   height: 50,
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      deleteProduct();
+                                      deleteStaff();
                                     },
                                     style: TextButton.styleFrom(
                                         backgroundColor: Colors.red[500],
@@ -405,12 +337,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         child: Column(
           children: [
             actionButtons(),
-            showImages(),
+            args.profileUrl != "" ? showImage() : const SizedBox(),
             nameInput(),
-            priceInput(),
-            discountInput(),
-            qtyInput(),
-            descriptionInput(),
+            usernameInput(),
+            emailInput(),
           ],
         ),
       )),

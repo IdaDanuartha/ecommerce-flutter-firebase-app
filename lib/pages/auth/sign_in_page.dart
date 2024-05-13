@@ -1,12 +1,8 @@
-import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecommerce_firebase/pages/admin/dashboard_page.dart';
 import 'package:ecommerce_firebase/pages/auth/sign_up_page.dart';
-import 'package:ecommerce_firebase/pages/home/home_page.dart';
-import 'package:ecommerce_firebase/pages/layouts/main_page.dart';
 import 'package:ecommerce_firebase/providers/cart_provider.dart';
 import 'package:ecommerce_firebase/providers/order_provider.dart';
+import 'package:ecommerce_firebase/providers/staff_provider.dart';
 import 'package:ecommerce_firebase/providers/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -79,6 +75,7 @@ void route() {
             await Provider.of<UserProvider>(context, listen: false).getUser(user!.uid);
             if(data["role"] == "admin" || data["role"] == "staff") {
               await Provider.of<OrderProvider>(context, listen: false).getOrders();
+              await Provider.of<OrderProvider>(context, listen: false).getOrdersMonthly();
             } else {
               await Provider.of<CartProvider>(context, listen: false).loadItemsFromPrefs();
               await Provider.of<OrderProvider>(context, listen: false).getOrdersByUser(userId: user?.uid);

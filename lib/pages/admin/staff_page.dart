@@ -3,8 +3,8 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:ecommerce_firebase/pages/admin/staff/add_staff_page.dart';
-import 'package:ecommerce_firebase/pages/admin/products/product_detail_page.dart';
-import 'package:ecommerce_firebase/providers/user_provider.dart';
+import 'package:ecommerce_firebase/pages/admin/staff/staff_detail.page.dart';
+import 'package:ecommerce_firebase/providers/staff_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +24,7 @@ class _StaffPageState extends State<StaffPage> {
 
   @override
   Widget build(BuildContext context) {
-    UserProvider userProvider = Provider.of<UserProvider>(context);
+    StaffProvider staffProvider = Provider.of<StaffProvider>(context);
   
     Widget addButton() {
         return TextButton(
@@ -140,7 +140,7 @@ class _StaffPageState extends State<StaffPage> {
                         }, 
                         defaultVerticalAlignment:
                             TableCellVerticalAlignment.middle,
-                        children: dataRows(userProvider, context),
+                        children: dataRows(staffProvider, context),
                       ),
                     ],
                   ),
@@ -163,14 +163,14 @@ class _StaffPageState extends State<StaffPage> {
   }
 }
 
-List<TableRow> dataRows(UserProvider userProvider, BuildContext context) {
-  return userProvider.staff
+List<TableRow> dataRows(StaffProvider staffProvider, BuildContext context) {
+  return staffProvider.staff
       .map((user) => TableRow(children: [
             TableCell(
               verticalAlignment: TableCellVerticalAlignment.middle,
               child: InkWell(
                 onTap: () {
-                  Navigator.pushNamed(context, ProductDetailPage.routeName, arguments: user);
+                  Navigator.pushNamed(context, StaffDetailPage.routeName, arguments: user);
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(12),
@@ -187,7 +187,7 @@ List<TableRow> dataRows(UserProvider userProvider, BuildContext context) {
               verticalAlignment: TableCellVerticalAlignment.middle,
               child: InkWell(
                 onTap: () {
-                  Navigator.pushNamed(context, ProductDetailPage.routeName, arguments: user);
+                  Navigator.pushNamed(context, StaffDetailPage.routeName, arguments: user);
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(12),
@@ -202,7 +202,7 @@ List<TableRow> dataRows(UserProvider userProvider, BuildContext context) {
               verticalAlignment: TableCellVerticalAlignment.middle,
               child: InkWell(
                 onTap: () {
-                  Navigator.pushNamed(context, ProductDetailPage.routeName, arguments: user);
+                  Navigator.pushNamed(context, StaffDetailPage.routeName, arguments: user);
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(12),

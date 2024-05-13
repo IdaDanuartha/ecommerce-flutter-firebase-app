@@ -4,6 +4,7 @@ import 'package:ecommerce_firebase/helpers/navigate_to.dart';
 import 'package:ecommerce_firebase/helpers/send_to_gmail.dart';
 import 'package:ecommerce_firebase/models/order_model.dart';
 import 'package:ecommerce_firebase/providers/order_provider.dart';
+import 'package:ecommerce_firebase/providers/staff_provider.dart';
 import 'package:ecommerce_firebase/providers/user_provider.dart';
 import 'package:ecommerce_firebase/widgets/order_item_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -41,6 +42,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     final args = ModalRoute.of(context)!.settings.arguments as OrderModel;
     OrderProvider orderProvider = Provider.of<OrderProvider>(context);
     UserProvider userProvider = Provider.of<UserProvider>(context);
+    StaffProvider staffProvider = Provider.of<StaffProvider>(context);
     String userRole = userProvider.user!.role;
 
     String statusSelected = args.status == 1
@@ -61,7 +63,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           (args.subTotal + 0 - args.totalDiscount).toStringAsFixed(2);
 
       sendToGmail("Order Cancelled", "cancelled", args.code, totalPrice,
-          userProvider, context);
+          userProvider, staffProvider, context);
 
       var nav = Navigator.of(context);
       nav.pop();
