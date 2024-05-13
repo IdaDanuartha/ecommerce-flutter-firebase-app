@@ -60,7 +60,6 @@ class _EditStaffPageState extends State<EditStaffPage> {
       Future<String> profileUrl = uploadSingleImage(selectedImage, "users");
 
         profileUrl.then((url) async {
-          // print("URLLLL : $url");
           var updateStaff = await staffProvider.update(args.id, {
             "name": _nameController.text,
             "email": _emailController.text,

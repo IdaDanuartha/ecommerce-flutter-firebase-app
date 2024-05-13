@@ -5,6 +5,7 @@
 import 'dart:io';
 
 import 'package:ecommerce_firebase/controllers/add_product_images_controller.dart';
+import 'package:ecommerce_firebase/helpers/upload_image.dart';
 import 'package:ecommerce_firebase/models/product_model.dart';
 import 'package:ecommerce_firebase/providers/product_provider.dart';
 import 'package:ecommerce_firebase/widgets/loading_button.dart';
@@ -57,13 +58,29 @@ class _EditProductPageState extends State<EditProductPage> {
       setState(() {
         isLoading = true;
       });
+
+      // List to store all futures returned by uploadSingleImage
+      List<String> imageUrls = [];
+
+      // Upload new images, if any
+      for (var image in addProductImagesController.selectedImages) {
+        try {
+          // Upload each image and wait for the result
+          String imageUrl = await uploadSingleImage(image, "products");
+          imageUrls.add(imageUrl);
+        } catch (error) {
+          print('Error uploading image: $error');
+          // Handle the error (for example, show a message to the user)
+        }
+      }
+
       var updateProduct = await productProvider.update(args.id, {
         "name": _nameController.text,
         "price": double.parse(_priceController.text),
         "discount": double.parse(_discountController.text),
         "qty": int.parse(_qtyController.text),
         "description": _descriptionController.text,
-        "images": [],
+        "images": imageUrls,
         "created_at": DateTime.now()
       });
 
@@ -208,21 +225,18 @@ class _EditProductPageState extends State<EditProductPage> {
               ),
             ),
             const SizedBox(height: 12),
-            Wrap(
-                spacing: 10,
-                runSpacing: 20,
-                children: [
-                  for(var image in args.images ) ClipRRect(
-                    borderRadius: BorderRadius.circular(4),
-                    child: Image.network(
-                      image,
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.cover,
-                    ),
-                  )
-                ]
-            )
+            Wrap(spacing: 10, runSpacing: 20, children: [
+              for (var image in args.images)
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(4),
+                  child: Image.network(
+                    image,
+                    width: 100,
+                    height: 100,
+                    fit: BoxFit.cover,
+                  ),
+                )
+            ])
           ],
         ),
       );
@@ -454,37 +468,39 @@ class _EditProductPageState extends State<EditProductPage> {
       appBar: header(),
       backgroundColor: bgColor1,
       body: SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.symmetric(
-            horizontal: defaultMargin,
-            vertical: 20
-          ),
-          child: Column(
+          child: Container(
+        margin: EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 20),
+        child: Column(
           children: [
             imageInput(),
             oldImages(),
-            addProductImagesController.selectedImages.length > 0 ?
-            Container(
-              margin: EdgeInsets.only(top: 15),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'New Images',
-                  style: primaryTextStyle.copyWith(
-                      fontSize: 16, fontWeight: medium, color: primaryTextColor),
-                ),
-              ),
-            ) : SizedBox.shrink(),
+            addProductImagesController.selectedImages.length > 0
+                ? Container(
+                    margin: EdgeInsets.only(top: 15),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'New Images',
+                        style: primaryTextStyle.copyWith(
+                            fontSize: 16,
+                            fontWeight: medium,
+                            color: primaryTextColor),
+                      ),
+                    ),
+                  )
+                : SizedBox.shrink(),
             showImages(),
             nameInput(),
             priceInput(),
             discountInput(),
             qtyInput(),
             descriptionInput(),
-            isLoading ? LoadingButton(text: "Saving", marginTop: 20) : addProductButton(),
+            isLoading
+                ? LoadingButton(text: "Saving", marginTop: 20)
+                : addProductButton(),
           ],
         ),
-        )),
+      )),
     );
   }
 }

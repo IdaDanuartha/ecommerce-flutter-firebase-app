@@ -268,6 +268,7 @@ class _StaffDetailPageState extends State<StaffDetailPage> {
                             ),
                             SizedBox(height: 20),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Container(
                                   height: 50,

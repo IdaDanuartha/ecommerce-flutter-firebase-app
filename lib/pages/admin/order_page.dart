@@ -48,15 +48,16 @@ class _OrderPageState extends State<OrderPage> {
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Container(
-                  width: MediaQuery.of(context).size.width + 200,
+                  width: MediaQuery.of(context).size.width + 280,
                   child: Column(
                     children: [
                       Table(
                         columnWidths: const {
-                          0: FlexColumnWidth(8),
+                          0: FlexColumnWidth(5),
                           1: FlexColumnWidth(7),
-                          2: FlexColumnWidth(5),
-                          3: FlexColumnWidth(6),
+                          2: FlexColumnWidth(7),
+                          3: FlexColumnWidth(5),
+                          4: FlexColumnWidth(6),
                         },
                         defaultVerticalAlignment:
                             TableCellVerticalAlignment.middle,
@@ -72,6 +73,18 @@ class _OrderPageState extends State<OrderPage> {
                                         horizontal: 16, vertical: 10),
                                     child: Text(
                                       "Order Date",
+                                      style: primaryTextStyle,
+                                    ),
+                                  ),
+                                ),
+                                TableCell(
+                                  verticalAlignment:
+                                      TableCellVerticalAlignment.middle,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16, vertical: 10),
+                                    child: Text(
+                                      "Order Code",
                                       style: primaryTextStyle,
                                     ),
                                   ),
@@ -117,10 +130,11 @@ class _OrderPageState extends State<OrderPage> {
                       ),
                       Table(
                         columnWidths: const {
-                          0: FlexColumnWidth(8),
+                          0: FlexColumnWidth(5),
                           1: FlexColumnWidth(7),
-                          2: FlexColumnWidth(5),
-                          3: FlexColumnWidth(6),
+                          2: FlexColumnWidth(7),
+                          3: FlexColumnWidth(5),
+                          4: FlexColumnWidth(6),
                         },
                         defaultVerticalAlignment:
                             TableCellVerticalAlignment.middle,
@@ -158,7 +172,23 @@ List<TableRow> dataRows(OrderProvider orderProvider, BuildContext context) {
                 child: Padding(
                   padding: const EdgeInsets.all(12),
                   child: Text(
-                    DateFormat("dd-MM-yyyy hh:mm a").format(order.createdAt.toDate()),
+                    DateFormat("dd-MM-yyyy").format(order.createdAt.toDate()),
+                    style: primaryTextStyle,
+                  ),
+                ),
+              ),
+            ),
+            TableCell(
+              verticalAlignment: TableCellVerticalAlignment.middle,
+              child: InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, OrderDetailPage.routeName,
+                      arguments: order);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Text(
+                    order.code,
                     style: primaryTextStyle,
                   ),
                 ),
