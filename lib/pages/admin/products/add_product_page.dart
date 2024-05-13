@@ -47,23 +47,36 @@ class _AddProductPageState extends State<AddProductPage> {
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
 
-    RxList<XFile> selectedImages = addProductImagesController.selectedImages;
-
     void storeProduct() async {
       setState(() {
         isLoading = true;
       });
 
-      List<String> profileUrl = uploadMultipleImages(selectedImages);
+      List<String> imageUrls = [];
+      // List to store all futures returned by uploadSingleImage
+      List<Future<String>> uploadFutures = [];
 
-      var newProduct = await productProvider.store({
+      for (var image in addProductImagesController.selectedImages) {
+        try {
+          // Upload each image and wait for the result
+          String imageUrl = await uploadSingleImage(image, "products");
+          imageUrls.add(imageUrl);
+        } catch (error) {
+          print('Error uploading image: $error');
+          // Handle the error (for example, show a message to the user)
+        }
+      }
+
+      try {
+        // Now that imageUrls is populated, proceed with the rest of the code
+        var newProduct = await productProvider.store({
           "name": _nameController.text,
           "price": double.parse(_priceController.text),
           "discount": double.parse(_discountController.text),
           "qty": int.parse(_qtyController.text),
           "description": _descriptionController.text,
-          "images": profileUrl,
-          "created_at": DateTime.now()
+          "images": imageUrls, // imageUrls is now populated
+          "created_at": DateTime.now(),
         });
 
         if (newProduct) {
@@ -93,6 +106,19 @@ class _AddProductPageState extends State<AddProductPage> {
             ),
           );
         }
+      } catch (error) {
+        print('Error uploading images: $error');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: alertColor,
+            duration: const Duration(milliseconds: 2500),
+            content: const Text(
+              'Error uploading images',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      }
 
       setState(() {
         isLoading = false;
@@ -429,7 +455,9 @@ class _AddProductPageState extends State<AddProductPage> {
             discountInput(),
             qtyInput(),
             descriptionInput(),
-            isLoading ? LoadingButton(text: "Creating") : addProductButton(),
+            isLoading
+                ? LoadingButton(text: "Creating", marginTop: 20)
+                : addProductButton(),
           ],
         ),
       )),

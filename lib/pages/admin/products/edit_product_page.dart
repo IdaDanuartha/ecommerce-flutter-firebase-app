@@ -481,7 +481,7 @@ class _EditProductPageState extends State<EditProductPage> {
             discountInput(),
             qtyInput(),
             descriptionInput(),
-            isLoading ? LoadingButton(text: "Saving") : addProductButton(),
+            isLoading ? LoadingButton(text: "Saving", marginTop: 20) : addProductButton(),
           ],
         ),
         )),

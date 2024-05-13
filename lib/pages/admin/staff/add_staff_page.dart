@@ -58,7 +58,7 @@ class _AddStaffPageState extends State<AddStaffPage> {
 
       if (selectedImage != null) {
         // An image is selected, proceed with uploading
-        Future<String> profileUrl = uploadSingleImage(selectedImage);
+        Future<String> profileUrl = uploadSingleImage(selectedImage, "users");
 
         profileUrl.then((url) async {
           var newStaff = await staffProvider.store({
@@ -387,7 +387,7 @@ class _AddStaffPageState extends State<AddStaffPage> {
             usernameInput(),
             emailInput(),
             passwordInput(),
-            isLoading ? const LoadingButton(text: "Creating") : addButton(),
+            isLoading ? const LoadingButton(text: "Creating", marginTop: 20) : addButton(),
           ],
         ),
       )),

@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 
 class LoadingButton extends StatelessWidget {
-  const LoadingButton({super.key, required this.text});
+  const LoadingButton({super.key, required this.text, this.marginTop = 30});
 
   final String text;
+  final double marginTop;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 50,
       width: double.infinity,
-      margin: EdgeInsets.only(top: 20),
+      margin: EdgeInsets.only(top: marginTop),
       child: TextButton(
         onPressed: () {},
         style: TextButton.styleFrom(

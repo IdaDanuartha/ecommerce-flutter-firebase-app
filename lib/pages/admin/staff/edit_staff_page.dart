@@ -56,10 +56,11 @@ class _EditStaffPageState extends State<EditStaffPage> {
       setState(() {
         isLoading = true;
       });
-
-      Future<String> profileUrl = uploadSingleImage(selectedImage);
+      // print("YOOO : ${addSingleImageController.selectedImage.value}");
+      Future<String> profileUrl = uploadSingleImage(selectedImage, "users");
 
         profileUrl.then((url) async {
+          // print("URLLLL : $url");
           var updateStaff = await staffProvider.update(args.id, {
             "name": _nameController.text,
             "email": _emailController.text,
@@ -389,7 +390,7 @@ class _EditStaffPageState extends State<EditStaffPage> {
             nameInput(),
             usernameInput(),
             emailInput(),
-            isLoading ? LoadingButton(text: "Saving") : updateButton(),
+            isLoading ? LoadingButton(text: "Saving", marginTop: 20) : updateButton(),
           ],
         ),
       )),
