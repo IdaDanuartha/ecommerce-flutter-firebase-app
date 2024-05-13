@@ -11,7 +11,7 @@ void sendToGmail(String title, String status, String orderCode, String totalPric
   final smtpServer = gmail(username!, password!);
 
   final message = Message()
-    ..from = Address(username, 'E-Commerce Owner')
+    ..from = Address(username, 'MushMagic')
     ..recipients.addAll([
       ...userProvider.admins.map((admin) => admin.email),
       ...userProvider.staff.map((staff) => staff.email),
@@ -41,7 +41,7 @@ void sendMessageToCustomer(String title, String status, String orderCode, String
   final smtpServer = gmail(username!, password!);
 
   final message = Message()
-    ..from = Address(username, 'E-Commerce Owner')
+    ..from = Address(username, 'MushMagic')
     ..recipients.add(email)
     ..subject = title
     ..html =

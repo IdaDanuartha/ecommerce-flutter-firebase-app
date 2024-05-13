@@ -51,7 +51,9 @@ class CartProvider with ChangeNotifier {
   }
 
   void increaseQty(CartModel item) {
-    item.qty += 1;
+    if(item.qty < item.product.qty) {
+      item.qty += 1;
+    }
     
     saveItemsToPrefs();
     notifyListeners();
