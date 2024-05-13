@@ -3,6 +3,7 @@ import 'package:ecommerce_firebase/pages/admin/products/add_product_page.dart';
 import 'package:ecommerce_firebase/pages/admin/staff/add_staff_page.dart';
 import 'package:ecommerce_firebase/pages/admin/products/product_detail_page.dart';
 import 'package:ecommerce_firebase/pages/admin/products/edit_product_page.dart';
+import 'package:ecommerce_firebase/pages/admin/staff/staff_detail.page.dart';
 import 'package:ecommerce_firebase/pages/home/cart_page.dart';
 import 'package:ecommerce_firebase/pages/home/order_detail_page.dart';
 import 'package:ecommerce_firebase/pages/home/product_detail_page.dart';
@@ -12,6 +13,7 @@ import 'package:ecommerce_firebase/providers/cart_provider.dart';
 import 'package:ecommerce_firebase/providers/order_provider.dart';
 import 'package:ecommerce_firebase/providers/places_provider.dart';
 import 'package:ecommerce_firebase/providers/product_provider.dart';
+import 'package:ecommerce_firebase/providers/staff_provider.dart';
 import 'package:ecommerce_firebase/providers/user_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:ecommerce_firebase/pages/home/checkout_page.dart';
@@ -67,6 +69,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => CartProvider()),
         ChangeNotifierProvider(create: (context) => OrderProvider()),
         ChangeNotifierProvider(create: (context) => PlacesProvider()),
+        ChangeNotifierProvider(create: (context) => StaffProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -81,6 +84,7 @@ class MyApp extends StatelessWidget {
           EditProductPage.routeName: (context) => const EditProductPage(),
 
           AddStaffPage.routeName: (context) => const AddStaffPage(),
+          StaffDetailPage.routeName: (context) => const StaffDetailPage(),
 
           CustomerDetailPage.routeName: (context) => const CustomerDetailPage(),
 

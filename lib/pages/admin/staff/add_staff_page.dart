@@ -4,11 +4,14 @@
 
 import 'dart:io';
 
-import 'package:ecommerce_firebase/controllers/add_product_images_controller.dart';
-import 'package:ecommerce_firebase/providers/product_provider.dart';
+import 'package:ecommerce_firebase/controllers/add_single_image_controller.dart';
+import 'package:ecommerce_firebase/helpers/upload_image.dart';
+import 'package:ecommerce_firebase/providers/staff_provider.dart';
+import 'package:ecommerce_firebase/widgets/loading_button.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class AddStaffPage extends StatefulWidget {
@@ -22,14 +25,12 @@ class AddStaffPage extends StatefulWidget {
 
 class _AddStaffPageState extends State<AddStaffPage> {
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _priceController = TextEditingController();
-  final TextEditingController _discountController =
-      TextEditingController(text: "0");
-  final TextEditingController _qtyController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
-  AddProductImagesController addProductImagesController =
-      Get.put(AddProductImagesController());
+  AddSingleImageController addSingleImageController =
+      Get.put(AddSingleImageController());
 
   @override
   void initState() {
@@ -38,49 +39,70 @@ class _AddStaffPageState extends State<AddStaffPage> {
 
   TextEditingController controller = TextEditingController();
 
-  bool _isLoading = false;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
-    ProductProvider productProvider = Provider.of<ProductProvider>(context);
+    StaffProvider staffProvider = Provider.of<StaffProvider>(context);
 
-    void storeProduct() async {
-      // print(addProductImagesController.selectedImages);
-      var newProduct = await productProvider.store({
-        "name": _nameController.text,
-        "price": double.parse(_priceController.text),
-        "discount": double.parse(_discountController.text),
-        "qty": int.parse(_qtyController.text),
-        "description": _descriptionController.text,
-        "images": [],
-        "created_at": DateTime.now()
+    XFile? selectedImage = addSingleImageController.selectedImage.value;
+
+    void storeStaff() async {
+      setState(() {
+        isLoading = true;
       });
 
-      Navigator.pop(context);
+      if (selectedImage != null) {
+        // An image is selected, proceed with uploading
+        Future<String> profileUrl = uploadSingleImage(selectedImage);
 
-      if (newProduct) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: successColor,
-            duration: const Duration(milliseconds: 2500),
-            content: const Text(
-              'Product created successfully',
-              textAlign: TextAlign.center,
-            ),
-          ),
-        );
+        profileUrl.then((url) async {
+          var newStaff = await staffProvider.store({
+            "name": _nameController.text,
+            "username": _usernameController.text,
+            "email": _emailController.text,
+            "profile_url": url,
+            "role": "staff",
+          }, {
+            "email": _emailController.text,
+            "password": _passwordController.text,
+          });
+
+          if (newStaff) {
+            Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: successColor,
+                duration: const Duration(milliseconds: 2500),
+                content: const Text(
+                  'Staff created successfully',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: alertColor,
+                duration: const Duration(milliseconds: 2500),
+                content: const Text(
+                  'Failed to create staff',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            );
+          }
+        }).catchError((error) {
+          print('Error uploading image: $error');
+        });
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: alertColor,
-            duration: const Duration(milliseconds: 2500),
-            content: const Text(
-              'Failed to create product',
-              textAlign: TextAlign.center,
-            ),
-          ),
-        );
+        // No image is selected
+        print('No image selected');
       }
+
+      setState(() {
+        isLoading = false;
+      });
     }
 
     Widget imageInput() {
@@ -89,9 +111,9 @@ class _AddStaffPageState extends State<AddStaffPage> {
         children: [
           ElevatedButton(
             onPressed: () {
-              addProductImagesController.showImagesPickerDialog(context);
+              addSingleImageController.showImagePickerDialog(context);
             },
-            child: const Text("Select Product Images"),
+            child: const Text("Select Profile Image"),
           )
         ],
       );
@@ -112,7 +134,7 @@ class _AddStaffPageState extends State<AddStaffPage> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          'Add Product',
+          'Add Staff',
           style: primaryTextStyle.copyWith(fontSize: 18),
         ),
       );
@@ -120,16 +142,16 @@ class _AddStaffPageState extends State<AddStaffPage> {
 
     Widget showImages() {
       return //show Images
-          GetBuilder<AddProductImagesController>(
-        init: AddProductImagesController(),
+          GetBuilder<AddSingleImageController>(
+        init: AddSingleImageController(),
         builder: (imageController) {
-          return imageController.selectedImages.length > 0
+          return imageController.selectedImage.value != null
               ? Container(
                   width: MediaQuery.of(context).size.width - 20,
                   height: 100,
                   margin: const EdgeInsets.symmetric(vertical: 20),
                   child: GridView.builder(
-                    itemCount: imageController.selectedImages.length,
+                    itemCount: 1,
                     physics: const BouncingScrollPhysics(),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
@@ -141,8 +163,7 @@ class _AddStaffPageState extends State<AddStaffPage> {
                       return Stack(
                         children: [
                           Image.file(
-                            File(addProductImagesController
-                                .selectedImages[index].path),
+                            File(imageController.selectedImage.value!.path),
                             fit: BoxFit.cover,
                             height: 100,
                             width: 120,
@@ -152,7 +173,7 @@ class _AddStaffPageState extends State<AddStaffPage> {
                             top: -3,
                             child: InkWell(
                               onTap: () {
-                                imageController.removeImages(index);
+                                imageController.removeImage();
                               },
                               child: CircleAvatar(
                                 backgroundColor: Colors.white24,
@@ -180,7 +201,7 @@ class _AddStaffPageState extends State<AddStaffPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Product name',
+              'Full Name',
               style: primaryTextStyle.copyWith(
                   fontSize: 16, fontWeight: medium, color: primaryTextColor),
             ),
@@ -199,7 +220,7 @@ class _AddStaffPageState extends State<AddStaffPage> {
                       controller: _nameController,
                       style: secondaryTextStyle,
                       decoration: InputDecoration(
-                          hintText: 'Input product name',
+                          hintText: 'Input full name',
                           hintStyle: subtitleTextStyle,
                           border: InputBorder.none),
                     ))
@@ -212,14 +233,14 @@ class _AddStaffPageState extends State<AddStaffPage> {
       );
     }
 
-    Widget priceInput() {
+    Widget usernameInput() {
       return Container(
         margin: const EdgeInsets.only(top: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Price',
+              'Username',
               style: primaryTextStyle.copyWith(
                   fontSize: 16, fontWeight: medium, color: primaryTextColor),
             ),
@@ -235,11 +256,10 @@ class _AddStaffPageState extends State<AddStaffPage> {
                   children: [
                     Expanded(
                         child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      controller: _priceController,
+                      controller: _usernameController,
                       style: secondaryTextStyle,
                       decoration: InputDecoration(
-                          hintText: 'Input price',
+                          hintText: 'Input username',
                           hintStyle: subtitleTextStyle,
                           border: InputBorder.none),
                     ))
@@ -252,14 +272,14 @@ class _AddStaffPageState extends State<AddStaffPage> {
       );
     }
 
-    Widget discountInput() {
+    Widget emailInput() {
       return Container(
         margin: const EdgeInsets.only(top: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Discount',
+              'Email',
               style: primaryTextStyle.copyWith(
                   fontSize: 16, fontWeight: medium, color: primaryTextColor),
             ),
@@ -275,11 +295,10 @@ class _AddStaffPageState extends State<AddStaffPage> {
                   children: [
                     Expanded(
                         child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      controller: _discountController,
+                      controller: _emailController,
                       style: secondaryTextStyle,
                       decoration: InputDecoration(
-                          hintText: 'Input discount (optional)',
+                          hintText: 'Input email',
                           hintStyle: subtitleTextStyle,
                           border: InputBorder.none),
                     ))
@@ -292,14 +311,14 @@ class _AddStaffPageState extends State<AddStaffPage> {
       );
     }
 
-    Widget qtyInput() {
+    Widget passwordInput() {
       return Container(
         margin: const EdgeInsets.only(top: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Quantity',
+              'Password',
               style: primaryTextStyle.copyWith(
                   fontSize: 16, fontWeight: medium, color: primaryTextColor),
             ),
@@ -315,11 +334,11 @@ class _AddStaffPageState extends State<AddStaffPage> {
                   children: [
                     Expanded(
                         child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      controller: _qtyController,
+                      controller: _passwordController,
+                      obscureText: true,
                       style: secondaryTextStyle,
                       decoration: InputDecoration(
-                          hintText: 'Input quantity',
+                          hintText: 'Input password',
                           hintStyle: subtitleTextStyle,
                           border: InputBorder.none),
                     ))
@@ -332,56 +351,13 @@ class _AddStaffPageState extends State<AddStaffPage> {
       );
     }
 
-    Widget descriptionInput() {
-      return Container(
-        margin: const EdgeInsets.only(top: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text(
-              'Description',
-              style: primaryTextStyle.copyWith(
-                  fontSize: 16, fontWeight: medium, color: primaryTextColor),
-            ),
-            const SizedBox(height: 12),
-            Container(
-              height: 120,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(width: 1, color: const Color(0xFF797979))),
-              child: Center(
-                child: Row(
-                  children: [
-                    Expanded(
-                        child: TextFormField(
-                      minLines: 8,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      controller: _descriptionController,
-                      style: secondaryTextStyle,
-                      decoration: InputDecoration(
-                          hintText: 'Input description',
-                          hintStyle: subtitleTextStyle,
-                          border: InputBorder.none),
-                    ))
-                  ],
-                ),
-              ),
-            )
-          ],
-        ),
-      );
-    }
-
-    Widget addProductButton() {
+    Widget addButton() {
       return Container(
         height: 50,
         width: double.infinity,
         margin: const EdgeInsets.only(top: 20),
         child: ElevatedButton(
-          onPressed: storeProduct,
+          onPressed: storeStaff,
           style: TextButton.styleFrom(
               backgroundColor: primaryColor,
               shape: RoundedRectangleBorder(
@@ -399,24 +375,20 @@ class _AddStaffPageState extends State<AddStaffPage> {
       appBar: header(),
       backgroundColor: bgColor1,
       body: SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.symmetric(
-            horizontal: defaultMargin,
-            vertical: 20
-          ),
-          child: Column(
+          child: Container(
+        margin: EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 20),
+        child: Column(
           children: [
             imageInput(),
             showImages(),
             nameInput(),
-            priceInput(),
-            discountInput(),
-            qtyInput(),
-            descriptionInput(),
-            addProductButton(),
+            usernameInput(),
+            emailInput(),
+            passwordInput(),
+            isLoading ? const LoadingButton(text: "Creating") : addButton(),
           ],
         ),
-        )),
+      )),
     );
   }
 }

@@ -4,6 +4,7 @@ import 'package:ecommerce_firebase/helpers/send_to_gmail.dart';
 import 'package:ecommerce_firebase/pages/home/checkout_success_page.dart';
 import 'package:ecommerce_firebase/providers/cart_provider.dart';
 import 'package:ecommerce_firebase/providers/order_provider.dart';
+import 'package:ecommerce_firebase/providers/staff_provider.dart';
 import 'package:ecommerce_firebase/providers/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -50,8 +51,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
     CartProvider cartProvider = Provider.of<CartProvider>(context);
     OrderProvider orderProvider = Provider.of<OrderProvider>(context);
     UserProvider userProvider = Provider.of<UserProvider>(context);
+    StaffProvider staffProvider = Provider.of<StaffProvider>(context);
 
     _paymentMethodController.text = paymentSelected;
+    _customerNameController.text = userProvider.user!.name;
 
     String grandTotal = (cartProvider.totalPrice + 0 - cartProvider.totalDiscount).toStringAsFixed(2);
 
@@ -115,7 +118,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
           ),
         );
 
-        sendToGmail("New Order From Your Customer!", "entered", generateCode, grandTotal, userProvider, context);
+        sendToGmail("New Order From Your Customer!", "entered", generateCode, grandTotal, userProvider, staffProvider, context);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

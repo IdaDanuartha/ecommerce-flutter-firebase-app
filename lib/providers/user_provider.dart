@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 
 class UserProvider with ChangeNotifier {
   late UserModel? _user;
-  List<UserModel> _staff = [];
+  // List<UserModel> _staff = [];
   List<UserModel> _customers = [];
   List<UserModel> _admins = [];
 
   UserModel? get user => _user;
-  List<UserModel> get staff => _staff;
+  // List<UserModel> get staff => _staff;
   List<UserModel> get customers => _customers;
   List<UserModel> get admins => _admins;
 
@@ -18,10 +18,10 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  set staff(List<UserModel> staff) {
-    _staff = staff;
-    notifyListeners();
-  }
+  // set staff(List<UserModel> staff) {
+  //   _staff = staff;
+  //   notifyListeners();
+  // }
 
   set customers(List<UserModel> customers) {
     _customers = customers;
@@ -53,16 +53,16 @@ class UserProvider with ChangeNotifier {
     }
   }
 
-  Future<void> getStaff() async {
-    try {
-      List<UserModel> staff = await UserService().getStaff();
-      _staff = staff;
+  // Future<void> getStaff() async {
+  //   try {
+  //     List<UserModel> staff = await UserService().getStaff();
+  //     _staff = staff;
 
-      notifyListeners();
-    } catch (e) {
-      print(e);
-    }
-  }
+  //     notifyListeners();
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   Future<void> getCustomers() async {
     try {

@@ -5,15 +5,12 @@
 import 'dart:io';
 
 import 'package:ecommerce_firebase/controllers/add_product_images_controller.dart';
-import 'package:ecommerce_firebase/helpers/generate_random_string.dart';
 import 'package:ecommerce_firebase/helpers/upload_image.dart';
 import 'package:ecommerce_firebase/providers/product_provider.dart';
 import 'package:ecommerce_firebase/widgets/loading_button.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class AddProductPage extends StatefulWidget {
@@ -53,44 +50,44 @@ class _AddProductPageState extends State<AddProductPage> {
       setState(() {
         isLoading = true;
       });
-      print(uploadMultipleImages(addProductImagesController.selectedImages));
-      // var newProduct = await productProvider.store({
-      //   "name": _nameController.text,
-      //   "price": double.parse(_priceController.text),
-      //   "discount": double.parse(_discountController.text),
-      //   "qty": int.parse(_qtyController.text),
-      //   "description": _descriptionController.text,
-      //   "images": uploadMultipleImages(addProductImagesController.selectedImages),
-      //   "created_at": DateTime.now()
-      // });
-      //
-      // if (newProduct) {
-      //   Navigator.pop(context);
-      //
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //     SnackBar(
-      //       backgroundColor: successColor,
-      //       duration: const Duration(milliseconds: 2500),
-      //       content: const Text(
-      //         'Product created successfully',
-      //         textAlign: TextAlign.center,
-      //       ),
-      //     ),
-      //   );
-      //
-      //   addProductImagesController.selectedImages.clear();
-      // } else {
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //     SnackBar(
-      //       backgroundColor: alertColor,
-      //       duration: const Duration(milliseconds: 2500),
-      //       content: const Text(
-      //         'Failed to create product',
-      //         textAlign: TextAlign.center,
-      //       ),
-      //     ),
-      //   );
-      // }
+
+      var newProduct = await productProvider.store({
+        "name": _nameController.text,
+        "price": double.parse(_priceController.text),
+        "discount": double.parse(_discountController.text),
+        "qty": int.parse(_qtyController.text),
+        "description": _descriptionController.text,
+        "images": uploadMultipleImages(addProductImagesController.selectedImages),
+        "created_at": DateTime.now()
+      });
+      
+      if (newProduct) {
+        Navigator.pop(context);
+      
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: successColor,
+            duration: const Duration(milliseconds: 2500),
+            content: const Text(
+              'Product created successfully',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      
+        addProductImagesController.selectedImages.clear();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: alertColor,
+            duration: const Duration(milliseconds: 2500),
+            content: const Text(
+              'Failed to create product',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      }
 
       setState(() {
         isLoading = false;

@@ -1,10 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_firebase/providers/order_provider.dart';
 import 'package:ecommerce_firebase/providers/product_provider.dart';
+import 'package:ecommerce_firebase/providers/staff_provider.dart';
 import 'package:ecommerce_firebase/providers/user_provider.dart';
 import 'package:ecommerce_firebase/widgets/charts/bar_chart.dart';
 import 'package:ecommerce_firebase/widgets/charts/pie_chart.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 import 'package:provider/provider.dart';
@@ -22,9 +21,10 @@ class _DashboardPageState extends State<DashboardPage> {
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
     UserProvider userProvider = Provider.of<UserProvider>(context);
     OrderProvider orderProvider = Provider.of<OrderProvider>(context);
+    StaffProvider staffProvider = Provider.of<StaffProvider>(context);
 
     int productCount = productProvider.products.length;
-    int staffCount = userProvider.staff.length;
+    int staffCount = staffProvider.staff.length;
     int customerCount = userProvider.customers.length;
     int orderCount = orderProvider.orders.length;
 
