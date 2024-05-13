@@ -48,11 +48,15 @@ class _AddStaffPageState extends State<AddStaffPage> {
     XFile? selectedImage = addSingleImageController.selectedImage.value;
 
     void storeStaff() async {
-      setState(() {
-        isLoading = true;
+      showDialog(context: context, builder: (context) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
       });
 
-      if (selectedImage != null) {
+      var nav = Navigator.of(context);
+
+      // if (selectedImage != null) {
         // An image is selected, proceed with uploading
         Future<String> profileUrl = uploadSingleImage(selectedImage);
 
@@ -63,13 +67,11 @@ class _AddStaffPageState extends State<AddStaffPage> {
             "email": _emailController.text,
             "profile_url": url,
             "role": "staff",
-          }, {
-            "email": _emailController.text,
-            "password": _passwordController.text,
-          });
+            "password": _passwordController.text
+          }, context);
 
           if (newStaff) {
-            Navigator.pop(context);
+            nav.pop();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 backgroundColor: successColor,
@@ -80,6 +82,8 @@ class _AddStaffPageState extends State<AddStaffPage> {
                 ),
               ),
             );
+
+            addSingleImageController.selectedImage.value = null;
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -95,14 +99,12 @@ class _AddStaffPageState extends State<AddStaffPage> {
         }).catchError((error) {
           print('Error uploading image: $error');
         });
-      } else {
-        // No image is selected
-        print('No image selected');
-      }
+      // } else {
+      //   // No image is selected
+      //   print('No image selected');
+      // }
 
-      setState(() {
-        isLoading = false;
-      });
+      nav.pop();
     }
 
     Widget imageInput() {

@@ -22,9 +22,9 @@ class StaffProvider with ChangeNotifier {
     }
   }
 
-  Future<bool> store(staffData, userData) async {
+  Future<bool> store(staffData, BuildContext context) async {
     try {
-      var stf = await StaffService().store(staffData, userData);
+      var stf = await StaffService().store(staffData, context);
       _staff.add(UserModel.fromJson(stf));
 
       notifyListeners();

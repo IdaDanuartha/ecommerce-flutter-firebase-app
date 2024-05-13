@@ -1,9 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_firebase/models/user_model.dart';
+import 'package:ecommerce_firebase/providers/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class StaffService {
   final FirebaseFirestore db = FirebaseFirestore.instance;
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
   List<UserModel> staffModel = [];
 
   Future<List<UserModel>> getStaff() async {
@@ -25,14 +30,18 @@ class StaffService {
     return usersModel;
   }
 
-  Future<dynamic> store(staffData, userData) async {
-    final FirebaseFirestore db = FirebaseFirestore.instance;
-    final FirebaseAuth auth = FirebaseAuth.instance;
+  Future<dynamic> store(staffData, BuildContext context) async {
+    UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
     // print(userData["email"]);
 
     var userCredential = await auth.createUserWithEmailAndPassword(
-      email: userData["email"],
-      password: userData["password"],
+      email: staffData["email"],
+      password: staffData["password"],
+    );
+
+    await auth.signInWithEmailAndPassword(
+      email: userProvider.user!.email,
+      password: userProvider.user!.password,
     );
 
     // Access the User object from UserCredential

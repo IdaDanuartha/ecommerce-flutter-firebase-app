@@ -30,7 +30,14 @@ class _SignUpPageState extends State<SignUpPage> {
       FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
       var user = _auth.currentUser;
       CollectionReference ref = firebaseFirestore.collection('users');
-      ref.doc(user!.uid).set({'name': _nameController.text, 'username': _usernameController.text, 'email': _emailController.text, 'role': "customer", "profile_url": ""});
+      ref.doc(user!.uid).set({
+        'name': _nameController.text, 
+        'username': _usernameController.text, 
+        'email': _emailController.text, 
+        'role': "customer", 
+        "profile_url": "",
+        "password": ""
+      });
       Navigator.pushNamed(context, SignInPage.routeName);
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -64,24 +71,6 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
         );
     }
-
-      // await _auth
-      //   .createUserWithEmailAndPassword(email: email, password: password)
-      //   .then((value) => {postDetailsToFirestore()})
-      //   .catchError((e) {
-      //     // print(e);
-      //     ScaffoldMessenger.of(context).showSnackBar(
-      //         SnackBar(
-      //           backgroundColor: alertColor,
-      //           duration: const Duration(milliseconds: 1500),
-      //           content: const Text(
-      //             'Failed to create account',
-      //             textAlign: TextAlign.center,
-      //           ),
-      //         ),
-      //       );
-      //   });
-
       setState(() {
         isLoading = false;
       });

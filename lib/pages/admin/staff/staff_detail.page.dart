@@ -31,20 +31,20 @@ class _StaffDetailPageState extends State<StaffDetailPage> {
     StaffProvider staffProvider = Provider.of<StaffProvider>(context);
     final args = ModalRoute.of(context)!.settings.arguments as UserModel;
 
-    void deleteProduct() async {
-      var deleteProduct= await staffProvider.delete(args.id);
+    void deleteStaff() async {
+      var deleteStaff= await staffProvider.delete(args.id);
 
       var nav = Navigator.of(context);
       nav.pop();
       nav.pop();
 
-      if (deleteProduct) {
+      if (deleteStaff) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: successColor,
             duration: const Duration(milliseconds: 2500),
             content: const Text(
-              'Product deleted successfully',
+              'Staff deleted successfully',
               textAlign: TextAlign.center,
             ),
           ),
@@ -55,7 +55,7 @@ class _StaffDetailPageState extends State<StaffDetailPage> {
             backgroundColor: alertColor,
             duration: const Duration(milliseconds: 2500),
             content: const Text(
-              'Failed to delete product',
+              'Failed to delete staff',
               textAlign: TextAlign.center,
             ),
           ),
@@ -102,7 +102,7 @@ class _StaffDetailPageState extends State<StaffDetailPage> {
             ClipRRect(
                   borderRadius: BorderRadius.circular(4),
                   child: Image.network(
-                      args.profileUrl,
+                    args.profileUrl,
                     width: 110,
                     height: 110,
                     fit: BoxFit.cover,
@@ -292,7 +292,7 @@ class _StaffDetailPageState extends State<StaffDetailPage> {
                                   height: 50,
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      deleteProduct();
+                                      deleteStaff();
                                     },
                                     style: TextButton.styleFrom(
                                         backgroundColor: Colors.red[500],
@@ -338,7 +338,7 @@ class _StaffDetailPageState extends State<StaffDetailPage> {
         child: Column(
           children: [
             actionButtons(),
-            showImage(),
+            args.profileUrl != "" ? showImage() : const SizedBox(),
             nameInput(),
             usernameInput(),
             emailInput(),
