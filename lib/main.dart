@@ -10,6 +10,7 @@ import 'package:ecommerce_firebase/pages/home/order_page.dart';
 import 'package:ecommerce_firebase/pages/layouts/admin_page.dart';
 import 'package:ecommerce_firebase/providers/cart_provider.dart';
 import 'package:ecommerce_firebase/providers/order_provider.dart';
+import 'package:ecommerce_firebase/providers/places_provider.dart';
 import 'package:ecommerce_firebase/providers/product_provider.dart';
 import 'package:ecommerce_firebase/providers/user_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -65,6 +66,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => UserProvider()),
         ChangeNotifierProvider(create: (context) => CartProvider()),
         ChangeNotifierProvider(create: (context) => OrderProvider()),
+        ChangeNotifierProvider(create: (context) => PlacesProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

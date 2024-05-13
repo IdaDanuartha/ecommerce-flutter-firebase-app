@@ -133,7 +133,7 @@ class ProductCard extends StatelessWidget {
           Navigator.pushNamed(context, ProductDetailHomePage.routeName, arguments: product);
         },
         child: Container(
-          width: MediaQuery.of(context).size.width - (2 * 120),
+          width: MediaQuery.of(context).size.width - (2 * 115),
           // height: 276,
           margin: const EdgeInsets.only(right: 10),
           padding: const EdgeInsets.all(10),

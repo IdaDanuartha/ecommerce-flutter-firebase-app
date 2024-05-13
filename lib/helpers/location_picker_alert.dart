@@ -1,8 +1,10 @@
+import 'package:ecommerce_firebase/providers/places_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:ecommerce_firebase/themes.dart';
+import 'package:provider/provider.dart';
 
 class LocationPickerAlert extends StatefulWidget {
   const LocationPickerAlert({super.key, this.onLocationSelected});
@@ -50,6 +52,8 @@ class _LocationPickerAlertState extends State<LocationPickerAlert> {
 
   @override
   Widget build(BuildContext context) {
+    PlacesProvider placesProvider = Provider.of<PlacesProvider>(context, listen: false);
+    print(placesProvider.searchResults.length);
     return AlertDialog(
       contentPadding: EdgeInsets.all(0),
       content: SizedBox(
@@ -57,40 +61,85 @@ class _LocationPickerAlertState extends State<LocationPickerAlert> {
         height: MediaQuery.of(context).size.height * 0.8,
         child: Column(
           children: [
+            // Container(
+            //   padding: EdgeInsets.symmetric(
+            //     horizontal: 20,
+            //     vertical: 5
+            //   ),
+            //   child: TextField(
+            //     decoration: InputDecoration(
+            //       hintText: "Search Location...",
+            //       hintStyle: TextStyle(
+            //         height: 2
+            //       ),
+            //       border: InputBorder.none,
+            //       prefixIcon: Icon(Icons.search),
+            //     ),
+            //     onChanged: (value) => PlacesProvider().searchPlaces(value),
+            //   ),
+            // ),
+            // Stack(
+            //   children: [
+            //     Container(
+            //       height: 200,
+            //       width: double.infinity,
+            //       decoration: BoxDecoration(
+            //         color: Colors.black.withOpacity(.2),
+            //         backgroundBlendMode: BlendMode.darken
+            //       ),
+            //     ),
+            //     Container(
+            //       height: 200,
+            //       child: ListView.builder(
+            //         itemCount: placesProvider.searchResults.length,
+            //         itemBuilder: (context, index) {
+            //           return ListTile(
+            //             title: Text(
+            //               placesProvider.searchResults[index].description,
+            //               style: primaryTextStyle,
+            //             ),
+            //           );
+            //         },
+            //       ),
+            //     )
+            //   ],
+            // ),
             Expanded(
               child: GoogleMap(
-                mapType: MapType.terrain,
+                mapType: MapType.normal,
                 onMapCreated: (controller) {
                   mapController = controller;
                 },
                 onTap: (latLng) {
-                  _selectedLocation = latLng;
+                  setState(() {
+                    _selectedLocation = latLng;
+                  });
                 },
                 markers: _selectedLocation != null
                   ? {
-                    Marker(
+                  Marker(
                     markerId: const MarkerId('selectedLocation'),
                     position: _selectedLocation!,
                     infoWindow: InfoWindow(
-                      title: 'Selected Location',
+                      title: 'Your Location',
                       snippet: 'Lat: ${_selectedLocation!.latitude}, Lng: ${_selectedLocation!.longitude}',
                     )
                   )
                 } : {},
                 initialCameraPosition: CameraPosition(
-                  target: LatLng(0, 0),
-                  zoom: 10
+                  target: _selectedLocation ?? const LatLng(0, 0),
+                  zoom: 15
                 ),
                 myLocationEnabled: true,
               ),
             ),
-            Padding(
-              padding: EdgeInsets.only(
-                bottom: 10,
-                top: 10
-              ),
-              child: FloatingActionButton(
-                backgroundColor: primaryColor,
+            Container(
+              width: 300,
+              margin: EdgeInsets.all(10),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: primaryColor,
+                ),
                 onPressed: () async {
                   if(_selectedLocation != null) {
                     print("Selected Location - Lat: ${_selectedLocation!.latitude}, Lng: ${_selectedLocation}");

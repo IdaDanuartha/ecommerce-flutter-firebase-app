@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_firebase/helpers/my_separator.dart';
+import 'package:ecommerce_firebase/helpers/navigate_to.dart';
 import 'package:ecommerce_firebase/helpers/send_to_gmail.dart';
 import 'package:ecommerce_firebase/models/order_model.dart';
 import 'package:ecommerce_firebase/providers/order_provider.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class OrderDetailPage extends StatefulWidget {
   const OrderDetailPage({super.key});
@@ -578,7 +580,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   Container(
                     width: 200,
                     child: Text(
-                      args.customerName,
+                      args.customerName != "" ? args.customerName : "-",
                       style: primaryTextStyle.copyWith(fontSize: 14),
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
@@ -596,7 +598,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   ),
                   SizedBox(height: 5),
                   Text(
-                    args.phone,
+                    args.phone != "" ? args.phone : "-",
                     style: primaryTextStyle.copyWith(fontSize: 14),
                   ),
                 ],
@@ -625,93 +627,35 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             ],
           ),
           SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "Country",
-                    style: primaryTextStyle.copyWith(
-                        color: Color.fromRGBO(255, 255, 255, .5), fontSize: 12),
-                  ),
-                  SizedBox(height: 5),
-                  Container(
-                    width: 200,
-                    child: Text(
-                      args.address.country,
-                      style: primaryTextStyle.copyWith(fontSize: 14),
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      navigateTo(args.address.latitude, args.address.longitude);
+                      // launchUrl(Uri.parse("https://www.google.com/maps?q=${args.address.latitude},${args.address.longitude}"));
+                    },
+                    label: Text(
+                      "Show Location",
+                      style: primaryTextStyle.copyWith(
+                        fontSize: 12
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primaryColor,
+                      foregroundColor: primaryTextColor,
+                    ),    
+                    icon: Icon(
+                      Icons.location_on,
+                      size: 16,
                     ),
                   ),
                 ],
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text("Province",
-                      style: primaryTextStyle.copyWith(
-                        color: Color.fromRGBO(255, 255, 255, .5),
-                        fontSize: 12,
-                      )),
-                  SizedBox(height: 5),
-                  Text(
-                    args.address.province,
-                    style: primaryTextStyle.copyWith(fontSize: 14),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "City",
-                    style: primaryTextStyle.copyWith(
-                        color: Color.fromRGBO(255, 255, 255, .5), fontSize: 12),
-                  ),
-                  SizedBox(height: 5),
-                  Container(
-                    width: 200,
-                    child: Text(
-                      args.address.city,
-                      style: primaryTextStyle.copyWith(fontSize: 14),
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text("Subdistrict",
-                      style: primaryTextStyle.copyWith(
-                        color: Color.fromRGBO(255, 255, 255, .5),
-                        fontSize: 12,
-                      )),
-                  SizedBox(height: 5),
-                  Text(
-                    args.address.subdistrict,
-                    style: primaryTextStyle.copyWith(fontSize: 14),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          SizedBox(height: 20),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+              SizedBox(height: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -724,7 +668,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   Container(
                     width: MediaQuery.of(context).size.width - 80,
                     child: Text(
-                      args.address.details,
+                      args.address.details != "" ? args.address.details : "-",
                       style: primaryTextStyle.copyWith(fontSize: 14),
                       maxLines: 5,
                       overflow: TextOverflow.ellipsis,
@@ -840,27 +784,25 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     }
 
     Widget content() {
-      return Expanded(
-        child: Container(
-            width: double.infinity,
-            color: bgColor3,
-            child: Column(
-              children: [
-                userRole == "admin"
-                    ? changeStatusButton()
-                    : (args.status == 1 ? cancelOrderBtn() : const SizedBox()),
-                basicInformation(),
-                divider(),
-                customerInformation(),
-                divider(),
-                addressInformation(),
-                divider(),
-                productItems(),
-                divider(top: 10),
-                paymentInformation(),
-              ],
-            )),
-      );
+      return Container(
+          width: double.infinity,
+          color: bgColor3,
+          child: Column(
+            children: [
+              userRole == "admin"
+                  ? changeStatusButton()
+                  : (args.status == 1 ? cancelOrderBtn() : const SizedBox()),
+              basicInformation(),
+              divider(),
+              customerInformation(),
+              divider(),
+              addressInformation(),
+              divider(),
+              productItems(),
+              divider(top: 10),
+              paymentInformation(),
+            ],
+          ));
     }
 
     return Scaffold(

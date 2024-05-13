@@ -105,7 +105,7 @@ class _HomePageState extends State<HomePage> {
         SizedBox(height: defaultMargin),
         Container(
           margin: EdgeInsets.symmetric(
-            horizontal: 20
+            horizontal: 10
           ),
           child: Center(
             child: Wrap(

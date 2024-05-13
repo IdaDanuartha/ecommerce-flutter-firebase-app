@@ -25,10 +25,8 @@ class CheckoutPage extends StatefulWidget {
 class _CheckoutPageState extends State<CheckoutPage> {
   final TextEditingController _customerNameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _countryController = TextEditingController();
-  final TextEditingController _provinceController = TextEditingController();
-  final TextEditingController _cityController = TextEditingController();
-  final TextEditingController _subdistrictController = TextEditingController();
+  final TextEditingController _latitudeController = TextEditingController();
+  final TextEditingController _longitudeController = TextEditingController();
   final TextEditingController _detailsController = TextEditingController();
   final TextEditingController _paymentMethodController =
       TextEditingController();
@@ -58,6 +56,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
     String grandTotal = (cartProvider.totalPrice + 0 - cartProvider.totalDiscount).toStringAsFixed(2);
 
     void handleCheckout() async {
+      print("${_latitudeController.text}, ${_longitudeController.text}");
       setState(() {
         isLoading = true;
       });
@@ -78,10 +77,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
         "delivery_fee": 0.0,
         "created_at": DateTime.now(),
         "address": {
-          "country": _countryController.text,
-          "province": _provinceController.text,
-          "city": _cityController.text,
-          "subdistrict": _subdistrictController.text,
+          "latitude": double.parse(_latitudeController.text),
+          "longitude": double.parse(_longitudeController.text),
           "details": _detailsController.text,
         },
         "items": cartProvider.items.map((item) {
@@ -254,174 +251,12 @@ class _CheckoutPageState extends State<CheckoutPage> {
       );
     }
 
-    Widget countryInput() {
-      return Container(
-        margin: const EdgeInsets.only(bottom: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Text(
-            //   'Full name',
-            //   style: primaryTextStyle.copyWith(
-            //       fontSize: 16, fontWeight: medium, color: primaryTextColor),
-            // ),
-            // const SizedBox(height: 12),
-            Container(
-              height: 50,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(width: 1, color: const Color(0xFF797979))),
-              child: Center(
-                child: Row(
-                  children: [
-                    Expanded(
-                        child: TextFormField(
-                      controller: _countryController,
-                      style: secondaryTextStyle.copyWith(fontSize: 14),
-                      decoration: InputDecoration(
-                          hintText: 'Input your country',
-                          hintStyle: subtitleTextStyle,
-                          border: InputBorder.none),
-                    ))
-                  ],
-                ),
-              ),
-            )
-          ],
-        ),
-      );
-    }
-
-    Widget provinceInput() {
-      return Container(
-        margin: const EdgeInsets.only(bottom: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Text(
-            //   'Full name',
-            //   style: primaryTextStyle.copyWith(
-            //       fontSize: 16, fontWeight: medium, color: primaryTextColor),
-            // ),
-            // const SizedBox(height: 12),
-            Container(
-              height: 50,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(width: 1, color: const Color(0xFF797979))),
-              child: Center(
-                child: Row(
-                  children: [
-                    Expanded(
-                        child: TextFormField(
-                      controller: _provinceController,
-                      style: secondaryTextStyle.copyWith(fontSize: 14),
-                      decoration: InputDecoration(
-                          hintText: 'Input your province',
-                          hintStyle: subtitleTextStyle,
-                          border: InputBorder.none),
-                    ))
-                  ],
-                ),
-              ),
-            )
-          ],
-        ),
-      );
-    }
-
-    Widget cityInput() {
-      return Container(
-        margin: const EdgeInsets.only(bottom: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Text(
-            //   'Full name',
-            //   style: primaryTextStyle.copyWith(
-            //       fontSize: 16, fontWeight: medium, color: primaryTextColor),
-            // ),
-            // const SizedBox(height: 12),
-            Container(
-              height: 50,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(width: 1, color: const Color(0xFF797979))),
-              child: Center(
-                child: Row(
-                  children: [
-                    Expanded(
-                        child: TextFormField(
-                      controller: _cityController,
-                      style: secondaryTextStyle.copyWith(fontSize: 14),
-                      decoration: InputDecoration(
-                          hintText: 'Input your city',
-                          hintStyle: subtitleTextStyle,
-                          border: InputBorder.none),
-                    ))
-                  ],
-                ),
-              ),
-            )
-          ],
-        ),
-      );
-    }
-
-    Widget subdistrictInput() {
-      return Container(
-        margin: const EdgeInsets.only(bottom: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Text(
-            //   'Full name',
-            //   style: primaryTextStyle.copyWith(
-            //       fontSize: 16, fontWeight: medium, color: primaryTextColor),
-            // ),
-            // const SizedBox(height: 12),
-            Container(
-              height: 50,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(width: 1, color: const Color(0xFF797979))),
-              child: Center(
-                child: Row(
-                  children: [
-                    Expanded(
-                        child: TextFormField(
-                      controller: _subdistrictController,
-                      style: secondaryTextStyle.copyWith(fontSize: 14),
-                      decoration: InputDecoration(
-                          hintText: 'Input your subdistrict',
-                          hintStyle: subtitleTextStyle,
-                          border: InputBorder.none),
-                    ))
-                  ],
-                ),
-              ),
-            )
-          ],
-        ),
-      );
-    }
-
     Widget addressDetailInput() {
       return Container(
         margin: const EdgeInsets.only(bottom: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Text(
-            //   'Full name',
-            //   style: primaryTextStyle.copyWith(
-            //       fontSize: 16, fontWeight: medium, color: primaryTextColor),
-            // ),
-            // const SizedBox(height: 12),
             Container(
               height: 50,
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -461,7 +296,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 return LocationPickerAlert(
                   onLocationSelected: (LatLng userLocation) {
                     selectedLocation = userLocation;
-                    print("Selected location - latitude : ${userLocation.latitude}, longitude : ${userLocation.longitude}");
+                    _latitudeController.text = userLocation.latitude.toString();
+                    _longitudeController.text = userLocation.longitude.toString();
+                    // print("Selected location - latitude : ${userLocation.latitude}, longitude : ${userLocation.longitude}");
                   }
                 );
               }
