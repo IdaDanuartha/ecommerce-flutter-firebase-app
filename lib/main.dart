@@ -3,6 +3,7 @@ import 'package:ecommerce_firebase/pages/admin/products/add_product_page.dart';
 import 'package:ecommerce_firebase/pages/admin/staff/add_staff_page.dart';
 import 'package:ecommerce_firebase/pages/admin/products/product_detail_page.dart';
 import 'package:ecommerce_firebase/pages/admin/products/edit_product_page.dart';
+import 'package:ecommerce_firebase/pages/admin/staff/edit_staff_page.dart';
 import 'package:ecommerce_firebase/pages/admin/staff/staff_detail.page.dart';
 import 'package:ecommerce_firebase/pages/home/cart_page.dart';
 import 'package:ecommerce_firebase/pages/home/order_detail_page.dart';
@@ -85,6 +86,7 @@ class MyApp extends StatelessWidget {
 
           AddStaffPage.routeName: (context) => const AddStaffPage(),
           StaffDetailPage.routeName: (context) => const StaffDetailPage(),
+          EditStaffPage.routeName: (context) => const EditStaffPage(),
 
           CustomerDetailPage.routeName: (context) => const CustomerDetailPage(),
 

@@ -35,24 +35,26 @@ Future<String> uploadSingleImage(XFile? image) async {
 
 List<String> uploadMultipleImages(images) {
   List<String> imageUrls = [];
-  images.forEach((element) async {
-    FirebaseStorage storage = FirebaseStorage.instance;
-    var date = DateTime.now().millisecondsSinceEpoch;
-    try {
-      UploadTask task = storage.ref('products/${date}_image.png').putData(
+
+  try {
+      images.forEach((element) async {
+        FirebaseStorage storage = FirebaseStorage.instance;
+        var date = DateTime.now().millisecondsSinceEpoch;
+
+        UploadTask task = storage.ref('products/${date}_image.png').putData(
           await element.readAsBytes(),
-          SettableMetadata(contentType: 'image/jpeg'));
+            SettableMetadata(contentType: 'image/jpeg'));
 
-      TaskSnapshot downloadUrl = (await task);
+        TaskSnapshot downloadUrl = (await task);
 
-      String url = (await downloadUrl.ref.getDownloadURL());
+        String url = (await downloadUrl.ref.getDownloadURL());
 
-      imageUrls.add(url);
+        imageUrls.add(url);
+      });
       print(imageUrls);
     } on FirebaseException catch (e) {
       throw Exception(e.message);
     }
-  });
 
   return imageUrls;
 }

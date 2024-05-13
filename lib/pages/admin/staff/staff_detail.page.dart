@@ -2,10 +2,9 @@
 // import 'package:firebase_auth/firebase_auth.dart';
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:ecommerce_firebase/models/product_model.dart';
 import 'package:ecommerce_firebase/models/user_model.dart';
 import 'package:ecommerce_firebase/pages/admin/products/edit_product_page.dart';
-import 'package:ecommerce_firebase/providers/product_provider.dart';
+import 'package:ecommerce_firebase/pages/admin/staff/edit_staff_page.dart';
 import 'package:ecommerce_firebase/providers/staff_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
@@ -212,7 +211,7 @@ class _StaffDetailPageState extends State<StaffDetailPage> {
             margin: const EdgeInsets.only(top: 20),
             child: ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, EditProductPage.routeName,
+                Navigator.pushNamed(context, EditStaffPage.routeName,
                     arguments: args);
               },
               style: TextButton.styleFrom(

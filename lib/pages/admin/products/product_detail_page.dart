@@ -106,8 +106,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   borderRadius: BorderRadius.circular(4),
                   child: Image.network(
                       image,
-                    width: 110,
-                    height: 110,
+                    width: 100,
+                    height: 100,
                     fit: BoxFit.cover,
                   ),
                 )

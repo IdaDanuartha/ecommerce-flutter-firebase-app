@@ -6,6 +6,7 @@ import 'dart:io';
 
 import 'package:ecommerce_firebase/controllers/add_single_image_controller.dart';
 import 'package:ecommerce_firebase/helpers/upload_image.dart';
+import 'package:ecommerce_firebase/models/user_model.dart';
 import 'package:ecommerce_firebase/providers/staff_provider.dart';
 import 'package:ecommerce_firebase/widgets/loading_button.dart';
 import 'package:flutter/material.dart';
@@ -14,20 +15,19 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-class AddStaffPage extends StatefulWidget {
-  const AddStaffPage({Key? key}) : super(key: key);
+class EditStaffPage extends StatefulWidget {
+  const EditStaffPage({Key? key}) : super(key: key);
 
-  static const routeName = '/staff/add';
+  static const routeName = '/staff/edit';
 
   @override
-  State<AddStaffPage> createState() => _AddStaffPageState();
+  State<EditStaffPage> createState() => _EditStaffPageState();
 }
 
-class _AddStaffPageState extends State<AddStaffPage> {
+class _EditStaffPageState extends State<EditStaffPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
 
   AddSingleImageController addSingleImageController =
       Get.put(AddSingleImageController());
@@ -44,40 +44,40 @@ class _AddStaffPageState extends State<AddStaffPage> {
   @override
   Widget build(BuildContext context) {
     StaffProvider staffProvider = Provider.of<StaffProvider>(context);
-
     XFile? selectedImage = addSingleImageController.selectedImage.value;
 
-    void storeStaff() async {
-      showDialog(context: context, builder: (context) {
-        return Center(
-          child: CircularProgressIndicator(),
-        );
+    final args = ModalRoute.of(context)!.settings.arguments as UserModel;
+
+    _nameController.text = args.name;
+    _usernameController.text = args.username;
+    _emailController.text = args.email;
+
+    void updateStaff() async {
+      setState(() {
+        isLoading = true;
       });
 
-      var nav = Navigator.of(context);
-
-      if (selectedImage != null) {
-        // An image is selected, proceed with uploading
-        Future<String> profileUrl = uploadSingleImage(selectedImage);
+      Future<String> profileUrl = uploadSingleImage(selectedImage);
 
         profileUrl.then((url) async {
-          var newStaff = await staffProvider.store({
+          var updateStaff = await staffProvider.update(args.id, {
             "name": _nameController.text,
-            "username": _usernameController.text,
             "email": _emailController.text,
-            "profile_url": url,
-            "role": "staff",
-            "password": _passwordController.text
-          }, context);
+            "username": _usernameController.text,
+            "profile_url": url == "" ? args.profileUrl : url,
+          });
 
-          if (newStaff) {
-            nav.pop();
+          var nav = Navigator.of(context);
+          nav.pop();
+          nav.pop();
+
+          if (updateStaff) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 backgroundColor: successColor,
                 duration: const Duration(milliseconds: 2500),
                 content: const Text(
-                  'Staff created successfully',
+                  'Staff updated successfully',
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -90,7 +90,7 @@ class _AddStaffPageState extends State<AddStaffPage> {
                 backgroundColor: alertColor,
                 duration: const Duration(milliseconds: 2500),
                 content: const Text(
-                  'Failed to create staff',
+                  'Failed to update staff',
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -99,12 +99,10 @@ class _AddStaffPageState extends State<AddStaffPage> {
         }).catchError((error) {
           print('Error uploading image: $error');
         });
-      } else {
-        // No image is selected
-        print('No image selected');
-      }
-
-      nav.pop();
+      
+      setState(() {
+        isLoading = false;
+      });
     }
 
     Widget imageInput() {
@@ -136,7 +134,7 @@ class _AddStaffPageState extends State<AddStaffPage> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          'Add Staff',
+          'Edit Staff',
           style: primaryTextStyle.copyWith(fontSize: 18),
         ),
       );
@@ -193,6 +191,35 @@ class _AddStaffPageState extends State<AddStaffPage> {
                 )
               : const SizedBox.shrink();
         },
+      );
+    }
+
+    Widget oldImages() {
+      return Container(
+        margin: const EdgeInsets.only(top: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Old Images',
+                style: primaryTextStyle.copyWith(
+                    fontSize: 16, fontWeight: medium, color: primaryTextColor),
+              ),
+            ),
+            const SizedBox(height: 12),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: Image.network(
+                args.profileUrl,
+                width: 110,
+                height: 110,
+                fit: BoxFit.cover,
+              ),
+            )
+          ],
+        ),
       );
     }
 
@@ -313,59 +340,19 @@ class _AddStaffPageState extends State<AddStaffPage> {
       );
     }
 
-    Widget passwordInput() {
-      return Container(
-        margin: const EdgeInsets.only(top: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Password',
-              style: primaryTextStyle.copyWith(
-                  fontSize: 16, fontWeight: medium, color: primaryTextColor),
-            ),
-            const SizedBox(height: 12),
-            Container(
-              height: 60,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(width: 1, color: const Color(0xFF797979))),
-              child: Center(
-                child: Row(
-                  children: [
-                    Expanded(
-                        child: TextFormField(
-                      controller: _passwordController,
-                      obscureText: true,
-                      style: secondaryTextStyle,
-                      decoration: InputDecoration(
-                          hintText: 'Input password',
-                          hintStyle: subtitleTextStyle,
-                          border: InputBorder.none),
-                    ))
-                  ],
-                ),
-              ),
-            )
-          ],
-        ),
-      );
-    }
-
-    Widget addButton() {
+    Widget updateButton() {
       return Container(
         height: 50,
         width: double.infinity,
         margin: const EdgeInsets.only(top: 20),
         child: ElevatedButton(
-          onPressed: storeStaff,
+          onPressed: updateStaff,
           style: TextButton.styleFrom(
               backgroundColor: primaryColor,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10))),
           child: Text(
-            'Create',
+            'Save changes',
             style:
                 primaryTextStyle.copyWith(fontSize: 16, fontWeight: semiBold),
           ),
@@ -382,12 +369,27 @@ class _AddStaffPageState extends State<AddStaffPage> {
         child: Column(
           children: [
             imageInput(),
+            oldImages(),
+            addSingleImageController.selectedImage.value != null
+                ? Container(
+                    margin: EdgeInsets.only(top: 15),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'New Profile Image',
+                        style: primaryTextStyle.copyWith(
+                            fontSize: 16,
+                            fontWeight: medium,
+                            color: primaryTextColor),
+                      ),
+                    ),
+                  )
+                : SizedBox.shrink(),
             showImages(),
             nameInput(),
             usernameInput(),
             emailInput(),
-            passwordInput(),
-            isLoading ? const LoadingButton(text: "Creating") : addButton(),
+            isLoading ? LoadingButton(text: "Saving") : updateButton(),
           ],
         ),
       )),
