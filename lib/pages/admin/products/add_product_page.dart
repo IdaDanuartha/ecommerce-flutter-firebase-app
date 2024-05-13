@@ -107,13 +107,12 @@ class _AddProductPageState extends State<AddProductPage> {
           );
         }
       } catch (error) {
-        print('Error uploading images: $error');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: alertColor,
             duration: const Duration(milliseconds: 2500),
             content: const Text(
-              'Error uploading images',
+              'Error uploading product images',
               textAlign: TextAlign.center,
             ),
           ),

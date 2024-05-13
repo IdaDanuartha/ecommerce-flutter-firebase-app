@@ -97,7 +97,16 @@ class _AddStaffPageState extends State<AddStaffPage> {
             );
           }
         }).catchError((error) {
-          print('Error uploading image: $error');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: successColor,
+              duration: const Duration(milliseconds: 2500),
+              content: const Text(
+                'Error when uploading profile image',
+                textAlign: TextAlign.center,
+              ),
+            ),
+          );
         });
       } else {
         // No image is selected
@@ -142,7 +151,7 @@ class _AddStaffPageState extends State<AddStaffPage> {
       );
     }
 
-    Widget showImages() {
+    Widget showImage() {
       return //show Images
           GetBuilder<AddSingleImageController>(
         init: AddSingleImageController(),
@@ -382,7 +391,7 @@ class _AddStaffPageState extends State<AddStaffPage> {
         child: Column(
           children: [
             imageInput(),
-            showImages(),
+            showImage(),
             nameInput(),
             usernameInput(),
             emailInput(),

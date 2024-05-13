@@ -97,7 +97,16 @@ class _EditStaffPageState extends State<EditStaffPage> {
             );
           }
         }).catchError((error) {
-          print('Error uploading image: $error');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: successColor,
+              duration: const Duration(milliseconds: 2500),
+              content: const Text(
+                'Error when uploading profile image',
+                textAlign: TextAlign.center,
+              ),
+            ),
+          );
         });
       
       setState(() {
@@ -140,7 +149,7 @@ class _EditStaffPageState extends State<EditStaffPage> {
       );
     }
 
-    Widget showImages() {
+    Widget showImage() {
       return //show Images
           GetBuilder<AddSingleImageController>(
         init: AddSingleImageController(),
@@ -326,6 +335,7 @@ class _EditStaffPageState extends State<EditStaffPage> {
                         child: TextFormField(
                       controller: _emailController,
                       style: secondaryTextStyle,
+                      readOnly: true,
                       decoration: InputDecoration(
                           hintText: 'Input email',
                           hintStyle: subtitleTextStyle,
@@ -385,7 +395,7 @@ class _EditStaffPageState extends State<EditStaffPage> {
                     ),
                   )
                 : SizedBox.shrink(),
-            showImages(),
+            showImage(),
             nameInput(),
             usernameInput(),
             emailInput(),
