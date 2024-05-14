@@ -43,6 +43,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         ? userProvider.user!.profileUrl
                         : "https://picsum.photos/id/64/100",
                     width: 64,
+                    height: 64,
+                    fit:BoxFit.cover,
                   ),
                 ),
                 SizedBox(width: 16),

@@ -58,7 +58,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
       try {
         await _auth.createUserWithEmailAndPassword(email: email, password: password);
-        postDetailsToFirestore();
+        await postDetailsToFirestore();
     } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

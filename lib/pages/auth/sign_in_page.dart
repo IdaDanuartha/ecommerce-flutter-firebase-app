@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_firebase/pages/auth/sign_up_page.dart';
 import 'package:ecommerce_firebase/providers/cart_provider.dart';
 import 'package:ecommerce_firebase/providers/order_provider.dart';
+import 'package:ecommerce_firebase/providers/product_provider.dart';
 import 'package:ecommerce_firebase/providers/staff_provider.dart';
 import 'package:ecommerce_firebase/providers/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -73,9 +74,13 @@ void route() {
             final data = doc.data() as Map<String, dynamic>;
             
             await Provider.of<UserProvider>(context, listen: false).getUser(user!.uid);
+            await Provider.of<ProductProvider>(context, listen: false).getProducts();
+            await Provider.of<OrderProvider>(context, listen: false).getOrdersMonthly();
             if(data["role"] == "admin" || data["role"] == "staff") {
               await Provider.of<OrderProvider>(context, listen: false).getOrders();
-              await Provider.of<OrderProvider>(context, listen: false).getOrdersMonthly();
+              await Provider.of<StaffProvider>(context, listen: false).getStaff();
+              await Provider.of<UserProvider>(context, listen: false).getCustomers();
+              await Provider.of<UserProvider>(context, listen: false).getAdmins();
             } else {
               await Provider.of<CartProvider>(context, listen: false).loadItemsFromPrefs();
               await Provider.of<OrderProvider>(context, listen: false).getOrdersByUser(userId: user?.uid);

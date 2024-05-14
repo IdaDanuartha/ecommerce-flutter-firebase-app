@@ -66,11 +66,15 @@ class _EditProductPageState extends State<EditProductPage> {
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
     final args = ModalRoute.of(context)!.settings.arguments as ProductModel;
 
-    _nameController.text = args.name;
-    _priceController.text = args.price.toString();
-    _discountController.text = args.discount.toString();
-    _qtyController.text = args.qty.toString();
-    _descriptionController.text = args.description;
+    showInput() {
+      _nameController.text = args.name;
+      _priceController.text = args.price.toString();
+      _discountController.text = args.discount.toString();
+      _qtyController.text = args.qty.toString();
+      _descriptionController.text = args.description;
+    }
+
+    showInput();
 
     List<DropdownMenuItem<String>> items = dropdownItems(productProvider);
     productSelected = args.promotion.productId;
@@ -102,7 +106,7 @@ class _EditProductPageState extends State<EditProductPage> {
         "discount": double.parse(_discountController.text),
         "qty": int.parse(_qtyController.text),
         "description": _descriptionController.text,
-        "images": imageUrls,
+        "images": imageUrls.isEmpty ? args.images : imageUrls,
         "created_at": DateTime.now()
       });
 

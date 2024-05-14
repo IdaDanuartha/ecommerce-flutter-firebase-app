@@ -37,7 +37,7 @@ class OrderProvider with ChangeNotifier {
 
   Future<void> getOrdersMonthly() async {
     try {
-      // _ordersMonthly.clear();
+      _ordersMonthly.clear();
       for(int i = 1; i <= 12; i++) {
         double ordersCount = await OrderService().getOrdersMonthly(i);
         _ordersMonthly.add(ordersCount);

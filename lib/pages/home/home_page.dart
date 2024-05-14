@@ -49,6 +49,8 @@ class _HomePageState extends State<HomePage> {
                     ? userProvider.user!.profileUrl
                     : "https://picsum.photos/id/64/100",
                 width: 54,
+                height: 54,
+                fit: BoxFit.cover,
               ),
             ),
           ],

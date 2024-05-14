@@ -28,10 +28,11 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
+
     UserProvider userProvider = Provider.of<UserProvider>(context);
     XFile? selectedImage = addSingleImageController.selectedImage.value;
+  
     var user = userProvider.user!;
-
     _nameController.text = user.name;
     _usernameController.text = user.username;
     _emailController.text = user.email;
@@ -51,7 +52,7 @@ class _EditProfileState extends State<EditProfile> {
           "name": _nameController.text,
           "username": _usernameController.text,
           "email": _emailController.text,
-          "profile_url": profileUrl == "" ? user.profileUrl : profileUrl
+          "profile_url": profileUrl.isEmpty ? user.profileUrl : profileUrl
         });
 
         if (updateProfile) {
@@ -77,6 +78,8 @@ class _EditProfileState extends State<EditProfile> {
             ),
           );
         }
+
+    addSingleImageController.selectedImage.value = null;
 
       // profileUrl.then((url) async { 
 
