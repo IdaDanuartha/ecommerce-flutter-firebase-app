@@ -25,6 +25,7 @@ class EditProductPage extends StatefulWidget {
 
 class _EditProductPageState extends State<EditProductPage> {
   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _productIdController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _discountController =
       TextEditingController(text: "0");
@@ -43,6 +44,23 @@ class _EditProductPageState extends State<EditProductPage> {
 
   bool isLoading = false;
 
+  List<DropdownMenuItem<String>> dropdownItems(ProductProvider productProvider) {
+    List<DropdownMenuItem<String>> menuItems = [
+      const DropdownMenuItem(child: Text("Select Product"), value: "Select Product"),
+    ];
+
+    for (var product in productProvider.products) {
+      if(product.promotion.productId == "") {
+        menuItems.add(DropdownMenuItem(child: Text(product.name), value: product.id));
+      }
+    }
+
+    return menuItems;
+  }
+
+  
+  String productSelected = "Select Product";
+
   @override
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
@@ -53,6 +71,10 @@ class _EditProductPageState extends State<EditProductPage> {
     _discountController.text = args.discount.toString();
     _qtyController.text = args.qty.toString();
     _descriptionController.text = args.description;
+
+    List<DropdownMenuItem<String>> items = dropdownItems(productProvider);
+    productSelected = args.promotion.productId;
+    _productIdController.text = productSelected;
 
     void updateProduct() async {
       setState(() {
@@ -237,6 +259,65 @@ class _EditProductPageState extends State<EditProductPage> {
                   ),
                 )
             ])
+          ],
+        ),
+      );
+    }
+
+    Widget selectProductInput() {
+      return Container(
+        margin: const EdgeInsets.only(top: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Product Promotion (Optional)',
+              style: primaryTextStyle.copyWith(
+                  fontSize: 16, fontWeight: medium, color: primaryTextColor),
+            ),
+            const SizedBox(height: 12),
+            Container(
+              height: 50,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(width: 1, color: const Color(0xFF797979))),
+              child: Center(
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: DropdownButtonFormField(
+                            decoration: const InputDecoration(
+                              border: InputBorder.none
+                              // enabledBorder: OutlineInputBorder(
+                              //   borderSide:
+                              //       BorderSide(color: Colors.blue, width: 2),
+                              //   borderRadius: BorderRadius.circular(20),
+                              // ),
+                              // border: OutlineInputBorder(
+                              //   borderSide:
+                              //       BorderSide(color: Colors.blue, width: 2),
+                              //   borderRadius: BorderRadius.circular(20),
+                              // ),
+                              // filled: true,
+                              // fillColor: Colors.blueAccent,
+                            ),
+                            elevation: 0,
+                            dropdownColor: bgColor3,
+                            style: TextStyle(
+                              color: primaryTextColor,
+                            ),
+                            value: productSelected,
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                productSelected = newValue!;
+                              });
+                            },
+                            items: items))
+                  ],
+                ),
+              ),
+            )
           ],
         ),
       );
@@ -490,6 +571,7 @@ class _EditProductPageState extends State<EditProductPage> {
                   )
                 : SizedBox.shrink(),
             showImages(),
+            // selectProductInput(),
             nameInput(),
             priceInput(),
             discountInput(),

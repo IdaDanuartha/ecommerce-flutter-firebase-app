@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_firebase/models/promotion_model.dart';
 
 class ProductModel {
   late String id;
-  late String productId;
+  late PromotionModel promotion;
   late String name;
   late double price;
   late double discount;
@@ -14,7 +15,7 @@ class ProductModel {
   ProductModel({
     required this.id,
     required this.name,
-    required this.productId,
+    required this.promotion,
     required this.price,
     required this.discount,
     required this.qty,
@@ -25,7 +26,7 @@ class ProductModel {
 
   ProductModel.fromJson(Map<String, dynamic> json) {
     id = json["id"];
-    productId = json["product_id"];
+    promotion = PromotionModel.fromJson(json["promotion"]);
     name = json["name"];
     price = double.parse(json["price"].toString());
     discount = double.parse(json["discount"].toString());
@@ -38,7 +39,7 @@ class ProductModel {
   Map<String, dynamic> toJson() {
     return {
       "id": id,
-      "product_id": productId,
+      "promotion": promotion.toJson(),
       "name": name,
       "price": price,
       "discount": discount,

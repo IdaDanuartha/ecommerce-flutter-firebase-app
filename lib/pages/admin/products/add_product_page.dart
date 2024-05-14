@@ -4,10 +4,13 @@
 
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_firebase/controllers/add_product_images_controller.dart';
 import 'package:ecommerce_firebase/helpers/upload_image.dart';
+import 'package:ecommerce_firebase/models/promotion_model.dart';
 import 'package:ecommerce_firebase/providers/product_provider.dart';
 import 'package:ecommerce_firebase/widgets/loading_button.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 import 'package:get/get.dart';
@@ -49,7 +52,9 @@ class _AddProductPageState extends State<AddProductPage> {
     ];
 
     for (var product in productProvider.products) {
-      menuItems.add(DropdownMenuItem(child: Text(product.name), value: product.id));
+      if(product.promotion.productId == "") {
+        menuItems.add(DropdownMenuItem(child: Text(product.name), value: product.id));
+      }
     }
 
     return menuItems;
@@ -85,16 +90,38 @@ class _AddProductPageState extends State<AddProductPage> {
         }
       }
 
+      PromotionModel? promotionModel;
+
+      await FirebaseFirestore.instance.collection("products").doc(_productIdController.text).get().then(
+        (DocumentSnapshot doc) {
+          final data = doc.data() as Map<String, dynamic>;
+          promotionModel = PromotionModel.fromJson({
+            "product_id": doc.id,
+            "name": data["name"]
+          });
+        },
+        onError: (e) {
+          print("Error completing: $e");
+          promotionModel = PromotionModel.fromJson({
+            "product_id": "",
+            "name": ""
+          });
+        },
+      );
+
       try {
         // Now that imageUrls is populated, proceed with the rest of the code
         var newProduct = await productProvider.store({
-          "product_id": _productIdController.text == "Select Product" ? "" : _productIdController,
+          "promotion": {
+            "product_id": promotionModel!.productId, 
+            "name": promotionModel!.name, 
+          },
           "name": _nameController.text,
           "price": double.parse(_priceController.text),
           "discount": double.parse(_discountController.text),
           "qty": int.parse(_qtyController.text),
           "description": _descriptionController.text,
-          "images": imageUrls, // imageUrls is now populated
+          "images": imageUrls,
           "created_at": DateTime.now(),
         });
 

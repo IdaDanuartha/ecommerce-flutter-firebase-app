@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_firebase/models/cart_model.dart';
 import 'package:ecommerce_firebase/models/product_model.dart';
+import 'package:ecommerce_firebase/models/promotion_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,7 +31,10 @@ class CartProvider with ChangeNotifier {
           qty: 0, 
           product: ProductModel(
             id: "",
-            productId: "",
+            promotion: PromotionModel(
+              productId: "",
+              name: ""
+            ),
             name: '',
             price: 0.0,
             discount: 0.0,

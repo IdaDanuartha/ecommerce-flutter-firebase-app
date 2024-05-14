@@ -28,7 +28,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
     final args = ModalRoute.of(context)!.settings.arguments as ProductModel;
-
+    
     void deleteProduct() async {
       // print(addProductImagesController.selectedImages);
       var deleteProduct= await productProvider.delete(args.id);
@@ -139,6 +139,36 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(args.name,
+                    style: primaryTextStyle.copyWith(
+                        color: Color.fromRGBO(255, 255, 255, .7))),
+              ),
+            )
+          ],
+        ),
+      );
+    }
+
+    Widget productPromotionInput() {
+      return Container(
+        margin: const EdgeInsets.only(top: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Promotion Product',
+              style: primaryTextStyle.copyWith(
+                  fontSize: 16, fontWeight: medium, color: primaryTextColor),
+            ),
+            const SizedBox(height: 12),
+            Container(
+              height: 60,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(width: 1, color: const Color(0xFF797979))),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(args.promotion.name,
                     style: primaryTextStyle.copyWith(
                         color: Color.fromRGBO(255, 255, 255, .7))),
               ),
@@ -406,6 +436,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           children: [
             actionButtons(),
             showImages(),
+            args.promotion.productId != "" ? productPromotionInput() : const SizedBox(),
             nameInput(),
             priceInput(),
             discountInput(),
