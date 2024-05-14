@@ -91,6 +91,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
             "discount": item.product.discount,
             "product": {
               "id": item.product.id,
+              "promotion": {
+                "product_id": item.product.promotion.productId,
+                "name": item.product.promotion.name
+              },
               "name": item.product.name,
               "price": item.product.price,
               "discount": item.product.discount,

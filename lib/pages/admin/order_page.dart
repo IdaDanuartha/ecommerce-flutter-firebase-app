@@ -138,7 +138,26 @@ class _OrderPageState extends State<OrderPage> {
                         },
                         defaultVerticalAlignment:
                             TableCellVerticalAlignment.middle,
-                        children: dataRows(orderProvider, context),
+                        children: orderProvider.orders.isNotEmpty ? dataRows(orderProvider, context) : [
+                          TableRow(
+                            children: [
+                              TableCell(
+                                verticalAlignment: TableCellVerticalAlignment.middle,
+                                child: Center(
+                                  child: Padding(
+                                      padding: const EdgeInsets.all(12),
+                                      child: Text(
+                                        "No order found",
+                                        style: primaryTextStyle.copyWith(
+                                          color: Color.fromRGBO(255,255,255,.7)
+                                        ),
+                                      ),
+                                    ),
+                                ),
+                              ),
+                            ]
+                          )
+                        ],
                       ),
                     ],
                   ),

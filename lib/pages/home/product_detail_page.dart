@@ -56,7 +56,7 @@ class _ProductDetailHomePageState extends State<ProductDetailHomePage> {
                     'assets/icon_success.png',
                     width: 100,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 12,
                   ),
                   Text(
@@ -66,14 +66,14 @@ class _ProductDetailHomePageState extends State<ProductDetailHomePage> {
                       fontWeight: semiBold,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 12,
                   ),
                   Text(
                     'Item added successfully',
                     style: secondaryTextStyle,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   // Container(
@@ -110,12 +110,12 @@ class _ProductDetailHomePageState extends State<ProductDetailHomePage> {
       return Container(
         width: currentIndex == index ? 16 : 4,
         height: 4,
-        margin: EdgeInsets.symmetric(
+        margin: const EdgeInsets.symmetric(
           horizontal: 2,
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: currentIndex == index ? primaryColor : Color(0xffC4C4C4),
+          color: currentIndex == index ? primaryColor : const Color(0xffC4C4C4),
         ),
       );
     }
@@ -138,19 +138,19 @@ class _ProductDetailHomePageState extends State<ProductDetailHomePage> {
                   onTap: () {
                     Navigator.pop(context);
                   },
-                  child: Icon(
+                  child: const Icon(
                     Icons.chevron_left,
                   ),
                 ),
               ],
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           CarouselSlider(
             items: args.images
                 .map(
                   (image) => Container(
-                    margin: EdgeInsets.only(right: 15),
+                    margin: const EdgeInsets.only(right: 15),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(12),
                       child: Image.network(
@@ -173,7 +173,7 @@ class _ProductDetailHomePageState extends State<ProductDetailHomePage> {
               },
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Row(
@@ -192,9 +192,9 @@ class _ProductDetailHomePageState extends State<ProductDetailHomePage> {
         child: Container(
           width: double.infinity,
           height: MediaQuery.of(context).size.height - 180,
-          margin: EdgeInsets.only(top: 17),
+          margin: const EdgeInsets.only(top: 17),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.vertical(
+            borderRadius: const BorderRadius.vertical(
               top: Radius.circular(24),
             ),
             color: bgColor1,
@@ -214,6 +214,14 @@ class _ProductDetailHomePageState extends State<ProductDetailHomePage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          args.promotion.productId != "" ? Text(
+                            "Promotion from ${args.promotion.name}",
+                            style: primaryTextStyle.copyWith(
+                              fontSize: 12,
+                              color: const Color.fromRGBO(255,255,255,.5)
+                            ),
+                          ) : const SizedBox(),
+                          args.promotion.productId != "" ? const SizedBox(height: 10) : const SizedBox(),
                           Text(
                             args.name,
                             style: primaryTextStyle.copyWith(
@@ -236,7 +244,7 @@ class _ProductDetailHomePageState extends State<ProductDetailHomePage> {
                   left: defaultMargin,
                   right: defaultMargin,
                 ),
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: bgColor2,
                   borderRadius: BorderRadius.circular(4),
@@ -257,18 +265,18 @@ class _ProductDetailHomePageState extends State<ProductDetailHomePage> {
                             fontWeight: semiBold,
                           ),
                         ),
-                        SizedBox(width: 5),
+                        const SizedBox(width: 5),
                         args.discount > 0 ? 
                           Text(
                           '\$${args.price}',
                           style: priceTextStyle.copyWith(
                             fontSize: 12,
                             fontWeight: semiBold,
-                            color: Color.fromRGBO(255,255,255, .3),
+                            color: const Color.fromRGBO(255,255,255, .3),
                             decoration: TextDecoration.lineThrough,
-                            decorationColor: Color.fromRGBO(255,255,255, .3) 
+                            decorationColor: const Color.fromRGBO(255,255,255, .3) 
                           ),
-                        ) : Text(""),
+                        ) : const Text(""),
                       ],
                     )
                   ],
@@ -292,7 +300,7 @@ class _ProductDetailHomePageState extends State<ProductDetailHomePage> {
                         fontWeight: medium,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 12,
                     ),
                     Text(
