@@ -11,7 +11,6 @@ import 'package:ecommerce_firebase/widgets/loading_button.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_firebase/themes.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class AddProductPage extends StatefulWidget {
@@ -25,6 +24,7 @@ class AddProductPage extends StatefulWidget {
 
 class _AddProductPageState extends State<AddProductPage> {
   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _productIdController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _discountController =
       TextEditingController(text: "0");
@@ -42,10 +42,28 @@ class _AddProductPageState extends State<AddProductPage> {
   TextEditingController controller = TextEditingController();
 
   bool isLoading = false;
+  
+  List<DropdownMenuItem<String>> dropdownItems(ProductProvider productProvider) {
+    List<DropdownMenuItem<String>> menuItems = [
+      const DropdownMenuItem(child: Text("Select Product"), value: "Select Product"),
+    ];
+
+    for (var product in productProvider.products) {
+      menuItems.add(DropdownMenuItem(child: Text(product.name), value: product.id));
+    }
+
+    return menuItems;
+  }
+
+  
+  String productSelected = "Select Product";
 
   @override
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
+
+    List<DropdownMenuItem<String>> items = dropdownItems(productProvider);
+    _productIdController.text = productSelected;
 
     void storeProduct() async {
       setState(() {
@@ -70,6 +88,7 @@ class _AddProductPageState extends State<AddProductPage> {
       try {
         // Now that imageUrls is populated, proceed with the rest of the code
         var newProduct = await productProvider.store({
+          "product_id": _productIdController.text == "Select Product" ? "" : _productIdController,
           "name": _nameController.text,
           "price": double.parse(_priceController.text),
           "discount": double.parse(_discountController.text),
@@ -214,6 +233,65 @@ class _AddProductPageState extends State<AddProductPage> {
                 )
               : const SizedBox.shrink();
         },
+      );
+    }
+
+    Widget selectProductInput() {
+      return Container(
+        margin: const EdgeInsets.only(top: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Product Promotion (Optional)',
+              style: primaryTextStyle.copyWith(
+                  fontSize: 16, fontWeight: medium, color: primaryTextColor),
+            ),
+            const SizedBox(height: 12),
+            Container(
+              height: 50,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(width: 1, color: const Color(0xFF797979))),
+              child: Center(
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: DropdownButtonFormField(
+                            decoration: const InputDecoration(
+                              border: InputBorder.none
+                              // enabledBorder: OutlineInputBorder(
+                              //   borderSide:
+                              //       BorderSide(color: Colors.blue, width: 2),
+                              //   borderRadius: BorderRadius.circular(20),
+                              // ),
+                              // border: OutlineInputBorder(
+                              //   borderSide:
+                              //       BorderSide(color: Colors.blue, width: 2),
+                              //   borderRadius: BorderRadius.circular(20),
+                              // ),
+                              // filled: true,
+                              // fillColor: Colors.blueAccent,
+                            ),
+                            elevation: 0,
+                            dropdownColor: bgColor3,
+                            style: TextStyle(
+                              color: primaryTextColor,
+                            ),
+                            value: productSelected,
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                productSelected = newValue!;
+                              });
+                            },
+                            items: items))
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
       );
     }
 
@@ -449,6 +527,7 @@ class _AddProductPageState extends State<AddProductPage> {
           children: [
             imageInput(),
             showImages(),
+            selectProductInput(),
             nameInput(),
             priceInput(),
             discountInput(),

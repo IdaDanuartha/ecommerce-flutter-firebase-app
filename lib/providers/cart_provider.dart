@@ -30,6 +30,7 @@ class CartProvider with ChangeNotifier {
           qty: 0, 
           product: ProductModel(
             id: "",
+            productId: "",
             name: '',
             price: 0.0,
             discount: 0.0,

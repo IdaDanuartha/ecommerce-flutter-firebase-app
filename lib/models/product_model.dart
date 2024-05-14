@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProductModel {
   late String id;
+  late String productId;
   late String name;
   late double price;
   late double discount;
@@ -13,6 +14,7 @@ class ProductModel {
   ProductModel({
     required this.id,
     required this.name,
+    required this.productId,
     required this.price,
     required this.discount,
     required this.qty,
@@ -23,6 +25,7 @@ class ProductModel {
 
   ProductModel.fromJson(Map<String, dynamic> json) {
     id = json["id"];
+    productId = json["product_id"];
     name = json["name"];
     price = double.parse(json["price"].toString());
     discount = double.parse(json["discount"].toString());
@@ -35,6 +38,7 @@ class ProductModel {
   Map<String, dynamic> toJson() {
     return {
       "id": id,
+      "product_id": productId,
       "name": name,
       "price": price,
       "discount": discount,
