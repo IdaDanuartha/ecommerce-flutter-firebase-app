@@ -198,7 +198,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   border: Border.all(width: 1, color: const Color(0xFF797979))),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Text("\$${args.price.toString()}",
+                child: Text("RM ${args.price.toString()}",
                     style: primaryTextStyle.copyWith(
                         color: Color.fromRGBO(255, 255, 255, .7))),
               ),
@@ -229,7 +229,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                    args.discount > 0 ? args.discount.toString() : "\$0",
+                    args.discount > 0 ? args.discount.toString() : "RM 0",
                     style: primaryTextStyle.copyWith(
                         color: Color.fromRGBO(255, 255, 255, .7))),
               ),

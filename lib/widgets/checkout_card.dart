@@ -49,13 +49,13 @@ class CheckoutCard extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      '\$${(cart.product.price - cart.product.discount).toStringAsFixed(2)}',
+                      'RM ${(cart.product.price - cart.product.discount).toStringAsFixed(2)}',
                       style: priceTextStyle,
                     ),
                     SizedBox(width: 5),
                     cart.product.discount > 0
                         ? Text(
-                            '\$${cart.product.price}',
+                            'RM ${cart.product.price}',
                             style: priceTextStyle.copyWith(
                                 fontSize: 12,
                                 color: Color.fromRGBO(255, 255, 255, .3),

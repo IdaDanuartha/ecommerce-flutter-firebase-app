@@ -166,14 +166,14 @@ class ProductCard extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          "\$${(product.price - product.discount).toStringAsFixed(2)}",
+                          "RM ${(product.price - product.discount).toStringAsFixed(2)}",
                           style: priceTextStyle.copyWith(
                               fontSize: 12, fontWeight: medium),
                         ),
                         SizedBox(width: 5),
                         product.discount > 0 ? 
                           Text(
-                          '\$${product.price}',
+                          'RM ${product.price}',
                           style: priceTextStyle.copyWith(
                             fontSize: 10,
                             color: Color.fromRGBO(255,255,255, .3),

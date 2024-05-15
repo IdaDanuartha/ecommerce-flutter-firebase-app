@@ -515,7 +515,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   ),
                 ),
                 Text(
-                  "\$${cartProvider.totalPrice.toStringAsFixed(2)}",
+                  "RM ${cartProvider.totalPrice.toStringAsFixed(2)}",
                   style: primaryTextStyle.copyWith(
                     fontWeight: medium,
                   ),
@@ -535,7 +535,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   ),
                 ),
                 Text(
-                  "-\$${cartProvider.totalDiscount.toStringAsFixed(2)}",
+                  "-RM ${cartProvider.totalDiscount == 0 ? "0" : cartProvider.totalDiscount}",
                   style: primaryTextStyle.copyWith(
                     fontWeight: medium,
                   ),
@@ -555,7 +555,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   ),
                 ),
                 Text(
-                  "\$0",
+                  "RM 0",
                   style: primaryTextStyle.copyWith(
                     fontWeight: medium,
                   ),
@@ -582,7 +582,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   ),
                 ),
                 Text(
-                  '\$${grandTotal}',
+                  'RM ${grandTotal}',
                   style: priceTextStyle.copyWith(
                     fontWeight: semiBold,
                   ),

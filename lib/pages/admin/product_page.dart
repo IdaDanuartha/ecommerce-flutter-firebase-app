@@ -73,15 +73,14 @@ class _ProductPageState extends State<ProductPage> {
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
+                  width: MediaQuery.of(context).size.width - 25,
                   child: Column(
                     children: [
                       Table(
                         columnWidths: const {
                           0: FlexColumnWidth(3),
-                          1: FlexColumnWidth(1),
+                          1: FlexColumnWidth(2),
                           2: FlexColumnWidth(1),
-                          3: FlexColumnWidth(1),
                         }, 
                         defaultVerticalAlignment:
                             TableCellVerticalAlignment.middle,
@@ -137,9 +136,8 @@ class _ProductPageState extends State<ProductPage> {
                       Table(
                         columnWidths: const {
                           0: FlexColumnWidth(3),
-                          1: FlexColumnWidth(1),
+                          1: FlexColumnWidth(2),
                           2: FlexColumnWidth(1),
-                          3: FlexColumnWidth(1),
                         }, 
                         defaultVerticalAlignment:
                             TableCellVerticalAlignment.middle,
@@ -195,7 +193,7 @@ List<TableRow> dataRows(ProductProvider productProvider, BuildContext context) {
                 child: Padding(
                   padding: const EdgeInsets.all(12),
                   child: Text(
-                    "\$${product.price.toString()}",
+                    "RM ${product.price.toString()}",
                     style: primaryTextStyle,
                   ),
                 ),

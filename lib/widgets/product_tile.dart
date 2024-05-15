@@ -61,7 +61,7 @@
 //                     height: 6,
 //                   ),
 //                   Text(
-//                     "\$${product.price}",
+//                     "RM ${product.price}",
 //                     style: priceTextStyle.copyWith(
 //                       fontWeight: medium
 //                     ),

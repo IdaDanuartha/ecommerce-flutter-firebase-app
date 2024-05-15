@@ -241,7 +241,7 @@ List<TableRow> dataRows(OrderProvider orderProvider, BuildContext context) {
                 child: Padding(
                   padding: const EdgeInsets.all(12),
                   child: Text(
-                    "\$${(order.subTotal + order.deliveryFee - order.totalDiscount).toStringAsFixed(2)}",
+                    "RM ${(order.subTotal + order.deliveryFee - order.totalDiscount).toStringAsFixed(2)}",
                     style: primaryTextStyle,
                   ),
                 ),

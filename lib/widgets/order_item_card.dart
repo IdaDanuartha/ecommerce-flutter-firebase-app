@@ -51,7 +51,7 @@ class OrderItemCard extends StatelessWidget {
                           children: [
                             item.discount > 0
                                 ? Text(
-                                    '\$${item.price}',
+                                    'RM ${item.price}',
                                     style: priceTextStyle.copyWith(
                                         fontSize: 10,
                                         color: Color.fromRGBO(255, 255, 255, .3),
@@ -62,7 +62,7 @@ class OrderItemCard extends StatelessWidget {
                                 : Text(""),
                             item.discount > 0 ? SizedBox(width: 5) : SizedBox(),
                             Text(
-                              "\$${(item.price - item.discount).toStringAsFixed(2)}",
+                              "RM ${(item.price - item.discount).toStringAsFixed(2)}",
                               style: primaryTextStyle.copyWith(
                                   fontSize: 12, 
                                   color: priceColor,

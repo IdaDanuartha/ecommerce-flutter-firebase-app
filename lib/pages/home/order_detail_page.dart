@@ -731,7 +731,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                 style: primaryTextStyle.copyWith(fontSize: 14),
               ),
               Text(
-                "\$${args.subTotal.toStringAsFixed(2)}",
+                "RM ${args.subTotal.toStringAsFixed(2)}",
                 style: primaryTextStyle.copyWith(fontSize: 14),
               ),
             ],
@@ -745,7 +745,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                 style: primaryTextStyle.copyWith(fontSize: 14),
               ),
               Text(
-                "-\$${args.totalDiscount}",
+                "-RM ${args.totalDiscount == 0 ? "0" : args.totalDiscount}",
                 style: primaryTextStyle.copyWith(fontSize: 14),
               ),
             ],
@@ -759,7 +759,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                 style: primaryTextStyle.copyWith(fontSize: 14),
               ),
               Text(
-                "\$${args.deliveryFee}",
+                "RM ${args.deliveryFee == 0 ? "0" : args.deliveryFee}",
                 style: primaryTextStyle.copyWith(fontSize: 14),
               ),
             ],
@@ -775,7 +775,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                 style: primaryTextStyle.copyWith(fontSize: 14),
               ),
               Text(
-                "\$${(args.subTotal + args.deliveryFee - args.totalDiscount).toStringAsFixed(2)}",
+                "RM ${(args.subTotal + args.deliveryFee - args.totalDiscount).toStringAsFixed(2)}",
                 style: primaryTextStyle.copyWith(fontSize: 14),
               ),
             ],
