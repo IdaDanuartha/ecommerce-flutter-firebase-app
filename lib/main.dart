@@ -5,6 +5,8 @@ import 'package:ecommerce_firebase/pages/admin/products/product_detail_page.dart
 import 'package:ecommerce_firebase/pages/admin/products/edit_product_page.dart';
 import 'package:ecommerce_firebase/pages/admin/staff/edit_staff_page.dart';
 import 'package:ecommerce_firebase/pages/admin/staff/staff_detail.page.dart';
+import 'package:ecommerce_firebase/pages/auth/forgot_password_page.dart';
+import 'package:ecommerce_firebase/pages/auth/send_email_success_page.dart';
 import 'package:ecommerce_firebase/pages/home/cart_page.dart';
 import 'package:ecommerce_firebase/pages/home/order_detail_page.dart';
 import 'package:ecommerce_firebase/pages/home/product_detail_page.dart';
@@ -78,6 +80,8 @@ class MyApp extends StatelessWidget {
           SplashPage.routeName: (context) => const SplashPage(),
           SignInPage.routeName: (context) => const SignInPage(),
           SignUpPage.routeName: (context) => SignUpPage(),
+          ForgotPasswordPage.routeName: (context) => ForgotPasswordPage(),
+          SendEmailSuccessPage.routeName: (context) => SendEmailSuccessPage(),
 
           AdminPage.routeName: (context) => const AdminPage(),
           AddProductPage.routeName: (context) => const AddProductPage(),

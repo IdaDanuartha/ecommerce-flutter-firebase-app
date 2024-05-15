@@ -55,7 +55,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       Text(
                         userProvider.user!.name,
                         style: primaryTextStyle.copyWith(
-                            fontSize: 24, fontWeight: semiBold),
+                            fontSize: 20, fontWeight: semiBold),
                       ),
                       Text(
                         "@${userProvider.user!.username}",

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_firebase/pages/auth/forgot_password_page.dart';
 import 'package:ecommerce_firebase/pages/auth/sign_up_page.dart';
 import 'package:ecommerce_firebase/providers/cart_provider.dart';
 import 'package:ecommerce_firebase/providers/order_provider.dart';
@@ -216,6 +217,26 @@ void route() {
       );
     }
 
+    Widget forgotPasswordText() {
+      return Container(
+        margin: EdgeInsets.only(top: 8),
+        child: Align(
+          alignment: Alignment.centerRight,
+          child: InkWell(
+            onTap: () {
+              Navigator.of(context).pushNamed(ForgotPasswordPage.routeName);
+            },
+            child: Text(
+              "Forgot Password?",
+              style: primaryTextStyle.copyWith(
+                color: primaryColor
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
     Widget signInButton() {
       return Container(
         height: 50,
@@ -277,6 +298,7 @@ void route() {
                 header(),
                 emailInput(),
                 passwordInput(),
+                forgotPasswordText(),
                 isLoading ? const LoadingButton(text: "Authenticating...") : signInButton(),
                 Spacer(),
                 footer()

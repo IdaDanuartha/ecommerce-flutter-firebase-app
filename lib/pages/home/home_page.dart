@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
                   Text(
                           "Hello, ${userProvider.user!.name}",
                           style: primaryTextStyle.copyWith(
-                              fontSize: 24, fontWeight: semiBold),
+                              fontSize: 20, fontWeight: semiBold),
                         ),
                   Text(
                           "@${userProvider.user!.username}",
