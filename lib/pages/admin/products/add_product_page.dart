@@ -92,13 +92,22 @@ class _AddProductPageState extends State<AddProductPage> {
 
       PromotionModel? promotionModel;
 
-      await FirebaseFirestore.instance.collection("products").doc(_productIdController.text).get().then(
+      // if(_productIdController.text != "Select Product") {
+        await FirebaseFirestore.instance.collection("products").doc(_productIdController.text).get().then(
         (DocumentSnapshot doc) {
-          final data = doc.data() as Map<String, dynamic>;
-          promotionModel = PromotionModel.fromJson({
-            "product_id": doc.id,
-            "name": data["name"]
-          });
+          print(doc.data());
+          if(doc.data() != null) {
+              final data = doc.data() as Map<String, dynamic>;
+              promotionModel = PromotionModel.fromJson({
+                "product_id": doc.id,
+                "name": data["name"]
+              });
+            } else {
+              promotionModel = PromotionModel.fromJson({
+                "product_id": "",
+                "name": ""
+              });
+            }
         },
         onError: (e) {
           print("Error completing: $e");
@@ -108,6 +117,7 @@ class _AddProductPageState extends State<AddProductPage> {
           });
         },
       );
+      // }
 
       try {
         // Now that imageUrls is populated, proceed with the rest of the code
