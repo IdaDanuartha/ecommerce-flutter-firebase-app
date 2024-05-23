@@ -141,7 +141,26 @@ class _ProductPageState extends State<ProductPage> {
                         }, 
                         defaultVerticalAlignment:
                             TableCellVerticalAlignment.middle,
-                        children: dataRows(productProvider, context),
+                        children: productProvider.products.isNotEmpty ? dataRows(productProvider, context) : [
+                          TableRow(
+                            children: [
+                              TableCell(
+                                verticalAlignment: TableCellVerticalAlignment.middle,
+                                child: Center(
+                                  child: Padding(
+                                      padding: const EdgeInsets.all(12),
+                                      child: Text(
+                                        "No product found",
+                                        style: primaryTextStyle.copyWith(
+                                          color: Color.fromRGBO(255,255,255,.7)
+                                        ),
+                                      ),
+                                    ),
+                                ),
+                              ),
+                            ]
+                          )
+                        ]
                       ),
                     ],
                   ),

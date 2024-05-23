@@ -115,7 +115,26 @@ class _CustomerPageState extends State<CustomerPage> {
                         }, 
                         defaultVerticalAlignment:
                             TableCellVerticalAlignment.middle,
-                        children: dataRows(userProvider, context),
+                        children: userProvider.customers.isNotEmpty ? dataRows(userProvider, context) : [
+                          TableRow(
+                            children: [
+                              TableCell(
+                                verticalAlignment: TableCellVerticalAlignment.middle,
+                                child: Center(
+                                  child: Padding(
+                                      padding: const EdgeInsets.all(12),
+                                      child: Text(
+                                        "No customer found",
+                                        style: primaryTextStyle.copyWith(
+                                          color: Color.fromRGBO(255,255,255,.7)
+                                        ),
+                                      ),
+                                    ),
+                                ),
+                              ),
+                            ]
+                          )
+                        ]
                       ),
                     ],
                   ),

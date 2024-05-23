@@ -140,7 +140,26 @@ class _StaffPageState extends State<StaffPage> {
                         }, 
                         defaultVerticalAlignment:
                             TableCellVerticalAlignment.middle,
-                        children: dataRows(staffProvider, context),
+                        children: staffProvider.staff.isNotEmpty ? dataRows(staffProvider, context) : [
+                          TableRow(
+                            children: [
+                              TableCell(
+                                verticalAlignment: TableCellVerticalAlignment.middle,
+                                child: Center(
+                                  child: Padding(
+                                      padding: const EdgeInsets.all(12),
+                                      child: Text(
+                                        "No staff found",
+                                        style: primaryTextStyle.copyWith(
+                                          color: Color.fromRGBO(255,255,255,.7)
+                                        ),
+                                      ),
+                                    ),
+                                ),
+                              ),
+                            ]
+                          )
+                        ]
                       ),
                     ],
                   ),
