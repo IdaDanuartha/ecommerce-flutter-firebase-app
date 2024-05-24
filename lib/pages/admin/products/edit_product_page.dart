@@ -102,8 +102,8 @@ class _EditProductPageState extends State<EditProductPage> {
 
       var updateProduct = await productProvider.update(args.id, {
         "name": _nameController.text,
-        "price": double.parse(_priceController.text),
-        "discount": double.parse(_discountController.text),
+        "price": int.parse(_priceController.text),
+        "discount": int.parse(_discountController.text),
         "qty": int.parse(_qtyController.text),
         "description": _descriptionController.text,
         "images": imageUrls.isEmpty ? args.images : imageUrls,

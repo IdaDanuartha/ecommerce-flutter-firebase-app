@@ -259,7 +259,7 @@ class _ProductDetailHomePageState extends State<ProductDetailHomePage> {
                     Row(
                       children: [
                         Text(
-                          'RM ${(args.price - args.discount).toStringAsFixed(2)}',
+                          'RM ${(args.price - args.discount)}',
                           style: priceTextStyle.copyWith(
                             fontSize: 16,
                             fontWeight: semiBold,
