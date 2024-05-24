@@ -229,7 +229,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                    args.discount > 0 ? args.discount.toString() : "RM 0",
+                    "RM ${args.discount.toString()}",
                     style: primaryTextStyle.copyWith(
                         color: Color.fromRGBO(255, 255, 255, .7))),
               ),
@@ -326,7 +326,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           SizedBox(width: 20),
           Container(
             height: 50,
-            // width: double.infinity,
+            // width: .infinity,
             margin: const EdgeInsets.only(top: 20),
             child: ElevatedButton(
               onPressed: () {

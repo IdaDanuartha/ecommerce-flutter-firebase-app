@@ -60,7 +60,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           await orderProvider.cancelOrder(args.id, {"status": 4}, context);
 
       String totalPrice =
-          (args.subTotal + 0 - args.totalDiscount).toStringAsFixed(2);
+          (args.subTotal + 0 - args.totalDiscount).toStringAsFixed(0);
 
       sendToGmail("Order Cancelled", "cancelled", args.code, totalPrice,
           userProvider, staffProvider, context);
@@ -731,7 +731,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                 style: primaryTextStyle.copyWith(fontSize: 14),
               ),
               Text(
-                "RM ${args.subTotal.toStringAsFixed(2)}",
+                "RM ${args.subTotal.toStringAsFixed(0)}",
                 style: primaryTextStyle.copyWith(fontSize: 14),
               ),
             ],
@@ -745,7 +745,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                 style: primaryTextStyle.copyWith(fontSize: 14),
               ),
               Text(
-                "-RM ${args.totalDiscount == 0 ? "0" : args.totalDiscount}",
+                "-RM ${args.totalDiscount == 0 ? "0" : args.totalDiscount.toStringAsFixed(0)}",
                 style: primaryTextStyle.copyWith(fontSize: 14),
               ),
             ],
@@ -775,7 +775,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                 style: primaryTextStyle.copyWith(fontSize: 14),
               ),
               Text(
-                "RM ${(args.subTotal + args.deliveryFee - args.totalDiscount).toStringAsFixed(2)}",
+                "RM ${(args.subTotal + args.deliveryFee - args.totalDiscount).toStringAsFixed(0)}",
                 style: primaryTextStyle.copyWith(fontSize: 14),
               ),
             ],

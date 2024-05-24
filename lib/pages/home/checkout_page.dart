@@ -1,6 +1,7 @@
 import 'package:ecommerce_firebase/helpers/generate_random_string.dart';
 import 'package:ecommerce_firebase/helpers/location_picker_alert.dart';
 import 'package:ecommerce_firebase/helpers/send_to_gmail.dart';
+import 'package:ecommerce_firebase/helpers/stripe_payment.dart';
 import 'package:ecommerce_firebase/pages/home/checkout_success_page.dart';
 import 'package:ecommerce_firebase/providers/cart_provider.dart';
 import 'package:ecommerce_firebase/providers/order_provider.dart';
@@ -34,14 +35,16 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
   bool isLoading = false;
 
-  List<DropdownMenuItem<String>> get dropdownItems{
+  List<DropdownMenuItem<String>> get dropdownItems {
     List<DropdownMenuItem<String>> menuItems = [
-      const DropdownMenuItem(child: Text("Online Banking"),value: "Online Banking"),
-      const DropdownMenuItem(child: Text("COD"),value: "COD"),
-      const DropdownMenuItem(child: Text("Mastercard"),value: "Mastercard"),
+      const DropdownMenuItem(
+          child: Text("Online Banking"), value: "Online Banking"),
+      const DropdownMenuItem(child: Text("COD"), value: "COD"),
+      const DropdownMenuItem(child: Text("Credit Card"), value: "Credit Card"),
     ];
     return menuItems;
   }
+
   String paymentSelected = "Online Banking";
 
   LatLng? selectedLocation;
@@ -56,10 +59,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
     _paymentMethodController.text = paymentSelected;
     _customerNameController.text = userProvider.user!.name;
 
-    String grandTotal = (cartProvider.totalPrice + 0 - cartProvider.totalDiscount).toStringAsFixed(2);
+    String grandTotal =
+        (cartProvider.totalPrice + 0 - cartProvider.totalDiscount)
+            .toStringAsFixed(0);
 
-    void handleCheckout() async {
-      print("${_latitudeController.text}, ${_longitudeController.text}");
+    Future<void> handleCheckout() async {
       setState(() {
         isLoading = true;
       });
@@ -67,8 +71,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
       User? user = FirebaseAuth.instance.currentUser;
 
       String generateCode = generateWithFormat();
+      bool newOrder = false;
 
-      var newOrder = await orderProvider.checkout({
+      newOrder = await orderProvider.checkout({
         "user_id": user!.uid,
         "customer_name": _customerNameController.text,
         "phone": _phoneController.text,
@@ -77,7 +82,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
         "payment_method": _paymentMethodController.text,
         "sub_total": cartProvider.totalPrice,
         "total_discount": cartProvider.totalDiscount,
-        "delivery_fee": 0.0,
+        "delivery_fee": 0,
         "created_at": DateTime.now(),
         "address": {
           "latitude": double.parse(_latitudeController.text),
@@ -109,8 +114,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
       if (newOrder) {
         Navigator.pushNamed(context, CheckoutSuccessPage.routeName);
-        orderProvider.getOrdersByUser(userId: user.uid);
-        
+        orderProvider.getOrdersByUser(userId: user!.uid);
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: successColor,
@@ -122,7 +127,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
           ),
         );
 
-        sendToGmail("New Order From Your Customer!", "entered", generateCode, grandTotal, userProvider, staffProvider, context);
+        sendToGmail("New Order From Your Customer!", "entered", generateCode,
+            grandTotal, userProvider, staffProvider, context);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -298,28 +304,23 @@ class _CheckoutPageState extends State<CheckoutPage> {
         child: ElevatedButton.icon(
           onPressed: () async {
             await showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return LocationPickerAlert(
-                  onLocationSelected: (LatLng userLocation) {
+                context: context,
+                builder: (BuildContext context) {
+                  return LocationPickerAlert(
+                      onLocationSelected: (LatLng userLocation) {
                     selectedLocation = userLocation;
                     _latitudeController.text = userLocation.latitude.toString();
-                    _longitudeController.text = userLocation.longitude.toString();
+                    _longitudeController.text =
+                        userLocation.longitude.toString();
                     // print("Selected location - latitude : ${userLocation.latitude}, longitude : ${userLocation.longitude}");
-                  }
-                );
-              }
-            );
+                  });
+                });
           },
           style: ElevatedButton.styleFrom(
-            foregroundColor: primaryColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10)
-            )
-          ),
-          icon: Icon(
-            Icons.location_on
-          ),
+              foregroundColor: primaryColor,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10))),
+          icon: Icon(Icons.location_on),
           label: const Text(
             "Select Location from Map",
           ),
@@ -351,20 +352,20 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     Expanded(
                         child: DropdownButtonFormField(
                             decoration: const InputDecoration(
-                              border: InputBorder.none
-                              // enabledBorder: OutlineInputBorder(
-                              //   borderSide:
-                              //       BorderSide(color: Colors.blue, width: 2),
-                              //   borderRadius: BorderRadius.circular(20),
-                              // ),
-                              // border: OutlineInputBorder(
-                              //   borderSide:
-                              //       BorderSide(color: Colors.blue, width: 2),
-                              //   borderRadius: BorderRadius.circular(20),
-                              // ),
-                              // filled: true,
-                              // fillColor: Colors.blueAccent,
-                            ),
+                                border: InputBorder.none
+                                // enabledBorder: OutlineInputBorder(
+                                //   borderSide:
+                                //       BorderSide(color: Colors.blue, width: 2),
+                                //   borderRadius: BorderRadius.circular(20),
+                                // ),
+                                // border: OutlineInputBorder(
+                                //   borderSide:
+                                //       BorderSide(color: Colors.blue, width: 2),
+                                //   borderRadius: BorderRadius.circular(20),
+                                // ),
+                                // filled: true,
+                                // fillColor: Colors.blueAccent,
+                                ),
                             elevation: 0,
                             dropdownColor: bgColor3,
                             style: TextStyle(
@@ -515,7 +516,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   ),
                 ),
                 Text(
-                  "RM ${cartProvider.totalPrice.toStringAsFixed(2)}",
+                  "RM ${cartProvider.totalPrice}",
                   style: primaryTextStyle.copyWith(
                     fontWeight: medium,
                   ),

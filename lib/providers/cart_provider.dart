@@ -13,12 +13,12 @@ class CartProvider with ChangeNotifier {
 
   List<CartModel> get items => _items;
 
-  double get totalPrice {
+  int get totalPrice {
     return _items.fold(
         0, (total, current) => total + (current.product.price * current.qty));
   }
 
-    double get totalDiscount {
+    int get totalDiscount {
     return _items.fold(
         0, (total, current) => total + (current.product.discount * current.qty));
   }
@@ -36,8 +36,8 @@ class CartProvider with ChangeNotifier {
               name: ""
             ),
             name: '',
-            price: 0.0,
-            discount: 0.0,
+            price: 0,
+            discount:0,
             qty: 0,
             images: [],
             description: '',

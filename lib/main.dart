@@ -27,6 +27,7 @@ import 'package:ecommerce_firebase/pages/auth/sign_in_page.dart';
 import 'package:ecommerce_firebase/pages/auth/sign_up_page.dart';
 import 'package:ecommerce_firebase/pages/splash_page.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,8 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await dotenv.load(fileName: ".env");
+
+  Stripe.publishableKey = dotenv.env["STRIPE_PUBLISHABLE_KEY"]!;
   runApp(const MyApp());
 }
 
@@ -80,8 +83,8 @@ class MyApp extends StatelessWidget {
           SplashPage.routeName: (context) => const SplashPage(),
           SignInPage.routeName: (context) => const SignInPage(),
           SignUpPage.routeName: (context) => SignUpPage(),
-          ForgotPasswordPage.routeName: (context) => ForgotPasswordPage(),
-          SendEmailSuccessPage.routeName: (context) => SendEmailSuccessPage(),
+          ForgotPasswordPage.routeName: (context) => const ForgotPasswordPage(),
+          SendEmailSuccessPage.routeName: (context) => const SendEmailSuccessPage(),
 
           AdminPage.routeName: (context) => const AdminPage(),
           AddProductPage.routeName: (context) => const AddProductPage(),

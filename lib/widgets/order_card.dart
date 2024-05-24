@@ -101,7 +101,7 @@ class OrderCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      "RM ${(order.subTotal + order.totalDiscount + order.deliveryFee).toStringAsFixed(2)}",
+                      "RM ${(order.subTotal - order.totalDiscount + order.deliveryFee).toStringAsFixed(0)}",
                       style: priceTextStyle,
                     ),
                   ],

@@ -49,7 +49,7 @@ class CheckoutCard extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      'RM ${(cart.product.price - cart.product.discount).toStringAsFixed(2)}',
+                      'RM ${(cart.product.price - cart.product.discount)}',
                       style: priceTextStyle,
                     ),
                     SizedBox(width: 5),

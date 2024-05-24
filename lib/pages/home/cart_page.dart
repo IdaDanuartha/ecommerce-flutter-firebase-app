@@ -96,7 +96,7 @@ class _CartPageState extends State<CartPage> {
                     style: primaryTextStyle,
                   ),
                   Text(
-                    'RM ${cartProvider.totalPrice.toStringAsFixed(2)}',
+                    'RM ${cartProvider.totalPrice}',
                     style: priceTextStyle.copyWith(
                       fontSize: 16,
                       fontWeight: semiBold,

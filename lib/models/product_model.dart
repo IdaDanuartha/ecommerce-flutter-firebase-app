@@ -5,8 +5,8 @@ class ProductModel {
   late String id;
   late PromotionModel promotion;
   late String name;
-  late double price;
-  late double discount;
+  late int price;
+  late int discount;
   late int qty;
   late String description;
   late Timestamp createdAt;
@@ -28,8 +28,8 @@ class ProductModel {
     id = json["id"];
     promotion = PromotionModel.fromJson(json["promotion"]);
     name = json["name"];
-    price = double.parse(json["price"].toString());
-    discount = double.parse(json["discount"].toString());
+    price = int.parse(json["price"].toString());
+    discount = int.parse(json["discount"].toString());
     qty = int.parse(json["qty"].toString());
     description = json["description"];
     images = json['images'];
