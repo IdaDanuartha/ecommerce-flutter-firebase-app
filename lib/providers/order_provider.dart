@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_firebase/models/order_model.dart';
 import 'package:ecommerce_firebase/providers/cart_provider.dart';
 import 'package:ecommerce_firebase/providers/product_provider.dart';
@@ -8,7 +9,9 @@ import 'package:provider/provider.dart';
 
 class OrderProvider with ChangeNotifier {
   List<OrderModel> _orders = [];
+  List<OrderModel> _tempOrders = [];
   List<OrderModel> get orders => _orders;
+  List<OrderModel> get tempOrders => _tempOrders;
 
   List<double> _ordersMonthly = [];
   List<double> get ordersMonthly => _ordersMonthly;
@@ -18,9 +21,27 @@ class OrderProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  set tempOrders(List<OrderModel> tempOrders) {
+    _tempOrders = tempOrders;
+    notifyListeners();
+  }
+
   set ordersMonthly(List<double> ordersMonthly) {
     _ordersMonthly = ordersMonthly;
     notifyListeners();
+  }
+
+  // Method to filter orders by Date
+  List<OrderModel> filterOrdersByDate(Timestamp startDate, Timestamp endDate) {
+    _orders = _tempOrders;
+    var orderFiltered = _orders.where((order) {
+      return order.createdAt.compareTo(startDate) >= 0 && order.createdAt.compareTo(endDate) <= 0;
+    }).toList();
+
+    _orders = orderFiltered;
+    notifyListeners();
+    
+    return orderFiltered;
   }
 
   Future<void> getOrders() async {
@@ -28,6 +49,7 @@ class OrderProvider with ChangeNotifier {
       _orders.clear();
       List<OrderModel> orders = await OrderService().getOrders();
       _orders = orders;
+      _tempOrders = orders;
 
       notifyListeners();
     } catch (e) {

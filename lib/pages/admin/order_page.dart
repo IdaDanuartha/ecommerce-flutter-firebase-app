@@ -2,7 +2,8 @@
 // import 'package:firebase_auth/firebase_auth.dart';
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:ecommerce_firebase/pages/admin/products/product_detail_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_firebase/models/order_model.dart';
 import 'package:ecommerce_firebase/pages/home/order_detail_page.dart';
 import 'package:ecommerce_firebase/providers/order_provider.dart';
 import 'package:flutter/material.dart';
@@ -23,9 +24,71 @@ class _OrderPageState extends State<OrderPage> {
     super.initState();
   }
 
+  final TextEditingController _startDateController = TextEditingController();
+  final TextEditingController _endDateController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     OrderProvider orderProvider = Provider.of<OrderProvider>(context);
+
+    Future<void> _selectStartDate() async {
+      DateTime? _picked = await showDatePicker(
+        context: context,
+        initialDate: _startDateController.text != "" ? DateTime.parse(_startDateController.text) : DateTime.now(),
+        firstDate: DateTime(2000),
+        lastDate: DateTime(2100)
+      );
+
+      if(_picked != null) {
+        setState(() {
+          _startDateController.text = _picked.toString().split(" ")[0];
+        });
+      }
+    }
+
+    Future<void> _selectEndDate() async {
+      DateTime? _picked = await showDatePicker(
+        context: context,
+        initialDate: _endDateController.text != "" ? DateTime.parse(_endDateController.text) : DateTime.now(),
+        firstDate: DateTime(2000),
+        lastDate: DateTime(2100)
+      );
+
+      if(_picked != null) {
+        setState(() {
+          _endDateController.text = _picked.toString().split(" ")[0];
+        });
+      }
+    }
+
+    void clearFilter() {
+      _startDateController.text = "";
+      _endDateController.text = "";
+    }
+
+    void applyFilter() {
+      // Parse the start and end dates from the text controllers
+      String startDateString = _startDateController.text;
+      String endDateString = _endDateController.text;
+
+      try {
+        DateTime startDateTime = DateTime.parse(startDateString);
+        DateTime endDateTime = DateTime.parse(endDateString);
+
+        // Convert DateTime to Timestamp
+        Timestamp startDate = Timestamp.fromDate(startDateTime);
+        Timestamp endDate = Timestamp.fromDate(endDateTime);
+
+        // Filter orders
+        List<OrderModel> filteredOrders = orderProvider.filterOrdersByDate(startDate, endDate);
+
+        // Do something with the filtered orders, such as displaying them in a UI component
+        print('Filtered Orders: ${filteredOrders.length}');
+      } catch (e) {
+        // Handle parsing errors
+        print('Invalid date format');
+      }
+    }
 
     Widget content() {
       return SingleChildScrollView(
@@ -43,6 +106,86 @@ class _OrderPageState extends State<OrderPage> {
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      controller: _startDateController,
+                      style: primaryTextStyle,
+                      decoration: InputDecoration(
+                        labelText: "Start Date",
+                        labelStyle: primaryTextStyle.copyWith(
+                          color: _startDateController.text != "" ? Colors.white24 : Colors.white
+                        ),
+                        prefixIcon: Icon(
+                          Icons.calendar_today
+                        ),
+                        // enabledBorder: OutlineInputBorder(
+                        //   borderSide: BorderSide(color: primaryColor)
+                        // ),
+                      ),
+                      readOnly: true,
+                      onTap: _selectStartDate
+                    ),
+                  ),
+                  SizedBox(width: 20),
+                  Expanded(
+                    child: TextFormField(
+                      controller: _endDateController,
+                      style: primaryTextStyle,
+                      decoration: InputDecoration(
+                        labelText: "End Date",
+                        labelStyle: primaryTextStyle.copyWith(
+                          color: _endDateController.text != "" ? Colors.white24 : Colors.white
+                        ),
+                        prefixIcon: Icon(
+                          Icons.calendar_today
+                        ),
+                        // enabledBorder: OutlineInputBorder(
+                        //   borderSide: BorderSide(color: primaryColor)
+                        // ),
+                      ),
+                      readOnly: true,
+                      onTap: _selectEndDate
+                    ),
+                  )
+                ]
+              ),
+              SizedBox(height: 10),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: clearFilter,
+                      style: TextButton.styleFrom(
+                          backgroundColor: Colors.red,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10))),
+                      child: Text(
+                        'Clear',
+                        style:
+                            primaryTextStyle.copyWith(fontSize: 16, fontWeight: semiBold),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 20),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: applyFilter,
+                      style: TextButton.styleFrom(
+                          backgroundColor: primaryColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10))),
+                      child: Text(
+                        'Apply',
+                        style:
+                            primaryTextStyle.copyWith(fontSize: 16, fontWeight: semiBold),
+                      ),
+                    ),
+                  ),
+                ]
               ),
               const SizedBox(height: 20),
               SingleChildScrollView(
