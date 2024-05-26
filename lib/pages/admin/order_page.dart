@@ -80,10 +80,7 @@ class _OrderPageState extends State<OrderPage> {
         Timestamp endDate = Timestamp.fromDate(endDateTime);
 
         // Filter orders
-        List<OrderModel> filteredOrders = orderProvider.filterOrdersByDate(startDate, endDate);
-
-        // Do something with the filtered orders, such as displaying them in a UI component
-        print('Filtered Orders: ${filteredOrders.length}');
+        orderProvider.filterOrdersByDate(startDate, endDate);
       } catch (e) {
         // Handle parsing errors
         print('Invalid date format');
