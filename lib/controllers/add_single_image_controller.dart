@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:ecommerce_firebase/themes.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -10,11 +9,9 @@ import 'package:permission_handler/permission_handler.dart';
 
 class AddSingleImageController extends GetxController {
   final ImagePicker _picker = ImagePicker();
-  Rx<XFile?> selectedImage;
-  final Rx<String> imageUrl = ''.obs;
+  Rx<XFile?> selectedImage = Rx<XFile?>(null);
+  Rx<String> imageUrl = ''.obs;
   final FirebaseStorage storageRef = FirebaseStorage.instance;
-
-  AddSingleImageController() : selectedImage = Rx<XFile?>(null);
 
   Future<void> showImagePickerDialog(BuildContext context) async {
     PermissionStatus status;
@@ -27,7 +24,7 @@ class AddSingleImageController extends GetxController {
       status = await Permission.mediaLibrary.request();
     }
 
-    if (status == PermissionStatus.granted) {
+    if (status.isGranted) {
       // ignore: use_build_context_synchronously
       showDialog(
         context: context,
@@ -78,12 +75,7 @@ class AddSingleImageController extends GetxController {
           );
         },
       );
-    }
-    if (status == PermissionStatus.denied) {
-      print("Error: Please allow permission for further usage");
-      openAppSettings();
-    }
-    if (status == PermissionStatus.permanentlyDenied) {
+    } else if (status.isDenied || status.isPermanentlyDenied) {
       print("Error: Please allow permission for further usage");
       openAppSettings();
     }
@@ -96,44 +88,51 @@ class AddSingleImageController extends GetxController {
 
   Future<void> selectImage(String type) async {
     XFile? img;
-    if (type == 'gallery') {
-      try {
+    try {
+      if (type == 'gallery') {
         img = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 80);
-        update();
-      } catch (e) {
-        print('Error: $e');
-      }
-    } else {
-      try {
+      } else {
         img = await _picker.pickImage(source: ImageSource.camera, imageQuality: 80);
-        update();
-      } catch (e) {
-        print('Error: $e');
       }
-    }
 
-
-    if (img != null) {
-      selectedImage.value = img;
+      if (img != null) {
+        selectedImage.value = img;
+        print("Selected image path: ${selectedImage.value?.path}");
+      } else {
+        print("No image selected");
+      }
       update();
-      print("PATH : ${selectedImage.value?.path}");
+    } catch (e) {
+      print('Error selecting image: $e');
     }
   }
 
   Future<void> uploadImage() async {
     if (selectedImage.value != null) {
-      imageUrl.value = await uploadFile(selectedImage.value!);
+      try {
+        imageUrl.value = await uploadFile(selectedImage.value!);
+        print("Uploaded image URL: ${imageUrl.value}");
+      } catch (e) {
+        print('Error uploading image: $e');
+      }
       update();
+    } else {
+      print('No image selected to upload');
     }
   }
 
   Future<String> uploadFile(XFile image) async {
-    TaskSnapshot reference = await storageRef
-        .ref()
-        .child("product-images")
-        .child(DateTime.now().millisecondsSinceEpoch.toString())
-        .putFile(File(image.path));
+    try {
+      TaskSnapshot reference = await storageRef
+          .ref()
+          .child("product-images")
+          .child(DateTime.now().millisecondsSinceEpoch.toString())
+          .putFile(File(image.path));
 
-    return await reference.ref.getDownloadURL();
+      return await reference.ref.getDownloadURL();
+    } catch (e) {
+      print('Error during file upload: $e');
+      rethrow;
+    }
   }
 }

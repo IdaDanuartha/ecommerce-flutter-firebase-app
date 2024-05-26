@@ -46,7 +46,8 @@ class _EditProfileState extends State<EditProfile> {
             );
           });
 
-      String? profileUrl = await uploadSingleImage(selectedImage, "users");
+    try {
+      String profileUrl = await uploadSingleImage(selectedImage, "users");
       
       var updateProfile = await userProvider.updateProfile({
           "name": _nameController.text,
@@ -78,6 +79,18 @@ class _EditProfileState extends State<EditProfile> {
             ),
           );
         }
+    } catch (error) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: alertColor,
+            duration: const Duration(milliseconds: 2500),
+            content: const Text(
+              'Error when uploading profile image',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      }
 
     addSingleImageController.selectedImage.value = null;
 
@@ -296,7 +309,7 @@ class _EditProfileState extends State<EditProfile> {
                       fit: BoxFit.fill,
                       image: NetworkImage(user.profileUrl != ""
                           ? user.profileUrl
-                          : "https://picsum.photos/id/64/200"))),
+                          : "https://firebasestorage.googleapis.com/v0/b/ecommerce-flutter-22e70.appspot.com/o/users%2Fuser.png?alt=media&token=f8257f26-5525-4216-8cac-99c9184b7467"))),
             ),
             Positioned(
                 top: 68,

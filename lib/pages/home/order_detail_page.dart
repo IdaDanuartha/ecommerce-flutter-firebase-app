@@ -727,6 +727,20 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
+                "Payment Method",
+                style: primaryTextStyle.copyWith(fontSize: 14),
+              ),
+              Text(
+                args.paymentMethod,
+                style: primaryTextStyle.copyWith(fontSize: 14),
+              ),
+            ],
+          ),
+          SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
                 "Subtotal",
                 style: primaryTextStyle.copyWith(fontSize: 14),
               ),

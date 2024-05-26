@@ -2,6 +2,7 @@
 // import 'package:firebase_auth/firebase_auth.dart';
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:async';
 import 'dart:io';
 
 import 'package:ecommerce_firebase/controllers/add_single_image_controller.dart';
@@ -29,7 +30,7 @@ class _EditStaffPageState extends State<EditStaffPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
 
-  AddSingleImageController addSingleImageController =
+  AddSingleImageController _addSingleImageController =
       Get.put(AddSingleImageController());
 
   @override
@@ -37,14 +38,12 @@ class _EditStaffPageState extends State<EditStaffPage> {
     super.initState();
   }
 
-  TextEditingController controller = TextEditingController();
-
   bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     StaffProvider staffProvider = Provider.of<StaffProvider>(context);
-    XFile? selectedImage = addSingleImageController.selectedImage.value;
+    XFile? selectedImage = _addSingleImageController.selectedImage.value;
 
     final args = ModalRoute.of(context)!.settings.arguments as UserModel;
 
@@ -56,62 +55,65 @@ class _EditStaffPageState extends State<EditStaffPage> {
       setState(() {
         isLoading = true;
       });
-      // print("YOOO : ${addSingleImageController.selectedImage.value}");
-      Future<String> profileUrl = uploadSingleImage(selectedImage, "users");
 
-        profileUrl.then((url) async {
-          var updateStaff = await staffProvider.update(args.id, {
-            "name": _nameController.text,
-            "email": _emailController.text,
-            "username": _usernameController.text,
-            "profile_url": url == "" ? args.profileUrl : url,
-          });
+      // Future.delayed(const Duration(seconds: 5));
+      try {
+        // Await the image upload function
+        String url = await uploadSingleImage(selectedImage, "users");
 
-          var nav = Navigator.of(context);
-          nav.pop();
-          nav.pop();
+        // Perform the update
+        var updateStaff = await staffProvider.update(args.id, {
+          "name": _nameController.text,
+          "email": _emailController.text,
+          "username": _usernameController.text,
+          "profile_url": url.isEmpty ? args.profileUrl : url,
+        });
 
-          if (updateStaff) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                backgroundColor: successColor,
-                duration: const Duration(milliseconds: 2500),
-                content: const Text(
-                  'Staff updated successfully',
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            );
+        var nav = Navigator.of(context);
+        nav.pop();
+        nav.pop();
 
-            addSingleImageController.selectedImage.value = null;
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                backgroundColor: alertColor,
-                duration: const Duration(milliseconds: 2500),
-                content: const Text(
-                  'Failed to update staff',
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            );
-          }
-        }).catchError((error) {
+        if (updateStaff) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               backgroundColor: successColor,
               duration: const Duration(milliseconds: 2500),
               content: const Text(
-                'Error when uploading profile image',
+                'Staff updated successfully',
                 textAlign: TextAlign.center,
               ),
             ),
           );
+
+          _addSingleImageController.selectedImage.value = null;
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: alertColor,
+              duration: const Duration(milliseconds: 2500),
+              content: const Text(
+                'Failed to update staff',
+                textAlign: TextAlign.center,
+              ),
+            ),
+          );
+        }
+      } catch (error) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: alertColor,
+            duration: const Duration(milliseconds: 2500),
+            content: const Text(
+              'Error when uploading profile image',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      } finally {
+        setState(() {
+          isLoading = false;
         });
-      
-      setState(() {
-        isLoading = false;
-      });
+      }
     }
 
     Widget imageInput() {
@@ -120,7 +122,7 @@ class _EditStaffPageState extends State<EditStaffPage> {
         children: [
           ElevatedButton(
             onPressed: () {
-              addSingleImageController.showImagePickerDialog(context);
+              _addSingleImageController.showImagePickerDialog(context);
             },
             child: const Text("Select Profile Image"),
           )
@@ -356,7 +358,9 @@ class _EditStaffPageState extends State<EditStaffPage> {
         width: double.infinity,
         margin: const EdgeInsets.only(top: 20),
         child: ElevatedButton(
-          onPressed: updateStaff,
+          onPressed: () {
+            updateStaff();
+          },
           style: TextButton.styleFrom(
               backgroundColor: primaryColor,
               shape: RoundedRectangleBorder(
@@ -380,7 +384,7 @@ class _EditStaffPageState extends State<EditStaffPage> {
           children: [
             imageInput(),
             oldImages(),
-            addSingleImageController.selectedImage.value != null
+            _addSingleImageController.selectedImage.value != null
                 ? Container(
                     margin: EdgeInsets.only(top: 15),
                     child: Align(
@@ -399,7 +403,9 @@ class _EditStaffPageState extends State<EditStaffPage> {
             nameInput(),
             usernameInput(),
             emailInput(),
-            isLoading ? LoadingButton(text: "Saving", marginTop: 20) : updateButton(),
+            isLoading
+                ? LoadingButton(text: "Saving", marginTop: 20)
+                : updateButton(),
           ],
         ),
       )),

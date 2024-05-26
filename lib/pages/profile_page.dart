@@ -41,7 +41,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Image.network(
                     userProvider.user!.profileUrl != ""
                         ? userProvider.user!.profileUrl
-                        : "https://picsum.photos/id/64/100",
+                        : "https://firebasestorage.googleapis.com/v0/b/ecommerce-flutter-22e70.appspot.com/o/users%2Fuser.png?alt=media&token=f8257f26-5525-4216-8cac-99c9184b7467",
                     width: 64,
                     height: 64,
                     fit:BoxFit.cover,
