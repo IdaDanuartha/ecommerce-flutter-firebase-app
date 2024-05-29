@@ -36,80 +36,91 @@ class _OrderPageState extends State<OrderPage> {
     }
 
     Widget emptyOrder() {
-      return Expanded(
-        child: Container(
-          width: double.infinity,        
-          color: bgColor3,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset("assets/icon_empty_order.png", width: 74, color: secondaryColor),
-              const SizedBox(height: 20),
-              Text("No Orders Yet", style: primaryTextStyle.copyWith(
-                fontSize: 16,
-                fontWeight: medium
-              ),),
-              const SizedBox(height: 12),
-              Text(
-                "It's seem that you don't have any orders yet",
-                style: secondaryTextStyle,
-              ),
-              const SizedBox(height: 20),
-              SizedBox(
-                height: 44,
-                child: TextButton(
-                  onPressed: (){
-                    Navigator.pushNamed(context, '/home');
-                  },
-                  style: TextButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 10
-                    ),
-                    backgroundColor: primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12)
-                    ),
+      return Container(
+        width: double.infinity,    
+        margin: EdgeInsets.only(top: 180),
+        color: bgColor3,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset("assets/icon_empty_order.png", width: 74, color: secondaryColor),
+            const SizedBox(height: 20),
+            Text("No Orders Yet", style: primaryTextStyle.copyWith(
+              fontSize: 16,
+              fontWeight: medium
+            ),),
+            const SizedBox(height: 12),
+            Text(
+              "It's seem that you don't have any orders yet",
+              style: secondaryTextStyle,
+            ),
+            const SizedBox(height: 20),
+            SizedBox(
+              height: 44,
+              child: TextButton(
+                onPressed: (){
+                  Navigator.pushNamed(context, '/home');
+                },
+                style: TextButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 10
                   ),
-                  child: Text(
-                    'Explore Product',
-                    style: primaryTextStyle.copyWith(
-                      fontSize: 16,
-                      fontWeight: medium
-                    ),
+                  backgroundColor: primaryColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12)
                   ),
                 ),
-              )
-            ],
-          ),
+                child: Text(
+                  'Explore Product',
+                  style: primaryTextStyle.copyWith(
+                    fontSize: 16,
+                    fontWeight: medium
+                  ),
+                ),
+              ),
+            )
+          ],
         ),
       );
     }
 
     Widget content() {
-      return Expanded(
-        child: Container(
-          width: double.infinity,        
-          color: bgColor3,
-          child: ListView(
-            padding: EdgeInsets.symmetric(
-              horizontal: defaultMargin
-            ),
-            children: orderProvider.orders.map(
-              (order) => OrderCard(order: order)
-            ).toList()
-          )
+      return Container(
+        width: double.infinity,    
+        // height: 1000,    
+        color: bgColor3,
+        // child: ListView(
+        //   padding: EdgeInsets.symmetric(
+        //     horizontal: defaultMargin
+        //   ),
+        //   children: orderProvider.orders.map(
+        //     (order) => OrderCard(order: order)
+        //   ).toList()
+        // )
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: defaultMargin
+          ),
+          child: Wrap(
+                spacing: 8.0,
+                children: orderProvider.orders
+                          .map((order) => OrderCard(order: order))
+                          .toList()
+              ),
         ),
       );
     }
 
-    return SingleChildScrollView(
-      child: Container(
-        margin: EdgeInsets.only(bottom: 40),
+    return Padding(
+      padding: EdgeInsets.only(bottom: 20),
+      child: SingleChildScrollView(
         child: Column(
           children: [
             header(),
-            orderProvider.orders.isEmpty ? emptyOrder() : content()
+            orderProvider.orders.isEmpty ?
+            emptyOrder() :
+            content(),
           ],
         ),
       ),
