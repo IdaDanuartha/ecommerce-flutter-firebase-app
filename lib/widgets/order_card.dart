@@ -1,7 +1,7 @@
-import 'package:ecommerce_firebase/models/order_model.dart';
-import 'package:ecommerce_firebase/pages/home/order_detail_page.dart';
-import 'package:ecommerce_firebase/themes.dart';
-import 'package:ecommerce_firebase/widgets/order_item_card.dart';
+import 'package:MushMagic/models/order_model.dart';
+import 'package:MushMagic/pages/home/order_detail_page.dart';
+import 'package:MushMagic/themes.dart';
+import 'package:MushMagic/widgets/order_item_card.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

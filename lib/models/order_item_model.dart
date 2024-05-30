@@ -1,4 +1,4 @@
-import 'package:ecommerce_firebase/models/product_model.dart';
+import 'package:MushMagic/models/product_model.dart';
 
 class OrderItemModel {
   late ProductModel product;

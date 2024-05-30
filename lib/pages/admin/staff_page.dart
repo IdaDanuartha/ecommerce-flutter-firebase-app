@@ -2,11 +2,11 @@
 // import 'package:firebase_auth/firebase_auth.dart';
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:ecommerce_firebase/pages/admin/staff/add_staff_page.dart';
-import 'package:ecommerce_firebase/pages/admin/staff/staff_detail.page.dart';
-import 'package:ecommerce_firebase/providers/staff_provider.dart';
+import 'package:MushMagic/pages/admin/staff/add_staff_page.dart';
+import 'package:MushMagic/pages/admin/staff/staff_detail.page.dart';
+import 'package:MushMagic/providers/staff_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_firebase/themes.dart';
+import 'package:MushMagic/themes.dart';
 import 'package:provider/provider.dart';
 
 class StaffPage extends StatefulWidget {

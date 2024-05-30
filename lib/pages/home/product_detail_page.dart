@@ -1,8 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:ecommerce_firebase/models/cart_model.dart';
-import 'package:ecommerce_firebase/models/product_model.dart';
-import 'package:ecommerce_firebase/providers/cart_provider.dart';
-import 'package:ecommerce_firebase/themes.dart';
+import 'package:MushMagic/models/cart_model.dart';
+import 'package:MushMagic/models/product_model.dart';
+import 'package:MushMagic/providers/cart_provider.dart';
+import 'package:MushMagic/themes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

@@ -1,4 +1,4 @@
-import 'package:ecommerce_firebase/widgets/bar_graph/individual_bar.dart';
+import 'package:MushMagic/widgets/bar_graph/individual_bar.dart';
 
 class BarData {
   final double sunAmount;

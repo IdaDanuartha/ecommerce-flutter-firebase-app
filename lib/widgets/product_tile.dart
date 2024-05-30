@@ -1,7 +1,7 @@
 // import 'package:flutter/material.dart';
-// import 'package:ecommerce_firebase/models/product_model.dart';
-// import 'package:ecommerce_firebase/pages/product_page.dart';
-// import 'package:ecommerce_firebase/themes.dart';
+// import 'package:MushMagic/models/product_model.dart';
+// import 'package:MushMagic/pages/product_page.dart';
+// import 'package:MushMagic/themes.dart';
 
 // class ProductTile extends StatelessWidget {
 //   const ProductTile({super.key, required this.product});

@@ -1,6 +1,6 @@
-import 'package:ecommerce_firebase/pages/home/order_page.dart';
+import 'package:MushMagic/pages/home/order_page.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_firebase/themes.dart';
+import 'package:MushMagic/themes.dart';
 
 class CheckoutSuccessPage extends StatelessWidget {
   const CheckoutSuccessPage({super.key});

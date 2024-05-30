@@ -1,12 +1,12 @@
-import 'package:ecommerce_firebase/pages/admin/customer_page.dart';
-import 'package:ecommerce_firebase/pages/admin/dashboard_page.dart';
-import 'package:ecommerce_firebase/pages/admin/order_page.dart';
-import 'package:ecommerce_firebase/pages/admin/product_page.dart';
-import 'package:ecommerce_firebase/pages/admin/staff_page.dart';
-import 'package:ecommerce_firebase/pages/profile_page.dart';
-import 'package:ecommerce_firebase/providers/user_provider.dart';
+import 'package:MushMagic/pages/admin/customer_page.dart';
+import 'package:MushMagic/pages/admin/dashboard_page.dart';
+import 'package:MushMagic/pages/admin/order_page.dart';
+import 'package:MushMagic/pages/admin/product_page.dart';
+import 'package:MushMagic/pages/admin/staff_page.dart';
+import 'package:MushMagic/pages/profile_page.dart';
+import 'package:MushMagic/providers/user_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_firebase/themes.dart';
+import 'package:MushMagic/themes.dart';
 import 'package:provider/provider.dart';
 
 class AdminPage extends StatefulWidget {

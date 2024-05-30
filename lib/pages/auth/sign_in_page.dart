@@ -1,15 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecommerce_firebase/pages/auth/forgot_password_page.dart';
-import 'package:ecommerce_firebase/pages/auth/sign_up_page.dart';
-import 'package:ecommerce_firebase/providers/cart_provider.dart';
-import 'package:ecommerce_firebase/providers/order_provider.dart';
-import 'package:ecommerce_firebase/providers/product_provider.dart';
-import 'package:ecommerce_firebase/providers/staff_provider.dart';
-import 'package:ecommerce_firebase/providers/user_provider.dart';
+import 'package:MushMagic/pages/auth/forgot_password_page.dart';
+import 'package:MushMagic/pages/auth/sign_up_page.dart';
+import 'package:MushMagic/providers/cart_provider.dart';
+import 'package:MushMagic/providers/order_provider.dart';
+import 'package:MushMagic/providers/product_provider.dart';
+import 'package:MushMagic/providers/staff_provider.dart';
+import 'package:MushMagic/providers/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_firebase/themes.dart';
-import 'package:ecommerce_firebase/widgets/loading_button.dart';
+import 'package:MushMagic/themes.dart';
+import 'package:MushMagic/widgets/loading_button.dart';
 import 'package:provider/provider.dart';
 
 class SignInPage extends StatefulWidget {

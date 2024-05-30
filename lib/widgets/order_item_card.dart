@@ -1,5 +1,5 @@
-import 'package:ecommerce_firebase/models/order_item_model.dart';
-import 'package:ecommerce_firebase/themes.dart';
+import 'package:MushMagic/models/order_item_model.dart';
+import 'package:MushMagic/themes.dart';
 import 'package:flutter/material.dart';
 
 class OrderItemCard extends StatelessWidget {

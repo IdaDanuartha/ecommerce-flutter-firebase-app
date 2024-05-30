@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecommerce_firebase/models/user_model.dart';
-import 'package:ecommerce_firebase/providers/user_provider.dart';
+import 'package:MushMagic/models/user_model.dart';
+import 'package:MushMagic/providers/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

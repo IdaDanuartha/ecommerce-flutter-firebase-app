@@ -1,5 +1,5 @@
-import 'package:ecommerce_firebase/models/product_model.dart';
-import 'package:ecommerce_firebase/services/product_service.dart';
+import 'package:MushMagic/models/product_model.dart';
+import 'package:MushMagic/services/product_service.dart';
 import 'package:flutter/material.dart';
 
 class ProductProvider with ChangeNotifier {

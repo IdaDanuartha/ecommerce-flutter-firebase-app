@@ -1,4 +1,4 @@
-import 'package:ecommerce_firebase/themes.dart';
+import 'package:MushMagic/themes.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 

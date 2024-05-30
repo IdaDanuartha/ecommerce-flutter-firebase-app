@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecommerce_firebase/models/product_model.dart';
+import 'package:MushMagic/models/product_model.dart';
 
 class ProductService {
   final FirebaseFirestore db = FirebaseFirestore.instance;

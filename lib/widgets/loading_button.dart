@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ecommerce_firebase/themes.dart';
+import 'package:MushMagic/themes.dart';
 
 class LoadingButton extends StatelessWidget {
   const LoadingButton({super.key, required this.text, this.marginTop = 30});

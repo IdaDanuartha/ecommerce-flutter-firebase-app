@@ -1,5 +1,5 @@
-import 'package:ecommerce_firebase/models/user_model.dart';
-import 'package:ecommerce_firebase/services/staff_service.dart';
+import 'package:MushMagic/models/user_model.dart';
+import 'package:MushMagic/services/staff_service.dart';
 import 'package:flutter/material.dart';
 
 class StaffProvider with ChangeNotifier {

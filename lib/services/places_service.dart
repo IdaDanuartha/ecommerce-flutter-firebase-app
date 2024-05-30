@@ -1,4 +1,4 @@
-import 'package:ecommerce_firebase/models/place_search_model.dart';
+import 'package:MushMagic/models/place_search_model.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;

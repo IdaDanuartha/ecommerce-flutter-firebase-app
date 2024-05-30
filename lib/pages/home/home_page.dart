@@ -1,8 +1,8 @@
-import 'package:ecommerce_firebase/providers/product_provider.dart';
-import 'package:ecommerce_firebase/providers/user_provider.dart';
-import 'package:ecommerce_firebase/widgets/product_card.dart';
+import 'package:MushMagic/providers/product_provider.dart';
+import 'package:MushMagic/providers/user_provider.dart';
+import 'package:MushMagic/widgets/product_card.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_firebase/themes.dart';
+import 'package:MushMagic/themes.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget  {

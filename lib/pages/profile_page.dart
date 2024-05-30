@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecommerce_firebase/pages/edit_profile_page.dart';
-import 'package:ecommerce_firebase/pages/auth/sign_in_page.dart';
-import 'package:ecommerce_firebase/providers/user_provider.dart';
+import 'package:MushMagic/pages/edit_profile_page.dart';
+import 'package:MushMagic/pages/auth/sign_in_page.dart';
+import 'package:MushMagic/providers/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_firebase/themes.dart';
+import 'package:MushMagic/themes.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {

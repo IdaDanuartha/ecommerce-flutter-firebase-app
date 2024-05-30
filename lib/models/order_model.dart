@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecommerce_firebase/models/address_model.dart';
-import 'package:ecommerce_firebase/models/order_item_model.dart';
+import 'package:MushMagic/models/address_model.dart';
+import 'package:MushMagic/models/order_item_model.dart';
 
 class OrderModel {
   late String id;

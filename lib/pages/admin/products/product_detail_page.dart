@@ -2,11 +2,11 @@
 // import 'package:firebase_auth/firebase_auth.dart';
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:ecommerce_firebase/models/product_model.dart';
-import 'package:ecommerce_firebase/pages/admin/products/edit_product_page.dart';
-import 'package:ecommerce_firebase/providers/product_provider.dart';
+import 'package:MushMagic/models/product_model.dart';
+import 'package:MushMagic/pages/admin/products/edit_product_page.dart';
+import 'package:MushMagic/providers/product_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_firebase/themes.dart';
+import 'package:MushMagic/themes.dart';
 import 'package:provider/provider.dart';
 
 class ProductDetailPage extends StatefulWidget {

@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecommerce_firebase/pages/auth/sign_in_page.dart';
+import 'package:MushMagic/pages/auth/sign_in_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_firebase/themes.dart';
-import 'package:ecommerce_firebase/widgets/loading_button.dart';
+import 'package:MushMagic/themes.dart';
+import 'package:MushMagic/widgets/loading_button.dart';
 
 class SignUpPage extends StatefulWidget {
   SignUpPage({super.key});

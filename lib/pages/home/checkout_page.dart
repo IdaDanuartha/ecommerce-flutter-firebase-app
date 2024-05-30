@@ -1,17 +1,17 @@
-import 'package:ecommerce_firebase/helpers/generate_random_string.dart';
-import 'package:ecommerce_firebase/helpers/location_picker_alert.dart';
-import 'package:ecommerce_firebase/helpers/send_to_gmail.dart';
-import 'package:ecommerce_firebase/helpers/stripe_payment.dart';
-import 'package:ecommerce_firebase/pages/home/checkout_success_page.dart';
-import 'package:ecommerce_firebase/providers/cart_provider.dart';
-import 'package:ecommerce_firebase/providers/order_provider.dart';
-import 'package:ecommerce_firebase/providers/staff_provider.dart';
-import 'package:ecommerce_firebase/providers/user_provider.dart';
+import 'package:MushMagic/helpers/generate_random_string.dart';
+import 'package:MushMagic/helpers/location_picker_alert.dart';
+import 'package:MushMagic/helpers/send_to_gmail.dart';
+import 'package:MushMagic/helpers/stripe_payment.dart';
+import 'package:MushMagic/pages/home/checkout_success_page.dart';
+import 'package:MushMagic/providers/cart_provider.dart';
+import 'package:MushMagic/providers/order_provider.dart';
+import 'package:MushMagic/providers/staff_provider.dart';
+import 'package:MushMagic/providers/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_firebase/themes.dart';
-import 'package:ecommerce_firebase/widgets/checkout_card.dart';
-import 'package:ecommerce_firebase/widgets/loading_button.dart';
+import 'package:MushMagic/themes.dart';
+import 'package:MushMagic/widgets/checkout_card.dart';
+import 'package:MushMagic/widgets/loading_button.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -73,44 +73,88 @@ class _CheckoutPageState extends State<CheckoutPage> {
       String generateCode = generateWithFormat();
       bool newOrder = false;
 
-      newOrder = await orderProvider.checkout({
-        "user_id": user!.uid,
-        "customer_name": _customerNameController.text,
-        "phone": _phoneController.text,
-        "code": generateCode,
-        "status": 1,
-        "payment_method": _paymentMethodController.text,
-        "sub_total": cartProvider.totalPrice,
-        "total_discount": cartProvider.totalDiscount,
-        "delivery_fee": 0,
-        "created_at": DateTime.now(),
-        "address": {
-          "latitude": double.parse(_latitudeController.text),
-          "longitude": double.parse(_longitudeController.text),
-          "details": _detailsController.text,
-        },
-        "items": cartProvider.items.map((item) {
-          return {
-            "price": item.product.price,
-            "qty": item.qty,
-            "discount": item.product.discount,
-            "product": {
-              "id": item.product.id,
-              "promotion": {
-                "product_id": item.product.promotion.productId,
-                "name": item.product.promotion.name
-              },
-              "name": item.product.name,
-              "price": item.product.price,
-              "discount": item.product.discount,
-              "qty": item.product.qty,
-              "description": item.product.description,
-              "created_at": item.product.createdAt,
-              "images": item.product.images
+      if (_paymentMethodController.text == "Credit Card") {
+        bool paymentResult = await makePayment(context, grandTotal);
+        if (paymentResult) {
+          newOrder = await orderProvider.checkout({
+            "user_id": user!.uid,
+            "customer_name": _customerNameController.text,
+            "phone": _phoneController.text,
+            "code": generateCode,
+            "status": 1,
+            "payment_method": _paymentMethodController.text,
+            "sub_total": cartProvider.totalPrice,
+            "total_discount": cartProvider.totalDiscount,
+            "delivery_fee": 0,
+            "created_at": DateTime.now(),
+            "address": {
+              "latitude": double.parse(_latitudeController.text),
+              "longitude": double.parse(_longitudeController.text),
+              "details": _detailsController.text,
             },
-          };
-        })
-      }, context);
+            "items": cartProvider.items.map((item) {
+              return {
+                "price": item.product.price,
+                "qty": item.qty,
+                "discount": item.product.discount,
+                "product": {
+                  "id": item.product.id,
+                  "promotion": {
+                    "product_id": item.product.promotion.productId,
+                    "name": item.product.promotion.name
+                  },
+                  "name": item.product.name,
+                  "price": item.product.price,
+                  "discount": item.product.discount,
+                  "qty": item.product.qty,
+                  "description": item.product.description,
+                  "created_at": item.product.createdAt,
+                  "images": item.product.images
+                },
+              };
+            })
+          }, context);
+        }
+      } else {
+        newOrder = await orderProvider.checkout({
+          "user_id": user!.uid,
+          "customer_name": _customerNameController.text,
+          "phone": _phoneController.text,
+          "code": generateCode,
+          "status": 1,
+          "payment_method": _paymentMethodController.text,
+          "sub_total": cartProvider.totalPrice,
+          "total_discount": cartProvider.totalDiscount,
+          "delivery_fee": 0,
+          "created_at": DateTime.now(),
+          "address": {
+            "latitude": double.parse(_latitudeController.text),
+            "longitude": double.parse(_longitudeController.text),
+            "details": _detailsController.text,
+          },
+          "items": cartProvider.items.map((item) {
+            return {
+              "price": item.product.price,
+              "qty": item.qty,
+              "discount": item.product.discount,
+              "product": {
+                "id": item.product.id,
+                "promotion": {
+                  "product_id": item.product.promotion.productId,
+                  "name": item.product.promotion.name
+                },
+                "name": item.product.name,
+                "price": item.product.price,
+                "discount": item.product.discount,
+                "qty": item.product.qty,
+                "description": item.product.description,
+                "created_at": item.product.createdAt,
+                "images": item.product.images
+              },
+            };
+          })
+        }, context);
+      }
 
       if (newOrder) {
         Navigator.pushNamed(context, CheckoutSuccessPage.routeName);

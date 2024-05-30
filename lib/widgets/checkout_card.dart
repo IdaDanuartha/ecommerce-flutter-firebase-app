@@ -1,6 +1,6 @@
-import 'package:ecommerce_firebase/models/cart_model.dart';
+import 'package:MushMagic/models/cart_model.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_firebase/themes.dart';
+import 'package:MushMagic/themes.dart';
 
 class CheckoutCard extends StatelessWidget {
   CheckoutCard({super.key, required this.cart});

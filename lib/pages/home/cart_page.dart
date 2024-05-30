@@ -1,8 +1,8 @@
-import 'package:ecommerce_firebase/pages/home/checkout_page.dart';
-import 'package:ecommerce_firebase/providers/cart_provider.dart';
+import 'package:MushMagic/pages/home/checkout_page.dart';
+import 'package:MushMagic/providers/cart_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_firebase/themes.dart';
-import 'package:ecommerce_firebase/widgets/cart_card.dart';
+import 'package:MushMagic/themes.dart';
+import 'package:MushMagic/widgets/cart_card.dart';
 import 'package:provider/provider.dart';
 
 class CartPage extends StatefulWidget {

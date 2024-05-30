@@ -1,11 +1,11 @@
-import 'package:ecommerce_firebase/providers/order_provider.dart';
-import 'package:ecommerce_firebase/providers/product_provider.dart';
-import 'package:ecommerce_firebase/providers/staff_provider.dart';
-import 'package:ecommerce_firebase/providers/user_provider.dart';
-import 'package:ecommerce_firebase/widgets/charts/bar_chart.dart';
-import 'package:ecommerce_firebase/widgets/charts/pie_chart.dart';
+import 'package:MushMagic/providers/order_provider.dart';
+import 'package:MushMagic/providers/product_provider.dart';
+import 'package:MushMagic/providers/staff_provider.dart';
+import 'package:MushMagic/providers/user_provider.dart';
+import 'package:MushMagic/widgets/charts/bar_chart.dart';
+import 'package:MushMagic/widgets/charts/pie_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_firebase/themes.dart';
+import 'package:MushMagic/themes.dart';
 import 'package:provider/provider.dart';
 
 class DashboardPage extends StatefulWidget {

@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecommerce_firebase/models/order_model.dart';
-import 'package:ecommerce_firebase/providers/cart_provider.dart';
-import 'package:ecommerce_firebase/providers/product_provider.dart';
-import 'package:ecommerce_firebase/services/order_service.dart';
+import 'package:MushMagic/models/order_model.dart';
+import 'package:MushMagic/providers/cart_provider.dart';
+import 'package:MushMagic/providers/product_provider.dart';
+import 'package:MushMagic/services/order_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

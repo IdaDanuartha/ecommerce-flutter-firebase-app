@@ -1,5 +1,5 @@
-import 'package:ecommerce_firebase/themes.dart';
-import 'package:ecommerce_firebase/widgets/bar_graph/bar_data.dart';
+import 'package:MushMagic/themes.dart';
+import 'package:MushMagic/widgets/bar_graph/bar_data.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 

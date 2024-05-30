@@ -3,11 +3,11 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecommerce_firebase/models/order_model.dart';
-import 'package:ecommerce_firebase/pages/home/order_detail_page.dart';
-import 'package:ecommerce_firebase/providers/order_provider.dart';
+import 'package:MushMagic/models/order_model.dart';
+import 'package:MushMagic/pages/home/order_detail_page.dart';
+import 'package:MushMagic/providers/order_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_firebase/themes.dart';
+import 'package:MushMagic/themes.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 

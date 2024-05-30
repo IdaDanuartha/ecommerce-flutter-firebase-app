@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecommerce_firebase/models/cart_model.dart';
-import 'package:ecommerce_firebase/models/product_model.dart';
-import 'package:ecommerce_firebase/models/promotion_model.dart';
+import 'package:MushMagic/models/cart_model.dart';
+import 'package:MushMagic/models/product_model.dart';
+import 'package:MushMagic/models/promotion_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';

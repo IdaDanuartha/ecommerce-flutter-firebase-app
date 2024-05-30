@@ -1,6 +1,6 @@
-import 'package:ecommerce_firebase/pages/auth/sign_in_page.dart';
+import 'package:MushMagic/pages/auth/sign_in_page.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_firebase/themes.dart';
+import 'package:MushMagic/themes.dart';
 
 class SendEmailSuccessPage extends StatefulWidget {
   const SendEmailSuccessPage({super.key});

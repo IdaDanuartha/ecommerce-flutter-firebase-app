@@ -1,7 +1,7 @@
-import 'package:ecommerce_firebase/providers/order_provider.dart';
-import 'package:ecommerce_firebase/widgets/order_card.dart';
+import 'package:MushMagic/providers/order_provider.dart';
+import 'package:MushMagic/widgets/order_card.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_firebase/themes.dart';
+import 'package:MushMagic/themes.dart';
 import 'package:provider/provider.dart';
 
 class OrderPage extends StatefulWidget {

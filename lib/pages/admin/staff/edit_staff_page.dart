@@ -5,13 +5,13 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:ecommerce_firebase/controllers/add_single_image_controller.dart';
-import 'package:ecommerce_firebase/helpers/upload_image.dart';
-import 'package:ecommerce_firebase/models/user_model.dart';
-import 'package:ecommerce_firebase/providers/staff_provider.dart';
-import 'package:ecommerce_firebase/widgets/loading_button.dart';
+import 'package:MushMagic/controllers/add_single_image_controller.dart';
+import 'package:MushMagic/helpers/upload_image.dart';
+import 'package:MushMagic/models/user_model.dart';
+import 'package:MushMagic/providers/staff_provider.dart';
+import 'package:MushMagic/widgets/loading_button.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_firebase/themes.dart';
+import 'package:MushMagic/themes.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';

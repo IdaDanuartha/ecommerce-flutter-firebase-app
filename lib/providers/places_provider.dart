@@ -1,5 +1,5 @@
-import 'package:ecommerce_firebase/models/place_search_model.dart';
-import 'package:ecommerce_firebase/services/places_service.dart';
+import 'package:MushMagic/models/place_search_model.dart';
+import 'package:MushMagic/services/places_service.dart';
 import 'package:flutter/material.dart';
 
 class PlacesProvider with ChangeNotifier {

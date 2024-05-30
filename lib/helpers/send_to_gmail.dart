@@ -1,5 +1,5 @@
-import 'package:ecommerce_firebase/providers/staff_provider.dart';
-import 'package:ecommerce_firebase/providers/user_provider.dart';
+import 'package:MushMagic/providers/staff_provider.dart';
+import 'package:MushMagic/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mailer/mailer.dart';
