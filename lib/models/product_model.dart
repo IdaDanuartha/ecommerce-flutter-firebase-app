@@ -9,6 +9,7 @@ class ProductModel {
   late int discount;
   late int qty;
   late String description;
+  late int totalRevenue;
   late Timestamp createdAt;
   late List<dynamic> images;
 
@@ -20,6 +21,7 @@ class ProductModel {
     required this.discount,
     required this.qty,
     required this.description,
+    required this.totalRevenue,
     required this.createdAt,
     required this.images,
   });
@@ -32,6 +34,7 @@ class ProductModel {
     discount = int.parse(json["discount"].toString());
     qty = int.parse(json["qty"].toString());
     description = json["description"];
+    totalRevenue = json["total_revenue"];
     images = json['images'];
     createdAt = json["created_at"] is String ? Timestamp.now() : json['created_at'];
   }
@@ -45,6 +48,7 @@ class ProductModel {
       "discount": discount,
       "qty": qty,
       "description": description,
+      "total_revenue": totalRevenue,
       "images": images,
       "created_at": createdAt.toString(),
     };

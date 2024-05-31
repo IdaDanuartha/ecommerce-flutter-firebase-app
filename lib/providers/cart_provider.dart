@@ -23,7 +23,7 @@ class CartProvider with ChangeNotifier {
         0, (total, current) => total + (current.product.discount * current.qty));
   }
 
-  void addItem(CartModel item) {
+  bool addItem(CartModel item, int productQty) {
     var foundItem = _items.firstWhere((i) => i.id == item.id,
         orElse: () => CartModel(
           id: "", 
@@ -41,18 +41,25 @@ class CartProvider with ChangeNotifier {
             qty: 0,
             images: [],
             description: '',
+            totalRevenue: 0,
             createdAt: Timestamp.now()
           )
         ));
 
-    if (foundItem.id != "") {
-      foundItem.qty += 1;
+    if(productQty < 1) {
+      return false;
     } else {
-      _items.add(item);
+      if (foundItem.id != "") {
+        foundItem.qty += 1;
+      } else {
+        _items.add(item);
+      }
     }
 
     saveItemsToPrefs();
     notifyListeners();
+
+    return true;
   }
 
   void increaseQty(CartModel item) {

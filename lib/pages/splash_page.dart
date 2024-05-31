@@ -33,6 +33,7 @@ class _SplashPageState extends State<SplashPage> {
 
   getInit() async {
     await Provider.of<ProductProvider>(context, listen: false).getProducts();
+    await Provider.of<ProductProvider>(context, listen: false).getTopBestSellingProduct();
     await Provider.of<StaffProvider>(context, listen: false).getStaff();
     await Provider.of<UserProvider>(context, listen: false).getCustomers();
     await Provider.of<UserProvider>(context, listen: false).getAdmins();

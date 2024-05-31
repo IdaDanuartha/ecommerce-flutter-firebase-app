@@ -131,6 +131,7 @@ class _AddProductPageState extends State<AddProductPage> {
           "discount": int.parse(_discountController.text),
           "qty": int.parse(_qtyController.text),
           "description": _descriptionController.text,
+          "total_revenue": 0,
           "images": imageUrls,
           "created_at": DateTime.now(),
         });

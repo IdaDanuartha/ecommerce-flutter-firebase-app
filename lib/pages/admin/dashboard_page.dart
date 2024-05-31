@@ -1,3 +1,4 @@
+import 'package:MushMagic/pages/admin/products/product_detail_page.dart';
 import 'package:MushMagic/providers/order_provider.dart';
 import 'package:MushMagic/providers/product_provider.dart';
 import 'package:MushMagic/providers/staff_provider.dart';
@@ -267,6 +268,108 @@ class _DashboardPageState extends State<DashboardPage> {
         ),
       );
     }
+    
+    Widget bestSellingProduct() {
+      return SingleChildScrollView(
+        child: Container(
+          margin: EdgeInsets.symmetric(vertical: 30),
+          // decoration: BoxDecoration(
+          //   borderRadius: const BorderRadius.all(Radius.circular(10)),
+          // ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                Text(
+                  "Best Selling Products",
+                  style: primaryTextStyle.copyWith(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ]),
+              const SizedBox(height: 20),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width - 25,
+                  child: Column(
+                    children: [
+                      Table(
+                        columnWidths: const {
+                          0: FlexColumnWidth(3),
+                          1: FlexColumnWidth(2),
+                        },
+                        defaultVerticalAlignment:
+                            TableCellVerticalAlignment.middle,
+                        children: [
+                          TableRow(
+                              decoration: BoxDecoration(color: bgColor3),
+                              children: [
+                                TableCell(
+                                  verticalAlignment:
+                                      TableCellVerticalAlignment.middle,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16, vertical: 10),
+                                    child: Text(
+                                      "Name",
+                                      style: primaryTextStyle,
+                                    ),
+                                  ),
+                                ),
+                                TableCell(
+                                  verticalAlignment:
+                                      TableCellVerticalAlignment.middle,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 12, vertical: 10),
+                                    child: Text(
+                                      "Total Revenue",
+                                      style: primaryTextStyle,
+                                    ),
+                                  ),
+                                ),
+                              ]),
+                        ],
+                      ),
+                      Table(
+                          columnWidths: const {
+                            0: FlexColumnWidth(3),
+                            1: FlexColumnWidth(2),
+                          },
+                          defaultVerticalAlignment:
+                              TableCellVerticalAlignment.middle,
+                          children: productProvider.products.isNotEmpty
+                              ? dataRows(productProvider, context)
+                              : [
+                                  TableRow(children: [
+                                    TableCell(
+                                      verticalAlignment:
+                                          TableCellVerticalAlignment.middle,
+                                      child: Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(12),
+                                          child: Text(
+                                            "No product found",
+                                            style: primaryTextStyle.copyWith(
+                                                color: Color.fromRGBO(
+                                                    255, 255, 255, .7)),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ])
+                                ]),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: defaultMargin),
@@ -276,9 +379,49 @@ class _DashboardPageState extends State<DashboardPage> {
           dataCount(),
           barChart(),
           // pieChart()
+          bestSellingProduct(),
           SizedBox(height: 30)
         ],
       ),
     );
   }
+}
+
+List<TableRow> dataRows(ProductProvider productProvider, BuildContext context) {
+  return productProvider.bestSellingProduct
+      .map((product) => TableRow(children: [
+            TableCell(
+              verticalAlignment: TableCellVerticalAlignment.middle,
+              child: InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, ProductDetailPage.routeName,
+                      arguments: product);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Text(
+                    product.name,
+                    style: primaryTextStyle,
+                  ),
+                ),
+              ),
+            ),
+            TableCell(
+              verticalAlignment: TableCellVerticalAlignment.middle,
+              child: InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, ProductDetailPage.routeName,
+                      arguments: product);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Text(
+                    "RM ${product.totalRevenue.toString()}",
+                    style: primaryTextStyle,
+                  ),
+                ),
+              ),
+            ),
+          ]))
+      .toList();
 }

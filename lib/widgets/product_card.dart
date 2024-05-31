@@ -67,28 +67,63 @@ class ProductCard extends StatelessWidget {
                   SizedBox(
                     height: 20,
                   ),
-                  // Container(
-                  //   width: 154,
-                  //   height: 44,
-                  //   child: TextButton(
-                  //     onPressed: () {
-                  //       Navigator.pushNamed(context, CartPage.routeName);
-                  //     },
-                  //     style: TextButton.styleFrom(
-                  //       backgroundColor: primaryColor,
-                  //       shape: RoundedRectangleBorder(
-                  //         borderRadius: BorderRadius.circular(12),
-                  //       ),
-                  //     ),
-                  //     child: Text(
-                  //       'View My Cart',
-                  //       style: primaryTextStyle.copyWith(
-                  //         fontSize: 16,
-                  //         fontWeight: medium,
-                  //       ),
-                  //     ),
-                  //   ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    Future<void> showErrorDialog() async {
+      return showDialog(
+        context: context,
+        builder: (BuildContext context) => Container(
+          width: MediaQuery.of(context).size.width - (2 * defaultMargin),
+          child: AlertDialog(
+            backgroundColor: bgColor3,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+            content: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(
+                        Icons.close,
+                        color: primaryTextColor,
+                      ),
+                    ),
+                  ),
+                  // Image.asset(
+                  //   'assets/icon_success.png',
+                  //   width: 100,
                   // ),
+                  SizedBox(
+                    height: 12,
+                  ),
+                  Text(
+                    'Product Empty :(',
+                    style: primaryTextStyle.copyWith(
+                      fontSize: 18,
+                      fontWeight: semiBold,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 12,
+                  ),
+                  Text(
+                    'Item added failed',
+                    style: secondaryTextStyle,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
             ),
@@ -196,12 +231,17 @@ class ProductCard extends StatelessWidget {
                         ),
                         GestureDetector(
                           onTap: () {
-                            cartProvider.addItem(CartModel(
+                            bool result = cartProvider.addItem(CartModel(
                                 id: product.id,
                                 userId: user!.uid,
                                 qty: 1,
-                                product: product));
-                            showSuccessDialog();
+                                product: product), product.qty);
+                            print(result);
+                            if(result) {
+                              showSuccessDialog();
+                            } else {
+                              showErrorDialog();
+                            }
                           },
                           child: Image.asset(
                             'assets/icon_cart.png',

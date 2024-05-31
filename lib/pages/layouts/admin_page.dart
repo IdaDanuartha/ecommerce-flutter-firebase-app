@@ -31,6 +31,7 @@ class _AdminPageState extends State<AdminPage> {
 
   final _screensStaff = [
     const DashboardPage(),
+    const ProductPage(),
     const OrderPage(),
     const CustomerPage(),
     const ProfilePage(),
@@ -128,8 +129,8 @@ class _AdminPageState extends State<AdminPage> {
         icon: Container(
           margin: const EdgeInsets.only(top: 20),
           child: Image.asset(
-            'assets/icon_order.png',
-            width: 23,
+            'assets/icon_product.png',
+            width: 28,
             color: _currentIndex == 1 ? primaryColor : const Color(0XFF808191),
           ),
         ),
@@ -139,7 +140,7 @@ class _AdminPageState extends State<AdminPage> {
         icon: Container(
           margin: const EdgeInsets.only(top: 20),
           child: Image.asset(
-            'assets/icon_users.png',
+            'assets/icon_order.png',
             width: 23,
             color: _currentIndex == 2 ? primaryColor : const Color(0XFF808191),
           ),
@@ -150,9 +151,20 @@ class _AdminPageState extends State<AdminPage> {
         icon: Container(
           margin: const EdgeInsets.only(top: 20),
           child: Image.asset(
+            'assets/icon_users.png',
+            width: 23,
+            color: _currentIndex == 3 ? primaryColor : const Color(0XFF808191),
+          ),
+        ),
+        label: '',
+      ),
+      BottomNavigationBarItem(
+        icon: Container(
+          margin: const EdgeInsets.only(top: 20),
+          child: Image.asset(
             'assets/icon_settings.png',
             width: 20,
-            color: _currentIndex == 3 ? primaryColor : const Color(0XFF808191),
+            color: _currentIndex == 4 ? primaryColor : const Color(0XFF808191),
           ),
         ),
         label: '',

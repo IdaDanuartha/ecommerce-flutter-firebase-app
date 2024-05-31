@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 
 class ProductProvider with ChangeNotifier {
   List<ProductModel> _products = [];
+  List<ProductModel> _bestSellingProduct = [];
+
   List<ProductModel> get products => _products;
+  List<ProductModel> get bestSellingProduct => _bestSellingProduct;
 
   set products(List<ProductModel> products) {
     _products = products;
@@ -15,6 +18,21 @@ class ProductProvider with ChangeNotifier {
     try {
       List<ProductModel> products = await ProductService().getProducts();
       _products = products;
+
+      notifyListeners();
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> getTopBestSellingProduct() async {
+    try {
+      List<ProductModel> sortedProducts = List.from(_products);
+      sortedProducts.sort((a, b) => b.totalRevenue.compareTo(a.totalRevenue));
+
+      List<ProductModel> topProducts = sortedProducts.take(3).toList();
+
+      _bestSellingProduct = topProducts;
 
       notifyListeners();
     } catch (e) {

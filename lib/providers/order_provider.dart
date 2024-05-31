@@ -161,6 +161,7 @@ class OrderProvider with ChangeNotifier {
 
       await cartProvider.clearCart();
       await productProvider.getProducts();
+      await productProvider.getTopBestSellingProduct();
       await getOrders();
 
       notifyListeners();

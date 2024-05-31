@@ -7,12 +7,10 @@ import 'package:MushMagic/providers/order_provider.dart';
 import 'package:MushMagic/providers/staff_provider.dart';
 import 'package:MushMagic/providers/user_provider.dart';
 import 'package:MushMagic/widgets/order_item_card.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:MushMagic/themes.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class OrderDetailPage extends StatefulWidget {
   const OrderDetailPage({super.key});
@@ -632,7 +630,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
+              userRole != "customer" ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ElevatedButton.icon(
@@ -656,7 +654,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     ),
                   ),
                 ],
-              ),
+              ) : SizedBox(),
               SizedBox(height: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -805,7 +803,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           color: bgColor3,
           child: Column(
             children: [
-              userRole == "admin"
+              userRole != "customer"
                   ? changeStatusButton()
                   : (args.status == 1 ? cancelOrderBtn() : const SizedBox()),
               basicInformation(),

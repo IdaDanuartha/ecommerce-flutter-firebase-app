@@ -106,6 +106,63 @@ class _ProductDetailHomePageState extends State<ProductDetailHomePage> {
       );
     }
 
+    Future<void> showErrorDialog() async {
+      return showDialog(
+        context: context,
+        builder: (BuildContext context) => Container(
+          width: MediaQuery.of(context).size.width - (2 * defaultMargin),
+          child: AlertDialog(
+            backgroundColor: bgColor3,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+            content: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(
+                        Icons.close,
+                        color: primaryTextColor,
+                      ),
+                    ),
+                  ),
+                  // Image.asset(
+                  //   'assets/icon_success.png',
+                  //   width: 100,
+                  // ),
+                  SizedBox(
+                    height: 12,
+                  ),
+                  Text(
+                    'Product Empty :(',
+                    style: primaryTextStyle.copyWith(
+                      fontSize: 18,
+                      fontWeight: semiBold,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 12,
+                  ),
+                  Text(
+                    'Item added failed',
+                    style: secondaryTextStyle,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
     Widget indicator(int index) {
       return Container(
         width: currentIndex == index ? 16 : 4,
@@ -327,12 +384,17 @@ class _ProductDetailHomePageState extends State<ProductDetailHomePage> {
                           height: 54,
                           child: TextButton(
                             onPressed: () {
-                              cartProvider.addItem(CartModel(
+                              bool result = cartProvider.addItem(CartModel(
                                   id: args.id,
                                   userId: user!.uid,
-                                  qty: 1, 
-                                  product: args));
-                              showSuccessDialog();
+                                  qty: 1,
+                                  product: args), args.qty);
+
+                              if(result) {
+                                showSuccessDialog();
+                              } else {
+                                showErrorDialog();
+                              }
                             },
                             style: TextButton.styleFrom(
                               shape: RoundedRectangleBorder(

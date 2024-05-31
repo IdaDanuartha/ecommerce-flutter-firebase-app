@@ -47,6 +47,14 @@ class OrderService {
     final FirebaseFirestore db = FirebaseFirestore.instance;
 
     DocumentReference orderRef = await db.collection("orders").add(newData);
+    
+    for (var item in newData.items) {
+      DocumentReference productRef = db.collection("products").doc(item.product.id);
+      print(productRef);
+      // await productRef.update({
+      //   "total_revenue": item.product.totalRevenue + (item.qty * item.price)
+      // });
+    }
 
     // Use the order ID to fetch the document data
     DocumentSnapshot orderSnapshot = await orderRef.get();

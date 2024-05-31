@@ -5,6 +5,7 @@
 import 'package:MushMagic/models/product_model.dart';
 import 'package:MushMagic/pages/admin/products/edit_product_page.dart';
 import 'package:MushMagic/providers/product_provider.dart';
+import 'package:MushMagic/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:MushMagic/themes.dart';
 import 'package:provider/provider.dart';
@@ -28,7 +29,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
     final args = ModalRoute.of(context)!.settings.arguments as ProductModel;
-    
+    UserProvider userProvider = Provider.of<UserProvider>(context);
+    String userRole = userProvider.user!.role;
+
     void deleteProduct() async {
       // print(addProductImagesController.selectedImages);
       var deleteProduct= await productProvider.delete(args.id);
@@ -434,7 +437,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         margin: EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 20),
         child: Column(
           children: [
-            actionButtons(),
+            userRole == "admin" ? actionButtons() : SizedBox(),
             showImages(),
             args.promotion.productId != "" ? productPromotionInput() : const SizedBox(),
             nameInput(),

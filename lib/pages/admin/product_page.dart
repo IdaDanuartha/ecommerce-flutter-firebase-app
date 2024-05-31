@@ -5,6 +5,7 @@
 import 'package:MushMagic/pages/admin/products/add_product_page.dart';
 import 'package:MushMagic/pages/admin/products/product_detail_page.dart';
 import 'package:MushMagic/providers/product_provider.dart';
+import 'package:MushMagic/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:MushMagic/themes.dart';
 import 'package:provider/provider.dart';
@@ -25,8 +26,10 @@ class _ProductPageState extends State<ProductPage> {
   @override
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
-  
-  Widget addButton() {
+    UserProvider userProvider = Provider.of<UserProvider>(context);
+    String userRole = userProvider.user!.role;
+
+    Widget addButton() {
       return TextButton(
         onPressed: () {
           Navigator.pushNamed(context, AddProductPage.routeName);
@@ -34,9 +37,8 @@ class _ProductPageState extends State<ProductPage> {
         child: Container(
           padding: EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: Color.fromRGBO(172, 164, 232, .1),
-            borderRadius: BorderRadius.circular(999)
-          ),
+              color: Color.fromRGBO(172, 164, 232, .1),
+              borderRadius: BorderRadius.circular(999)),
           child: Image.asset(
             'assets/icon_add.png',
             width: 16,
@@ -56,19 +58,16 @@ class _ProductPageState extends State<ProductPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Data Products",
-                    style: primaryTextStyle.copyWith(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                Text(
+                  "Data Products",
+                  style: primaryTextStyle.copyWith(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
-                  addButton()
-                ]
-              ),
+                ),
+                userRole == "admin" ? addButton() : SizedBox()
+              ]),
               const SizedBox(height: 20),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -81,7 +80,7 @@ class _ProductPageState extends State<ProductPage> {
                           0: FlexColumnWidth(3),
                           1: FlexColumnWidth(2),
                           2: FlexColumnWidth(1),
-                        }, 
+                        },
                         defaultVerticalAlignment:
                             TableCellVerticalAlignment.middle,
                         children: [
@@ -93,9 +92,7 @@ class _ProductPageState extends State<ProductPage> {
                                       TableCellVerticalAlignment.middle,
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
-                                      horizontal: 16,
-                                      vertical: 10
-                                    ),
+                                        horizontal: 16, vertical: 10),
                                     child: Text(
                                       "Name",
                                       style: primaryTextStyle,
@@ -107,9 +104,7 @@ class _ProductPageState extends State<ProductPage> {
                                       TableCellVerticalAlignment.middle,
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 10
-                                    ),
+                                        horizontal: 12, vertical: 10),
                                     child: Text(
                                       "Price",
                                       style: primaryTextStyle,
@@ -121,9 +116,7 @@ class _ProductPageState extends State<ProductPage> {
                                       TableCellVerticalAlignment.middle,
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 10
-                                    ),
+                                        horizontal: 12, vertical: 10),
                                     child: Text(
                                       "Qty",
                                       style: primaryTextStyle,
@@ -134,34 +127,34 @@ class _ProductPageState extends State<ProductPage> {
                         ],
                       ),
                       Table(
-                        columnWidths: const {
-                          0: FlexColumnWidth(3),
-                          1: FlexColumnWidth(2),
-                          2: FlexColumnWidth(1),
-                        }, 
-                        defaultVerticalAlignment:
-                            TableCellVerticalAlignment.middle,
-                        children: productProvider.products.isNotEmpty ? dataRows(productProvider, context) : [
-                          TableRow(
-                            children: [
-                              TableCell(
-                                verticalAlignment: TableCellVerticalAlignment.middle,
-                                child: Center(
-                                  child: Padding(
-                                      padding: const EdgeInsets.all(12),
-                                      child: Text(
-                                        "No product found",
-                                        style: primaryTextStyle.copyWith(
-                                          color: Color.fromRGBO(255,255,255,.7)
+                          columnWidths: const {
+                            0: FlexColumnWidth(3),
+                            1: FlexColumnWidth(2),
+                            2: FlexColumnWidth(1),
+                          },
+                          defaultVerticalAlignment:
+                              TableCellVerticalAlignment.middle,
+                          children: productProvider.products.isNotEmpty
+                              ? dataRows(productProvider, context)
+                              : [
+                                  TableRow(children: [
+                                    TableCell(
+                                      verticalAlignment:
+                                          TableCellVerticalAlignment.middle,
+                                      child: Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(12),
+                                          child: Text(
+                                            "No product found",
+                                            style: primaryTextStyle.copyWith(
+                                                color: Color.fromRGBO(
+                                                    255, 255, 255, .7)),
+                                          ),
                                         ),
                                       ),
                                     ),
-                                ),
-                              ),
-                            ]
-                          )
-                        ]
-                      ),
+                                  ])
+                                ]),
                     ],
                   ),
                 ),
@@ -192,7 +185,8 @@ List<TableRow> dataRows(ProductProvider productProvider, BuildContext context) {
               verticalAlignment: TableCellVerticalAlignment.middle,
               child: InkWell(
                 onTap: () {
-                  Navigator.pushNamed(context, ProductDetailPage.routeName, arguments: product);
+                  Navigator.pushNamed(context, ProductDetailPage.routeName,
+                      arguments: product);
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(12),
@@ -207,7 +201,8 @@ List<TableRow> dataRows(ProductProvider productProvider, BuildContext context) {
               verticalAlignment: TableCellVerticalAlignment.middle,
               child: InkWell(
                 onTap: () {
-                  Navigator.pushNamed(context, ProductDetailPage.routeName, arguments: product);
+                  Navigator.pushNamed(context, ProductDetailPage.routeName,
+                      arguments: product);
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(12),
@@ -222,7 +217,8 @@ List<TableRow> dataRows(ProductProvider productProvider, BuildContext context) {
               verticalAlignment: TableCellVerticalAlignment.middle,
               child: InkWell(
                 onTap: () {
-                  Navigator.pushNamed(context, ProductDetailPage.routeName, arguments: product);
+                  Navigator.pushNamed(context, ProductDetailPage.routeName,
+                      arguments: product);
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(12),

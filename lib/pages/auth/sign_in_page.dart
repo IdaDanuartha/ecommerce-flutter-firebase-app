@@ -76,6 +76,7 @@ void route() {
             
             await Provider.of<UserProvider>(context, listen: false).getUser(user!.uid);
             await Provider.of<ProductProvider>(context, listen: false).getProducts();
+            await Provider.of<ProductProvider>(context, listen: false).getTopBestSellingProduct();
             await Provider.of<OrderProvider>(context, listen: false).getOrdersMonthly();
             if(data["role"] == "admin" || data["role"] == "staff") {
               await Provider.of<OrderProvider>(context, listen: false).getOrders();

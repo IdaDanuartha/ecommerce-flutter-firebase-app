@@ -171,12 +171,14 @@ class _StaffPageState extends State<StaffPage> {
       );
     }
 
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 20),
-      child: Column(
-        children: [
-          content()
-        ],
+    return SingleChildScrollView(
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 20),
+        child: Column(
+          children: [
+            content()
+          ],
+        ),
       ),
     );
   }
