@@ -2,7 +2,7 @@ import 'package:MushMagic/providers/places_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
+import 'package:geocoding/geocoding.dart';
 import 'package:MushMagic/themes.dart';
 import 'package:provider/provider.dart';
 
@@ -28,23 +28,50 @@ class _LocationPickerAlertState extends State<LocationPickerAlert> {
   void _requestLocationPermission() async {
     LocationPermission permission = await Geolocator.requestPermission();
 
-    if(permission == LocationPermission.denied) {
+    if (permission == LocationPermission.denied) {
       print("Location permission denied");
-    } else if(permission == LocationPermission.deniedForever) {
+    } else if (permission == LocationPermission.deniedForever) {
       print("Location permission denied forever");
     } else {
       _getCurrentLocation();
     }
   }
 
+  Future<void> _getAddressFromLatLng(LatLng position) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
+
+      if (placemarks.isNotEmpty) {
+        Placemark place = placemarks[0];
+        print(place);
+        print("Country: ${place.country}");
+        print("Region: ${place.administrativeArea}");
+        print("Locality: ${place.locality}");
+        print("Street: ${place.street}");
+        print("Postal Code: ${place.postalCode}");
+        // You can use the place object to get detailed information
+      }
+    } catch (e) {
+      print("Error in reverse geocoding: $e");
+    }
+  }
+
   void _getCurrentLocation() async {
     try {
-      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-      print("Latitude : ${position.latitude}, Longitude : ${position.longitude}");
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      print(
+          "Latitude : ${position.latitude}, Longitude : ${position.longitude}");
 
       setState(() {
         _selectedLocation = LatLng(position.latitude, position.longitude);
       });
+
+      await _getAddressFromLatLng(_selectedLocation!);
+
     } catch (e) {
       print("Error getting current location: $e");
     }
@@ -52,7 +79,8 @@ class _LocationPickerAlertState extends State<LocationPickerAlert> {
 
   @override
   Widget build(BuildContext context) {
-    PlacesProvider placesProvider = Provider.of<PlacesProvider>(context, listen: false);
+    PlacesProvider placesProvider =
+        Provider.of<PlacesProvider>(context, listen: false);
     print(placesProvider.searchResults.length);
     return AlertDialog(
       contentPadding: EdgeInsets.all(0),
@@ -116,20 +144,19 @@ class _LocationPickerAlertState extends State<LocationPickerAlert> {
                   });
                 },
                 markers: _selectedLocation != null
-                  ? {
-                  Marker(
-                    markerId: const MarkerId('selectedLocation'),
-                    position: _selectedLocation!,
-                    infoWindow: InfoWindow(
-                      title: 'Your Location',
-                      snippet: 'Lat: ${_selectedLocation!.latitude}, Lng: ${_selectedLocation!.longitude}',
-                    )
-                  )
-                } : {},
+                    ? {
+                        Marker(
+                            markerId: const MarkerId('selectedLocation'),
+                            position: _selectedLocation!,
+                            infoWindow: InfoWindow(
+                              title: 'Your Location',
+                              snippet:
+                                  'Lat: ${_selectedLocation!.latitude}, Lng: ${_selectedLocation!.longitude}',
+                            ))
+                      }
+                    : {},
                 initialCameraPosition: CameraPosition(
-                  target: _selectedLocation ?? const LatLng(0, 0),
-                  zoom: 15
-                ),
+                    target: _selectedLocation ?? const LatLng(0, 0), zoom: 15),
                 myLocationEnabled: true,
               ),
             ),
@@ -141,8 +168,9 @@ class _LocationPickerAlertState extends State<LocationPickerAlert> {
                   backgroundColor: primaryColor,
                 ),
                 onPressed: () async {
-                  if(_selectedLocation != null) {
-                    print("Selected Location - Lat: ${_selectedLocation!.latitude}, Lng: ${_selectedLocation}");
+                  if (_selectedLocation != null) {
+                    print(
+                        "Selected Location - Lat: ${_selectedLocation!.latitude}, Lng: ${_selectedLocation}");
                     Navigator.pop(context);
                     widget.onLocationSelected?.call(_selectedLocation!);
                   } else {

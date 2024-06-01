@@ -152,7 +152,7 @@ class OrderProvider with ChangeNotifier {
 
       var order = await OrderService().checkout(newData);
       _orders.add(OrderModel.fromJson(order));
-      
+
       await Future.forEach(cartProvider.items, (cart) async {
         await productProvider.update(cart.product.id, {
           "qty": cart.product.qty - cart.qty

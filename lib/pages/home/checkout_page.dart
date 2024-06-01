@@ -59,6 +59,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
     _paymentMethodController.text = paymentSelected;
     _customerNameController.text = userProvider.user!.name;
 
+    String userRole = userProvider.user!.role;
+
     String grandTotal =
         (cartProvider.totalPrice + 0 - cartProvider.totalDiscount)
             .toStringAsFixed(0);
@@ -110,7 +112,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
               "images": item.product.images
             },
           };
-        })
+        }).toList()
       }, context);
 
       if (newOrder) {
@@ -128,8 +130,16 @@ class _CheckoutPageState extends State<CheckoutPage> {
           ),
         );
 
-        sendToGmail("New Order From Your Customer!", "entered", generateCode,
-            grandTotal, userProvider, staffProvider, context);
+        String message = "Order entered with code #$generateCode with a total price of RM $grandTotal";
+        String title;
+
+        if(userRole == "customer") {
+          title = "Order Placed Successfully";
+        } else {
+          title = "New Order From Your Customer";
+        }
+
+        sendToGmail(title, message, userProvider, staffProvider, user.email, context);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

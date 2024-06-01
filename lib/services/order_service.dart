@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MushMagic/models/order_model.dart';
-import 'package:MushMagic/providers/cart_provider.dart';
 
 class OrderService {
   final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -48,12 +47,12 @@ class OrderService {
 
     DocumentReference orderRef = await db.collection("orders").add(newData);
     
-    for (var item in newData.items) {
-      DocumentReference productRef = db.collection("products").doc(item.product.id);
-      print(productRef);
-      // await productRef.update({
-      //   "total_revenue": item.product.totalRevenue + (item.qty * item.price)
-      // });
+    for (var item in newData["items"]) {
+      DocumentReference productRef = db.collection("products").doc(item["product"]["id"]);
+
+      await productRef.update({
+        "total_revenue": item["product"]["total_revenue"] + (item["qty"] * item["price"])
+      });
     }
 
     // Use the order ID to fetch the document data

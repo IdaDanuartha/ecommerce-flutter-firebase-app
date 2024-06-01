@@ -1,3 +1,4 @@
+import 'package:MushMagic/helpers/send_to_gmail.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MushMagic/pages/auth/sign_in_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -39,6 +40,10 @@ class _SignUpPageState extends State<SignUpPage> {
         "password": ""
       });
       Navigator.pushNamed(context, SignInPage.routeName);
+      String message = "Welcome ${_nameController.text}, thanks for registering your account in our application";
+
+      sendMessageAfterSignUp("Account Created", message, _emailController.text, context);
+      
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: successColor,

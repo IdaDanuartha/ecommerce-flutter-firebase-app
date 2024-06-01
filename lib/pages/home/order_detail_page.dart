@@ -60,8 +60,9 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
       String totalPrice =
           (args.subTotal + 0 - args.totalDiscount).toStringAsFixed(0);
 
-      sendToGmail("Order Cancelled", "cancelled", args.code, totalPrice,
-          userProvider, staffProvider, context);
+      String message = "Order cancelled with code #${args.code} with a total price of RM $totalPrice";
+
+      sendToGmail("Order Cancelled", message, userProvider, staffProvider, "", context);
 
       var nav = Navigator.of(context);
       nav.pop();
