@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
     Widget header() {
       return Container(
         margin: EdgeInsets.only(
-            top: defaultMargin, left: defaultMargin, right: defaultMargin),
+            top: defaultMargin, left: 20, right: 20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -63,8 +63,8 @@ class _HomePageState extends State<HomePage> {
           Container(
             margin: EdgeInsets.only(
               top: defaultMargin,
-              left: defaultMargin,
-              right: defaultMargin,
+              left: 15,
+              right: 15,
             ),
             child: Text(
               'Latest Products',
