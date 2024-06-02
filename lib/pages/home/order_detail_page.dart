@@ -661,6 +661,27 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
+                    "Full Address",
+                    style: primaryTextStyle.copyWith(
+                        color: Color.fromRGBO(255, 255, 255, .5), fontSize: 12),
+                  ),
+                  SizedBox(height: 5),
+                  Container(
+                    width: MediaQuery.of(context).size.width - 80,
+                    child: Text(
+                      args.address.details != "" ? args.address.details : "-",
+                      style: primaryTextStyle.copyWith(fontSize: 14),
+                      maxLines: 5,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
                     "Details",
                     style: primaryTextStyle.copyWith(
                         color: Color.fromRGBO(255, 255, 255, .5), fontSize: 12),

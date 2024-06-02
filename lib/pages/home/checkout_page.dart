@@ -29,6 +29,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _latitudeController = TextEditingController();
   final TextEditingController _longitudeController = TextEditingController();
+  final TextEditingController _fullAddressController = TextEditingController();
   final TextEditingController _detailsController = TextEditingController();
   final TextEditingController _paymentMethodController =
       TextEditingController();
@@ -49,6 +50,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
   LatLng? selectedLocation;
 
+  String fullAddress = "";
+
   @override
   Widget build(BuildContext context) {
     CartProvider cartProvider = Provider.of<CartProvider>(context);
@@ -58,6 +61,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
     _paymentMethodController.text = paymentSelected;
     _customerNameController.text = userProvider.user!.name;
+    _fullAddressController.text = fullAddress;
 
     String userRole = userProvider.user!.role;
 
@@ -275,6 +279,39 @@ class _CheckoutPageState extends State<CheckoutPage> {
       );
     }
 
+    Widget fullAddressInput() {
+      return Container(
+        margin: const EdgeInsets.only(bottom: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              height: 50,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(width: 1, color: const Color(0xFF797979))),
+              child: Center(
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: TextFormField(
+                      controller: _fullAddressController,
+                      style: secondaryTextStyle.copyWith(fontSize: 14),
+                      decoration: InputDecoration(
+                          hintText: 'Input full address',
+                          hintStyle: subtitleTextStyle,
+                          border: InputBorder.none),
+                    ))
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    }
+
     Widget addressDetailInput() {
       return Container(
         margin: const EdgeInsets.only(bottom: 20),
@@ -318,11 +355,15 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 context: context,
                 builder: (BuildContext context) {
                   return LocationPickerAlert(
-                      onLocationSelected: (LatLng userLocation) {
-                    selectedLocation = userLocation;
-                    _latitudeController.text = userLocation.latitude.toString();
-                    _longitudeController.text =
-                        userLocation.longitude.toString();
+                      onLocationSelected: (LatLng userLocation, String detailAddress) {
+                    setState(() {
+                      selectedLocation = userLocation;
+                      _latitudeController.text = userLocation.latitude.toString();
+                      _longitudeController.text =
+                          userLocation.longitude.toString();
+                      fullAddress = detailAddress;
+                    });
+                    print("Address : ${fullAddress}");
                     // print("Selected location - latitude : ${userLocation.latitude}, longitude : ${userLocation.longitude}");
                   });
                 });
@@ -458,6 +499,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
             // cityInput(),
             // subdistrictInput(),
             showLocationFromMap(),
+            fullAddressInput(),
             addressDetailInput(),
           ],
         ),

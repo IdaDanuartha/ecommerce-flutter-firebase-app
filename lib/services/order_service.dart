@@ -47,12 +47,34 @@ class OrderService {
 
     DocumentReference orderRef = await db.collection("orders").add(newData);
     
+    DocumentReference updateOrderRef = db.collection("orders").doc(orderRef.id);
+    
+    Map<String, dynamic> updatedItems = {};
+
+    // update total revenue in order collection
+    for (int i = 0; i < newData["items"].length; i++) {
+      var item = newData["items"][i];
+
+      item["product"]["total_revenue"] += item["qty"] * (item["price"] - item["discount"]);
+      updatedItems['items.$i'] = {
+        "product": item["product"],
+        "qty": item["qty"],
+        "price": item["price"],
+        "discount": item["discount"]
+      };
+    }
+    await updateOrderRef.update(updatedItems);
+
+    // update total revenue in product collection
     for (var item in newData["items"]) {
       DocumentReference productRef = db.collection("products").doc(item["product"]["id"]);
 
+      int totalRevenue = item["product"]["total_revenue"] + (item["qty"] * (item["price"] - item["discount"]));
       await productRef.update({
-        "total_revenue": item["product"]["total_revenue"] + (item["qty"] * item["price"])
+        "total_revenue": totalRevenue
       });
+      print("${item["product"]["total_revenue"]}, ${item["qty"]}, ${item["price"]}");
+      print(totalRevenue);
     }
 
     // Use the order ID to fetch the document data

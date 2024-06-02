@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 class LocationPickerAlert extends StatefulWidget {
   const LocationPickerAlert({super.key, this.onLocationSelected});
 
-  final Function(LatLng)? onLocationSelected;
+  final Function(LatLng, String)? onLocationSelected;
 
   @override
   State<LocationPickerAlert> createState() => _LocationPickerAlertState();
@@ -18,6 +18,7 @@ class LocationPickerAlert extends StatefulWidget {
 class _LocationPickerAlertState extends State<LocationPickerAlert> {
   GoogleMapController? mapController;
   LatLng? _selectedLocation;
+  String? _detailLocation;
 
   @override
   void initState() {
@@ -46,13 +47,13 @@ class _LocationPickerAlertState extends State<LocationPickerAlert> {
 
       if (placemarks.isNotEmpty) {
         Placemark place = placemarks[0];
-        print(place);
-        print("Country: ${place.country}");
-        print("Region: ${place.administrativeArea}");
-        print("Locality: ${place.locality}");
-        print("Street: ${place.street}");
-        print("Postal Code: ${place.postalCode}");
-        // You can use the place object to get detailed information
+        // print(place);
+        // print("Country: ${place.country}");
+        // print("Region: ${place.administrativeArea}");
+        // print("Locality: ${place.locality}");
+        // print("Street: ${place.street}");
+        // print("Postal Code: ${place.postalCode}");
+        _detailLocation = "${place.street}, ${place.locality}, ${place.administrativeArea}, ${place.country}, ${place.postalCode}";
       }
     } catch (e) {
       print("Error in reverse geocoding: $e");
@@ -66,12 +67,10 @@ class _LocationPickerAlertState extends State<LocationPickerAlert> {
       print(
           "Latitude : ${position.latitude}, Longitude : ${position.longitude}");
 
-      setState(() {
+      setState(() async {
         _selectedLocation = LatLng(position.latitude, position.longitude);
+        await _getAddressFromLatLng(_selectedLocation!);
       });
-
-      await _getAddressFromLatLng(_selectedLocation!);
-
     } catch (e) {
       print("Error getting current location: $e");
     }
@@ -172,7 +171,8 @@ class _LocationPickerAlertState extends State<LocationPickerAlert> {
                     print(
                         "Selected Location - Lat: ${_selectedLocation!.latitude}, Lng: ${_selectedLocation}");
                     Navigator.pop(context);
-                    widget.onLocationSelected?.call(_selectedLocation!);
+                    widget.onLocationSelected?.call(_selectedLocation!, _detailLocation!);
+                    print(_detailLocation);
                   } else {
                     // handle case where no location is selected
                   }

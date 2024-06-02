@@ -100,7 +100,7 @@ class _OrderPageState extends State<OrderPage> {
         // )
         child: Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: defaultMargin
+            horizontal: 15
           ),
           child: Wrap(
                 spacing: 8.0,

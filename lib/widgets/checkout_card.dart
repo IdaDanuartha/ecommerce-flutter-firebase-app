@@ -73,7 +73,7 @@ class CheckoutCard extends StatelessWidget {
             width: 12,
           ),
           Text(
-            '${cart.qty.toString()} Items',
+            '${cart.qty.toString()} ${cart.qty > 1 ? "Items" : "Item"}',
             style: secondaryTextStyle.copyWith(
               fontSize: 12,
             ),
