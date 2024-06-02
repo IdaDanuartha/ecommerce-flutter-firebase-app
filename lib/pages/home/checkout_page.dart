@@ -79,46 +79,92 @@ class _CheckoutPageState extends State<CheckoutPage> {
       String generateCode = generateWithFormat();
       bool newOrder = false;
 
-      newOrder = await orderProvider.checkout({
-        "user_id": user!.uid,
-        "customer_name": _customerNameController.text,
-        "phone": _phoneController.text,
-        "code": generateCode,
-        "status": 1,
-        "payment_method": _paymentMethodController.text,
-        "sub_total": cartProvider.totalPrice,
-        "total_discount": cartProvider.totalDiscount,
-        "delivery_fee": 0,
-        "created_at": DateTime.now(),
-        "address": {
-          "latitude": double.parse(_latitudeController.text),
-          "longitude": double.parse(_longitudeController.text),
-          "full_address": _fullAddressController.text,
-          "details": _detailsController.text,
-        },
-        "items": cartProvider.items.map((item) {
-          return {
-            "price": item.product.price,
-            "qty": item.qty,
-            "discount": item.product.discount,
-            "product": {
-              "id": item.product.id,
-              "promotion": {
-                "product_id": item.product.promotion.productId,
-                "name": item.product.promotion.name
-              },
-              "name": item.product.name,
-              "price": item.product.price,
-              "discount": item.product.discount,
-              "qty": item.product.qty,
-              "description": item.product.description,
-              "created_at": item.product.createdAt,
-              "total_revenue": item.product.totalRevenue + ((item.product.price - item.product.discount) * item.qty),
-              "images": item.product.images
+      if (_paymentMethodController.text == "Credit Card") {
+        bool paymentResult = await makePayment(context, grandTotal);
+        if (paymentResult) {
+          newOrder = await orderProvider.checkout({
+            "user_id": user!.uid,
+            "customer_name": _customerNameController.text,
+            "phone": _phoneController.text,
+            "code": generateCode,
+            "status": 1,
+            "payment_method": _paymentMethodController.text,
+            "sub_total": cartProvider.totalPrice,
+            "total_discount": cartProvider.totalDiscount,
+            "delivery_fee": 0,
+            "created_at": DateTime.now(),
+            "address": {
+              "latitude": double.parse(_latitudeController.text),
+              "longitude": double.parse(_longitudeController.text),
+              "full_address": _fullAddressController.text,
+              "details": _detailsController.text,
             },
-          };
-        }).toList()
-      }, context);
+            "items": cartProvider.items.map((item) {
+              return {
+                "price": item.product.price,
+                "qty": item.qty,
+                "discount": item.product.discount,
+                "product": {
+                  "id": item.product.id,
+                  "promotion": {
+                    "product_id": item.product.promotion.productId,
+                    "name": item.product.promotion.name
+                  },
+                  "name": item.product.name,
+                  "price": item.product.price,
+                  "discount": item.product.discount,
+                  "qty": item.product.qty,
+                  "description": item.product.description,
+                  "created_at": item.product.createdAt,
+                  "total_revenue": item.product.totalRevenue + ((item.product.price - item.product.discount) * item.qty),
+                  "images": item.product.images
+                },
+              };
+            }).toList()
+          }, context);
+        }
+      } else {
+        newOrder = await orderProvider.checkout({
+          "user_id": user!.uid,
+          "customer_name": _customerNameController.text,
+          "phone": _phoneController.text,
+          "code": generateCode,
+          "status": 1,
+          "payment_method": _paymentMethodController.text,
+          "sub_total": cartProvider.totalPrice,
+          "total_discount": cartProvider.totalDiscount,
+          "delivery_fee": 0,
+          "created_at": DateTime.now(),
+          "address": {
+            "latitude": double.parse(_latitudeController.text),
+            "longitude": double.parse(_longitudeController.text),
+            "full_address": _fullAddressController.text,
+            "details": _detailsController.text,
+          },
+          "items": cartProvider.items.map((item) {
+            return {
+              "price": item.product.price,
+              "qty": item.qty,
+              "discount": item.product.discount,
+              "product": {
+                "id": item.product.id,
+                "promotion": {
+                  "product_id": item.product.promotion.productId,
+                  "name": item.product.promotion.name
+                },
+                "name": item.product.name,
+                "price": item.product.price,
+                "discount": item.product.discount,
+                "qty": item.product.qty,
+                "description": item.product.description,
+                "created_at": item.product.createdAt,
+                "total_revenue": item.product.totalRevenue + ((item.product.price - item.product.discount) * item.qty),
+                "images": item.product.images
+              },
+            };
+          }).toList()
+        }, context);
+      }
 
       if (newOrder) {
         Navigator.pushNamed(context, CheckoutSuccessPage.routeName);
