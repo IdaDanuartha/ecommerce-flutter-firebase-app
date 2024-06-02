@@ -93,6 +93,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
         "address": {
           "latitude": double.parse(_latitudeController.text),
           "longitude": double.parse(_longitudeController.text),
+          "full_address": _fullAddressController.text,
           "details": _detailsController.text,
         },
         "items": cartProvider.items.map((item) {
@@ -112,7 +113,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
               "qty": item.product.qty,
               "description": item.product.description,
               "created_at": item.product.createdAt,
-              "total_revenue": item.product.totalRevenue,
+              "total_revenue": item.product.totalRevenue + ((item.product.price - item.product.discount) * item.qty),
               "images": item.product.images
             },
           };

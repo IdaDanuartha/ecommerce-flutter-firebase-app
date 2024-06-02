@@ -56,16 +56,16 @@ class _AddStaffPageState extends State<AddStaffPage> {
 
       var nav = Navigator.of(context);
 
-      if (selectedImage != null) {
+      // if (selectedImage != null) {
         // An image is selected, proceed with uploading
-        Future<String> profileUrl = uploadSingleImage(selectedImage, "users");
+        // Future<String> profileUrl = uploadSingleImage(selectedImage, "users");
 
-        profileUrl.then((url) async {
+        // profileUrl.then((url) async {
           var newStaff = await staffProvider.store({
             "name": _nameController.text,
             "username": _usernameController.text,
             "email": _emailController.text,
-            "profile_url": url,
+            "profile_url": "",
             "role": "staff",
             "password": _passwordController.text
           }, context);
@@ -96,22 +96,31 @@ class _AddStaffPageState extends State<AddStaffPage> {
               ),
             );
           }
-        }).catchError((error) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: successColor,
-              duration: const Duration(milliseconds: 2500),
-              content: const Text(
-                'Error when uploading profile image',
-                textAlign: TextAlign.center,
-              ),
-            ),
-          );
-        });
-      } else {
-        // No image is selected
-        print('No image selected');
-      }
+        // }).catchError((error) {
+        //   ScaffoldMessenger.of(context).showSnackBar(
+        //     SnackBar(
+        //       backgroundColor: alertColor,
+        //       duration: const Duration(milliseconds: 2500),
+        //       content: const Text(
+        //         'Error when uploading profile image',
+        //         textAlign: TextAlign.center,
+        //       ),
+        //     ),
+        //   );
+        // });
+      // } else {
+      //   // No image is selected
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //       SnackBar(
+      //         backgroundColor: alertColor,
+      //         duration: const Duration(milliseconds: 2500),
+      //         content: const Text(
+      //           'No image selected',
+      //           textAlign: TextAlign.center,
+      //         ),
+      //       ),
+      //     );
+      // }
 
       nav.pop();
     }
@@ -390,7 +399,7 @@ class _AddStaffPageState extends State<AddStaffPage> {
         margin: EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 20),
         child: Column(
           children: [
-            imageInput(),
+            // imageInput(),
             showImage(),
             nameInput(),
             usernameInput(),

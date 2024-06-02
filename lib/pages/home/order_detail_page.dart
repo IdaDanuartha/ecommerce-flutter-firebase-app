@@ -667,9 +667,9 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   ),
                   SizedBox(height: 5),
                   Container(
-                    width: MediaQuery.of(context).size.width - 80,
+                    width: MediaQuery.of(context).size.width - 60,
                     child: Text(
-                      args.address.details != "" ? args.address.details : "-",
+                      args.address.fullAddress != "" ? args.address.fullAddress : "-",
                       style: primaryTextStyle.copyWith(fontSize: 14),
                       maxLines: 5,
                       overflow: TextOverflow.ellipsis,
@@ -688,7 +688,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   ),
                   SizedBox(height: 5),
                   Container(
-                    width: MediaQuery.of(context).size.width - 80,
+                    width: MediaQuery.of(context).size.width - 60,
                     child: Text(
                       args.address.details != "" ? args.address.details : "-",
                       style: primaryTextStyle.copyWith(fontSize: 14),

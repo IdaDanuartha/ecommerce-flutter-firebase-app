@@ -290,9 +290,9 @@ class _EditProfileState extends State<EditProfile> {
 
     Widget profileImage() {
       return InkWell(
-        onTap: () {
-          addSingleImageController.showImagePickerDialog(context);
-        },
+        // onTap: () {
+        //   addSingleImageController.showImagePickerDialog(context);
+        // },
         focusColor: Colors.transparent,
         hoverColor: Colors.transparent,
         highlightColor: Colors.transparent,
@@ -311,14 +311,14 @@ class _EditProfileState extends State<EditProfile> {
                           ? user.profileUrl
                           : "https://firebasestorage.googleapis.com/v0/b/ecommerce-flutter-22e70.appspot.com/o/users%2Fuser.png?alt=media&token=f8257f26-5525-4216-8cac-99c9184b7467"))),
             ),
-            Positioned(
-                top: 68,
-                left: 35,
-                child: Icon(
-                  Icons.camera_alt,
-                  size: 32,
-                  color: Colors.black.withOpacity(0.7),
-                )),
+            // Positioned(
+            //     top: 68,
+            //     left: 35,
+            //     child: Icon(
+            //       Icons.camera_alt,
+            //       size: 32,
+            //       color: Colors.black.withOpacity(0.7),
+            //     )),
           ],
         ),
       );

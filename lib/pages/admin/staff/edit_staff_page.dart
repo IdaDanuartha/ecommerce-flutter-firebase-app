@@ -59,14 +59,15 @@ class _EditStaffPageState extends State<EditStaffPage> {
       // Future.delayed(const Duration(seconds: 5));
       try {
         // Await the image upload function
-        String url = await uploadSingleImage(selectedImage, "users");
+        // String url = await uploadSingleImage(selectedImage, "users");
 
         // Perform the update
         var updateStaff = await staffProvider.update(args.id, {
           "name": _nameController.text,
           "email": _emailController.text,
           "username": _usernameController.text,
-          "profile_url": url.isEmpty ? args.profileUrl : url,
+          // "profile_url": url.isEmpty ? args.profileUrl : url,
+          "profile_url": ""
         });
 
         var nav = Navigator.of(context);
@@ -382,8 +383,8 @@ class _EditStaffPageState extends State<EditStaffPage> {
         margin: EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 20),
         child: Column(
           children: [
-            imageInput(),
-            oldImages(),
+            // imageInput(),
+            // oldImages(),
             _addSingleImageController.selectedImage.value != null
                 ? Container(
                     margin: EdgeInsets.only(top: 15),
