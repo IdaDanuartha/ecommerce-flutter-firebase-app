@@ -18,7 +18,7 @@ class LocationPickerAlert extends StatefulWidget {
 class _LocationPickerAlertState extends State<LocationPickerAlert> {
   GoogleMapController? mapController;
   LatLng? _selectedLocation;
-  String? _detailLocation;
+  String _detailLocation = "";
 
   @override
   void initState() {
@@ -40,20 +40,24 @@ class _LocationPickerAlertState extends State<LocationPickerAlert> {
 
   Future<void> _getAddressFromLatLng(LatLng position) async {
     try {
-      List<Placemark> placemarks = await placemarkFromCoordinates(
+      List<Placemark> placemarks;
+
+      placemarks = [];
+
+      placemarks = await placemarkFromCoordinates(
         position.latitude,
         position.longitude,
       );
 
+      print("Latitudeee : ${position.latitude}, Longitudeee : ${position.longitude}");
+      print(placemarks);
+
       if (placemarks.isNotEmpty) {
         Placemark place = placemarks[0];
-        // print(place);
-        // print("Country: ${place.country}");
-        // print("Region: ${place.administrativeArea}");
-        // print("Locality: ${place.locality}");
-        // print("Street: ${place.street}");
-        // print("Postal Code: ${place.postalCode}");
-        _detailLocation = "${place.street}, ${place.locality}, ${place.administrativeArea}, ${place.country}, ${place.postalCode}";
+        print(place);
+        setState(() {
+          _detailLocation = "${place.street}, ${place.locality}, ${place.administrativeArea}, ${place.country}, ${place.postalCode}";
+        });
       }
     } catch (e) {
       print("Error in reverse geocoding: $e");
@@ -78,9 +82,9 @@ class _LocationPickerAlertState extends State<LocationPickerAlert> {
 
   @override
   Widget build(BuildContext context) {
-    PlacesProvider placesProvider =
-        Provider.of<PlacesProvider>(context, listen: false);
-    print(placesProvider.searchResults.length);
+    // PlacesProvider placesProvider =
+    //     Provider.of<PlacesProvider>(context, listen: false);
+    // print(placesProvider.searchResults.length);
     return AlertDialog(
       contentPadding: EdgeInsets.all(0),
       content: SizedBox(
@@ -171,7 +175,7 @@ class _LocationPickerAlertState extends State<LocationPickerAlert> {
                     print(
                         "Selected Location - Lat: ${_selectedLocation!.latitude}, Lng: ${_selectedLocation}");
                     Navigator.pop(context);
-                    widget.onLocationSelected?.call(_selectedLocation!, _detailLocation!);
+                    widget.onLocationSelected?.call(_selectedLocation!, _detailLocation);
                     print(_detailLocation);
                   } else {
                     // handle case where no location is selected
