@@ -1,10 +1,8 @@
-import 'package:MushMagic/providers/places_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:MushMagic/themes.dart';
-import 'package:provider/provider.dart';
 
 class LocationPickerAlert extends StatefulWidget {
   const LocationPickerAlert({super.key, this.onLocationSelected});
@@ -40,22 +38,19 @@ class _LocationPickerAlertState extends State<LocationPickerAlert> {
 
   Future<void> _getAddressFromLatLng(LatLng position) async {
     try {
-      List<Placemark> placemarks;
-
-      placemarks = [];
+      List<Placemark> placemarks = [];
 
       placemarks = await placemarkFromCoordinates(
         position.latitude,
         position.longitude,
       );
 
-      print("Latitudeee : ${position.latitude}, Longitudeee : ${position.longitude}");
-      print(placemarks);
+      // print("Latitudeee : ${position.latitude}, Longitudeee : ${position.longitude}");
+      // print(placemarks);
 
       if (placemarks.isNotEmpty) {
-        Placemark place = placemarks[0];
-        print(place);
         setState(() {
+          Placemark place = placemarks[0];
           _detailLocation = "${place.street}, ${place.locality}, ${place.administrativeArea}, ${place.country}, ${place.postalCode}";
         });
       }
@@ -68,8 +63,8 @@ class _LocationPickerAlertState extends State<LocationPickerAlert> {
     try {
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
-      print(
-          "Latitude : ${position.latitude}, Longitude : ${position.longitude}");
+      // print(
+      //     "Latitude : ${position.latitude}, Longitude : ${position.longitude}");
 
       setState(() async {
         _selectedLocation = LatLng(position.latitude, position.longitude);
@@ -141,10 +136,11 @@ class _LocationPickerAlertState extends State<LocationPickerAlert> {
                 onMapCreated: (controller) {
                   mapController = controller;
                 },
-                onTap: (latLng) {
+                onTap: (latLng) async {
                   setState(() {
                     _selectedLocation = latLng;
                   });
+                  await _getAddressFromLatLng(latLng);
                 },
                 markers: _selectedLocation != null
                     ? {
