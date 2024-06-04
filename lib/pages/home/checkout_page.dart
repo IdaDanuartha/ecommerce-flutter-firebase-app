@@ -1,7 +1,6 @@
 import 'package:MushMagic/helpers/generate_random_string.dart';
 import 'package:MushMagic/helpers/location_picker_alert.dart';
 import 'package:MushMagic/helpers/send_to_gmail.dart';
-import 'package:MushMagic/helpers/stripe_payment.dart';
 import 'package:MushMagic/pages/home/checkout_success_page.dart';
 import 'package:MushMagic/providers/cart_provider.dart';
 import 'package:MushMagic/providers/order_provider.dart';
@@ -61,7 +60,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
     _paymentMethodController.text = paymentSelected;
     _customerNameController.text = userProvider.user!.name;
-    _fullAddressController.text = fullAddress;
 
     String userRole = userProvider.user!.role;
 
@@ -408,9 +406,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       _latitudeController.text = userLocation.latitude.toString();
                       _longitudeController.text =
                           userLocation.longitude.toString();
-                      fullAddress = detailAddress;
+                      // fullAddress = detailAddress;
+
+                      _fullAddressController.text = detailAddress;
                     });
-                    print("Address : ${fullAddress}");
+                    print("Address : ${_fullAddressController.text}");
                     // print("Selected location - latitude : ${userLocation.latitude}, longitude : ${userLocation.longitude}");
                   });
                 });
