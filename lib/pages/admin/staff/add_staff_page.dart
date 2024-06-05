@@ -5,6 +5,7 @@
 import 'dart:io';
 
 import 'package:MushMagic/controllers/add_single_image_controller.dart';
+import 'package:MushMagic/helpers/send_to_gmail.dart';
 import 'package:MushMagic/helpers/upload_image.dart';
 import 'package:MushMagic/providers/staff_provider.dart';
 import 'package:MushMagic/widgets/loading_button.dart';
@@ -84,6 +85,10 @@ class _AddStaffPageState extends State<AddStaffPage> {
             );
 
             addSingleImageController.selectedImage.value = null;
+
+            String message = "Welcome ${_nameController.text}, The admin has created an account for you as staff";
+
+            sendMessageAfterSignUp("Account Created", message, _emailController.text, context);
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
