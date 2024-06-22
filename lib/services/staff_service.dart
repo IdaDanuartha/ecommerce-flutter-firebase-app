@@ -1,3 +1,4 @@
+import 'package:MushMagic/themes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MushMagic/models/user_model.dart';
 import 'package:MushMagic/providers/user_provider.dart';
@@ -37,7 +38,20 @@ class StaffService {
     var userCredential = await auth.createUserWithEmailAndPassword(
       email: staffData["email"],
       password: staffData["password"],
-    );
+    ).catchError((error) {
+      if(error.code == "email-already-in-use") {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: alertColor,
+            duration: const Duration(milliseconds: 2500),
+            content: const Text(
+              'The email address is already in use by another user',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      }
+    });
 
     await auth.signInWithEmailAndPassword(
       email: userProvider.user!.email,

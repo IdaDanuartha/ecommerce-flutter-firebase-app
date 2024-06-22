@@ -62,7 +62,20 @@ class _SignUpPageState extends State<SignUpPage> {
       });
 
       try {
-        await _auth.createUserWithEmailAndPassword(email: email, password: password);
+        await _auth.createUserWithEmailAndPassword(email: email, password: password).catchError((error) {
+          if(error.code == "email-already-in-use") {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: alertColor,
+                duration: const Duration(milliseconds: 2500),
+                content: const Text(
+                  'The email address is already in use by another user',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            );
+          }
+        });
         await postDetailsToFirestore();
     } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
